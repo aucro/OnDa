@@ -1,6 +1,6 @@
 import React from 'react';
 
-const diary = () => {
+const memoTest = () => {
     return (
         <div>
             hello
@@ -8,4 +8,4 @@ const diary = () => {
     );
 };
 
-export default diary;
+export default memoTest;
