@@ -13,16 +13,26 @@ const style = {
   border: 'solid 1px #ddd',
   background: '#f0f0f0',
   borderRadius: '15px',
+  overflow: 'hidden',
 } as const
 const headerStyle = {
-  verticalAlign: 'top',
-  alignItems: 'left',
+  position: 'absolute',
+  top: '0%',
+  left: '0%',
+  margin: '10px',
 } as const
 const contentStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
 } as const
+const deleteButton = {
+  position: 'absolute',
+  top: '0%',
+  right: '0%',
+  margin: '10px',
+  cursor: 'pointer',
+}
 const MemoFrame: NextPage<Props> = ({ width, height, content, header }) => {
   const [size, setSize] = useState({
     width: width,
@@ -31,6 +41,9 @@ const MemoFrame: NextPage<Props> = ({ width, height, content, header }) => {
   useEffect(() => {
     console.log(size)
   }, [size])
+  const onDeleteButtonClick = () => {
+    console.log('delete 구현')
+  }
   return (
     <Resizable
       style={style}
@@ -42,6 +55,9 @@ const MemoFrame: NextPage<Props> = ({ width, height, content, header }) => {
         setSize({ width: size.width + d.width, height: size.height + d.height })
       }}
     >
+      <div style={deleteButton} onClick={onDeleteButtonClick}>
+        ❌
+      </div>
       <div style={headerStyle}>{header}</div>
       <div style={contentStyle}> {content}</div>
     </Resizable>
