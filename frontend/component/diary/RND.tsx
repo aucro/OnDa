@@ -8,6 +8,8 @@ interface RndProps {
     x: number
     y: number
   }
+  disableDragging: boolean
+  onResize: (e, direction, ref, delta, position) => void
   style?: React.CSSProperties
   children: JSX.Element
   onDragStop: (e, d) => void
@@ -15,16 +17,27 @@ interface RndProps {
 }
 
 const RND = (props: RndProps) => {
-  const { content, onDragStop, onResizeStop, style } = props
+  const {
+    content,
+    onDragStop,
+    onResize,
+    onResizeStop,
+    style,
+    disableDragging,
+  } = props
   return (
     <Rnd
       style={style}
       size={{ width: content.width, height: content.height }}
       position={{ x: content.x, y: content.y }}
       onDragStop={(e, d) => onDragStop(e, d)}
+      onResize={(e, direction, ref, delta, position) =>
+        onResize(e, direction, ref, delta, position)
+      }
       onResizeStop={(e, direction, ref, delta, position) =>
         onResizeStop(e, direction, ref, delta, position)
       }
+      disableDragging={disableDragging}
     >
       {props.children}
     </Rnd>
