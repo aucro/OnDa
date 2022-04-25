@@ -1,11 +1,23 @@
 import React, { Children } from 'react'
 import { Rnd } from 'react-rnd'
 
-const RND = (props) => {
-  const { content, index, onDragStop, onResizeStop, style } = props
+interface RndProps {
+  content: {
+    width: string
+    height: string
+    x: number
+    y: number
+  }
+  style?: React.CSSProperties
+  children: JSX.Element
+  onDragStop: (e, d) => void
+  onResizeStop: (e, direction, ref, delta, position) => void
+}
+
+const RND = (props: RndProps) => {
+  const { content, onDragStop, onResizeStop, style } = props
   return (
     <Rnd
-      key={index}
       style={style}
       size={{ width: content.width, height: content.height }}
       position={{ x: content.x, y: content.y }}
