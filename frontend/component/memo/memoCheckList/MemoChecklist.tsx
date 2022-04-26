@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MemoFrame from '../memoCommon/MemoFrame';
+import styles from '../../../styles/scss/Memo.module.scss'
 
 const memoChecklist = () => {
     const [checkboxInfo, setCheckboxInfo] = useState([{
@@ -9,18 +9,38 @@ const memoChecklist = () => {
         content: 'test2',
         isChecked: true
     }])
-    
+    const [content, setContent] = useState('');
+    const [isEditable, setIsEditable] = useState(false);
     const onCheckboxClick = (index) =>{
         checkboxInfo[index].isChecked = !checkboxInfo[index].isChecked
         setCheckboxInfo([...checkboxInfo])
     }
-
-    const addCheckboxList = () =>{
-        setCheckboxInfo([...checkboxInfo, {content: "추가하기 test", isChecked: false}])
+    const inputChecklistContent = (e) =>{
+        setContent(e.target.value)
     }
+    const addCheckboxList = () =>{
+        if(content===''){
+            alert("내용을 넣어주세요!");
+            return
+        }
+        setCheckboxInfo([...checkboxInfo, {content: content, isChecked: false}])
+        setContent('')
+    }
+    const onUpdateButtonClick = () =>{
+        setIsEditable(true);
+    }
+    const onApproveUpdateClick = () => {
+        setIsEditable(false);
+    }
+    const onDeleteButtonClick = () =>{
 
+    }
     return (
-        <div>
+        <div className={styles.checklist}>
+            <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+                ❌
+            </div>
+            {!isEditable && (<div className={styles.updateButton} onClick={onUpdateButtonClick}>✏️</div>)}
             {checkboxInfo.length > 0 && checkboxInfo.map((checkbox, index)=>{
                 return(
                     <div>
@@ -29,7 +49,15 @@ const memoChecklist = () => {
                     </div>
                 )
             })}
-            <button onClick={addCheckboxList} >추가하기</button>
+            {isEditable && <div className={styles.checklistButton} >
+                <input value={content} onChange={inputChecklistContent} type="text"/>
+                <button onClick={addCheckboxList} >추가하기</button>
+            </div>}
+            {isEditable && (
+                <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
+                ✔️
+                </div>
+            )}
         </div>
     );
 };
