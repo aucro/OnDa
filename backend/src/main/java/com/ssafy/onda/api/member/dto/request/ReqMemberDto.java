@@ -1,14 +1,13 @@
 package com.ssafy.onda.api.member.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-@NoArgsConstructor
+@ToString(of = { "memberId", "password", "email", "nickname" })
 @Getter
 public class ReqMemberDto {
 
@@ -25,11 +24,4 @@ public class ReqMemberDto {
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]{3,12}$", message = "닉네임 형식에 맞지 않습니다.")
     private String nickname;
 
-    @Builder
-    public ReqMemberDto(String memberId, String password, String email, String nickname) {
-        this.memberId = memberId;
-        this.password = password;
-        this.email = email;
-        this.nickname = nickname;
-    }
 }
