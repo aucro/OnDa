@@ -56,7 +56,7 @@ public class MemberController {
                 .build();
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/memberId/{memberId}")
     public BaseResponseDto isExistMemberId(@PathVariable String memberId) {
         log.info("Called API: {}", LogUtil.getClassAndMethodName());
 
@@ -69,6 +69,27 @@ public class MemberController {
         } else {
             status = NO_CONTENT.value();
             msg = "사용할 수 있는 ID입니다.";
+        }
+
+        return BaseResponseDto.builder()
+                .status(status)
+                .msg(msg)
+                .build();
+    }
+
+    @GetMapping("/email/{email}")
+    public BaseResponseDto isExistEmail(@PathVariable String email) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        Integer status = null;
+        String msg = null;
+
+        if (memberService.hasEmail(email)) {
+            status = OK.value();
+            msg = "이미 사용중인 이메일입니다.";
+        } else {
+            status = NO_CONTENT.value();
+            msg = "사용할 수 있는 이메일입니다.";
         }
 
         return BaseResponseDto.builder()

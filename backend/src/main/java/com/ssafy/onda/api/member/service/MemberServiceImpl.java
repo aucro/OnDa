@@ -31,22 +31,24 @@ public class MemberServiceImpl implements MemberService {
         String regx = "^[a-z]+[0-9a-z]{3,15}$";
         Pattern pattern = Pattern.compile(regx);
 
-        System.out.println("memberId = " + memberId);
-
         if (!pattern.matcher(memberId).matches()) {
             throw new CustomException(LogUtil.getElement(), INVALID_ID_FORMAT);
         }
-
-        System.out.println(memberRepository.existsByMemberId(memberId));
 
         return memberRepository.existsByMemberId(memberId);
     }
 
     @Override
     public boolean hasEmail(String email) {
-        return memberRepository.existsByEmail(email);
-    }
 
+        String regx = "^[0-9a-z]+([.-]?[0-9a-z]+)*@[0-9a-z]+([.-]+[0-9a-z]+)*(\\.[0-9a-z]{2,3})+$";
+        Pattern pattern = Pattern.compile(regx);
+
+        if (!pattern.matcher(email).matches()) {
+            throw new CustomException(LogUtil.getElement(), INVALID_EMAIL_FORMAT);
+        }
+
+        return memberRepository.existsByEmail(email);
     }
 
     @Transactional

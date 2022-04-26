@@ -34,6 +34,7 @@ public enum ErrorStatus {
     MEMBER_NOT_FOUND(BAD_REQUEST.value(), "사용자가 존재하지 않습니다."),
     // id check
     INVALID_ID_FORMAT(BAD_REQUEST.value(), "ID 형식에 맞지 않습니다."),
+    INVALID_EMAIL_FORMAT(BAD_REQUEST.value(), "이메일 형식에 맞지 않습니다."),
     // login
     LOGIN_INPUT_INVALID(BAD_REQUEST.value(), "Login input is invalid"),
     SSGAMEID_NOT_FOUND(BAD_REQUEST.value(), "ID를 다시 확인해주세요."),
