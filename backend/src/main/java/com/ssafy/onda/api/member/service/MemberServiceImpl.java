@@ -47,9 +47,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.existsByEmail(email);
     }
 
-    @Override
-    public boolean hasNickname(String nickname) {
-        return memberRepository.existsByNickname(nickname);
     }
 
     @Transactional
@@ -63,8 +60,6 @@ public class MemberServiceImpl implements MemberService {
             throw new CustomException(LogUtil.getElement(), MEMBERID_DUPLICATION);
         } else if (reqMemberDto.getPassword().contains(memberId)) {
             throw new CustomException(LogUtil.getElement(), PASSWORD_CONTAINED_MEMBERID);
-        } else if (hasNickname(reqMemberDto.getNickname())) {
-            throw new CustomException(LogUtil.getElement(), NICKNAME_DUPLICATION);
         } else if (hasEmail(reqMemberDto.getEmail())) {
             throw new CustomException(LogUtil.getElement(), EMAIL_DUPLICATION);
         }
