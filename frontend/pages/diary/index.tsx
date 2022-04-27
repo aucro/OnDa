@@ -3,17 +3,20 @@ import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/Pannel'
 import { useSelector, useDispatch } from 'react-redux'
+import { changeMemoState, addMemo } from 'core/store/modules/diary'
 import { getMemoAction } from 'core/store/actions/memo'
 
 const diary = () => {
-  const value = useSelector((state) => state.diary)
+  const value = useSelector((state) => state)
+  const [isChanged, setIsChanged] = useState(false)
   console.log(value)
+  const len = value.diary.length
 
   const dispatch = useDispatch()
 
   // 컴포넌트(떡메)의 위치, 크기 정보
   // 추 후에 고유번호(백엔드와 협의 후 결정)값이 추가되어야 함.
-  const [content, setContent] = useState(value.diary)
+  // const [content, setContent] = useState(value.diary)
   const [draggableState, setDraggableState] = useState(true)
   const test = {
     background: '#898989',
@@ -30,89 +33,58 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
-    // setContent([
-    //   ...content,
-    //   {
-    //     width: '',
-    //     height: '',
-    //     x: 10,
-    //     y: 10,
-    //     memoTypeSeq: params,
-    //   },
-    // ])
-
-    dispatch(getMemoAction(content))
-
+    dispatch(
+      addMemo({
+        id: len + 1,
+        width: 400,
+        height: 200,
+        x: 10,
+        y: 10,
+        memoTypeSeq: params,
+      }),
+    )
     // alert('추가되었습니다.')
   }
 
   console.log('reload')
 
   useEffect(() => {
-    dispatch(getMemoAction(content))
-  }, [])
+    dispatch(getMemoAction(1))
+    // setIsChanged(false)
+  }, [isChanged])
 
   return (
     <>
       <button>저장하기</button>
-      {value.map((c, index) => (
+      {value.diary.map((c, index) => (
         <RND
           style={test}
           content={c}
           key={index}
           onDragStop={(e, d) => {
             console.log(d)
-            setContent(
-              content.map((con, idx) =>
-                idx === index ? { ...con, x: d.x, y: d.y } : con,
-              ),
+            dispatch(
+              changeMemoState({
+                ...c,
+                x: d.x,
+                y: d.y,
+              }),
             )
+            setIsChanged(true)
           }}
           onResizeStop={(e, direction, ref, delta, position) => {
-            setContent(
-              content.map((con, idx) =>
-                idx === index
-                  ? {
-                      ...con,
-                      width: Number(
-                        ref.style.width.substring(
-                          0,
-                          ref.style.width.length - 2,
-                        ),
-                      ),
-                      height: Number(
-                        ref.style.height.substring(
-                          0,
-                          ref.style.height.length - 2,
-                        ),
-                      ),
-                    }
-                  : con,
-              ),
+            dispatch(
+              changeMemoState({
+                ...c,
+                width: Number(
+                  ref.style.width.substring(0, ref.style.width.length - 2),
+                ),
+                height: Number(
+                  ref.style.height.substring(0, ref.style.height.length - 2),
+                ),
+              }),
             )
-          }}
-          onResize={(e, direction, ref, delta, position) => {
-            setContent(
-              content.map((con, idx) =>
-                idx === index
-                  ? {
-                      ...con,
-                      width: Number(
-                        ref.style.width.substring(
-                          0,
-                          ref.style.width.length - 2,
-                        ),
-                      ),
-                      height: Number(
-                        ref.style.height.substring(
-                          0,
-                          ref.style.height.length - 2,
-                        ),
-                      ),
-                    }
-                  : con,
-              ),
-            )
+            setIsChanged(true)
           }}
           disableDragging={!draggableState}
         >

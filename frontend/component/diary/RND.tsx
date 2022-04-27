@@ -3,6 +3,7 @@ import { Rnd } from 'react-rnd'
 
 interface RndProps {
   content: {
+    id: number
     width: number
     height: number
     x: number

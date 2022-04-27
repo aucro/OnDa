@@ -10,6 +10,7 @@ import { getMemoAction } from '../actions/memo'
 
 let initialMemo = [
   //   {
+  //    id: 1
   //     width: 200,
   //     height: 200,
   //     x: 10,
@@ -17,6 +18,7 @@ let initialMemo = [
   //     memoTypeSeq: 1,
   //   },
   //   {
+  //     id: 1
   //     width: 200,
   //     height: 200,
   //     x: 10,
@@ -32,6 +34,12 @@ const diarySlice = createSlice({
     addMemo: (state, action) => {
       state.push(action.payload)
     },
+    changeMemoState: (state, action) => {
+      let arr = state.filter((s) => s.id !== action.payload.id)
+      arr.push(action.payload)
+
+      return arr
+    },
   },
   extraReducers: (builder) =>
     builder.addCase(getMemoAction.fulfilled, (state, action) => {
@@ -41,5 +49,5 @@ const diarySlice = createSlice({
     }),
 })
 
-export const { addMemo } = diarySlice.actions
+export const { addMemo, changeMemoState } = diarySlice.actions
 export default diarySlice.reducer

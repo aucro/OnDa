@@ -8,6 +8,7 @@ export const getMemoAction = createAsyncThunk(
 
     // 요청 response가지고 reducer에 return
     return {
+      id: 0,
       width: 200,
       height: 200,
       x: 10,
