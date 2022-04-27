@@ -2,8 +2,15 @@ import React, { Component, useState } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/Pannel'
+import { useSelector, useDispatch } from 'react-redux'
+import { addMemo } from 'core/store/modules/diary'
 
 const diary = () => {
+  const value = useSelector((state) => state)
+  console.log(value)
+
+  const dispatch = useDispatch()
+
   // 컴포넌트(떡메)의 위치, 크기 정보
   // 추 후에 고유번호(백엔드와 협의 후 결정)값이 추가되어야 함.
   const [content, setContent] = useState([
@@ -38,25 +45,33 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
-    setContent([
-      ...content,
-      {
+    // setContent([
+    //   ...content,
+    //   {
+    //     width: '',
+    //     height: '',
+    //     x: 10,
+    //     y: 10,
+    //     memoTypeSeq: params,
+    //   },
+    // ])
+
+    dispatch(
+      addMemo({
         width: '',
         height: '',
         x: 10,
         y: 10,
         memoTypeSeq: params,
-      },
-    ])
-    console.log(params)
-    alert('추가되었습니다.')
+      }),
+    )
+    // alert('추가되었습니다.')
   }
 
   console.log('reload')
 
   return (
     <>
-      {console.log(content)}
       {content.map((c, index) => (
         <RND
           style={test}
