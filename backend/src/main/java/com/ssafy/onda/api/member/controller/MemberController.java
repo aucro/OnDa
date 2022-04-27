@@ -4,6 +4,7 @@ import com.ssafy.onda.api.member.dto.MemberDto;
 import com.ssafy.onda.api.member.dto.request.ReqLoginMemberDto;
 import com.ssafy.onda.api.member.dto.request.ReqMemberDto;
 import com.ssafy.onda.api.member.service.MemberService;
+import com.ssafy.onda.global.common.auth.CustomUserDetails;
 import com.ssafy.onda.global.common.dto.BaseResponseDto;
 import com.ssafy.onda.global.common.util.JwtTokenUtil;
 import com.ssafy.onda.global.common.util.LogUtil;
@@ -11,6 +12,7 @@ import com.ssafy.onda.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,6 +135,29 @@ public class MemberController {
         return BaseResponseDto.builder()
                 .status(status)
                 .msg(msg)
+                .data(data)
+                .build();
+    }
+
+    @GetMapping("/mypage")
+    public BaseResponseDto mypage(Authentication authentication) {
+        log.info("Called API: {}", LogUtil.getClassAndMethodName());
+
+        if (authentication == null) {
+            throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        MemberDto memberDto = details.getMemberDto();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("memberId", memberDto.getMemberId());
+        data.put("email", memberDto.getEmail());
+        data.put("nickname", memberDto.getNickname());
+
+        return BaseResponseDto.builder()
+                .status(OK.value())
+                .msg("회원정보 조회에 성공했습니다.")
                 .data(data)
                 .build();
     }
