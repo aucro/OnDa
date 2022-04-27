@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
-
-const memoChecklist = () => {
+interface Props {
+    width: number,
+    height: number,
+    content: any,
+    header: any,
+    drag: any,
+  }
+const memoChecklist = ({drag}) => {
     const [checkboxInfo, setCheckboxInfo] = useState([{
         content: 'test',
         isChecked: false
@@ -28,9 +34,11 @@ const memoChecklist = () => {
     }
     const onUpdateButtonClick = () =>{
         setIsEditable(true);
+        drag.disableDragging();
     }
     const onApproveUpdateClick = () => {
         setIsEditable(false);
+        drag.enableDragging();
     }
     const onDeleteButtonClick = () =>{
 

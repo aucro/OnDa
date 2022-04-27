@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
-
-const MemoFinancialLedger = () => {
+interface Props {
+    width: number,
+    height: number,
+    content: any,
+    header: any,
+    drag: any,
+  }
+const MemoFinancialLedger = ({drag}) => {
     const [financeLedger, setFinanceLedger] = useState([])
     const [inputData, setInputData] = useState({
         content: '',
@@ -43,9 +49,11 @@ const MemoFinancialLedger = () => {
     }
     const onUpdateButtonClick = () =>{
         setIsEditable(true);
+        drag.disableDragging();
     }
     const onApproveUpdateClick = () => {
         setIsEditable(false);
+        drag.enableDragging();
     }
     const onDeleteButtonClick = () =>{
 

@@ -30,10 +30,10 @@ const MemoSeparator: NextPage<Props> = ({width, height, content, header, memoTyp
         );
     }
     else if(memoTypeSeq===2){
-        return <MemoFinancialLedger />
+        return <MemoFinancialLedger drag={drag}/>
     }
     else if(memoTypeSeq===3){
-        return <MemoChecklist />
+        return <MemoChecklist drag={drag}/>
     }
 };
 
