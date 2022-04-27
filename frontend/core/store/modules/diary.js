@@ -2,15 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialMemo = [
   {
-    width: '',
-    height: '',
+    width: 200,
+    height: 200,
     x: 10,
     y: 10,
     memoTypeSeq: 1,
   },
   {
-    width: '',
-    height: '',
+    width: 200,
+    height: 200,
     x: 10,
     y: 10,
     memoTypeSeq: 2,

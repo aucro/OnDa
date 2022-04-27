@@ -15,15 +15,15 @@ const diary = () => {
   // 추 후에 고유번호(백엔드와 협의 후 결정)값이 추가되어야 함.
   const [content, setContent] = useState([
     {
-      width: '200px',
-      height: '200px',
+      width: 200,
+      height: 200,
       x: 10,
       y: 10,
       memoTypeSeq: 1,
     },
     {
-      width: '500px',
-      height: '200px',
+      width: 500,
+      height: 200,
       x: 40,
       y: 310,
       memoTypeSeq: 2,
@@ -58,8 +58,8 @@ const diary = () => {
 
     dispatch(
       addMemo({
-        width: '',
-        height: '',
+        width: 200,
+        height: 200,
         x: 10,
         y: 10,
         memoTypeSeq: params,
@@ -89,7 +89,21 @@ const diary = () => {
             setContent(
               content.map((con, idx) =>
                 idx === index
-                  ? { ...con, width: ref.style.width, height: ref.style.height }
+                  ? {
+                      ...con,
+                      width: Number(
+                        ref.style.width.substring(
+                          0,
+                          ref.style.width.length - 2,
+                        ),
+                      ),
+                      height: Number(
+                        ref.style.height.substring(
+                          0,
+                          ref.style.height.length - 2,
+                        ),
+                      ),
+                    }
                   : con,
               ),
             )
@@ -98,7 +112,21 @@ const diary = () => {
             setContent(
               content.map((con, idx) =>
                 idx === index
-                  ? { ...con, width: ref.style.width, height: ref.style.height }
+                  ? {
+                      ...con,
+                      width: Number(
+                        ref.style.width.substring(
+                          0,
+                          ref.style.width.length - 2,
+                        ),
+                      ),
+                      height: Number(
+                        ref.style.height.substring(
+                          0,
+                          ref.style.height.length - 2,
+                        ),
+                      ),
+                    }
                   : con,
               ),
             )
@@ -107,8 +135,8 @@ const diary = () => {
         >
           {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
-            width={Number(c.width.substring(0, c.width.length - 2))}
-            height={Number(c.height.substring(0, c.height.length - 2))}
+            width={c.width}
+            height={c.height}
             content={'helloWorld'}
             header={'this is header'}
             memoTypeSeq={c.memoTypeSeq}
