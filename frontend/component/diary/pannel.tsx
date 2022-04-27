@@ -5,7 +5,7 @@ import textMemoImg from 'public/asset/image/memoImage/textMemoImg.png'
 import Image from 'next/image'
 
 const Pannel = ({ onClick }) => {
-  const index = 2
+  const index = 3
 
   return (
     <div className={styles.pannel}>
