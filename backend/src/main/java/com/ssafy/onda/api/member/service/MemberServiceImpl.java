@@ -90,4 +90,10 @@ public class MemberServiceImpl implements MemberService {
 
         return memberDto;
     }
+
+    @Override
+    public MemberDto findMemberDtoByMemberId(String memberId) {
+        return memberRepository.findMemberDtoByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
+    }
 }

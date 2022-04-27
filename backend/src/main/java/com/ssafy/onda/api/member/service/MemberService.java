@@ -14,4 +14,6 @@ public interface MemberService {
 
     MemberDto findMemberDtoInLogin(ReqLoginMemberDto reqLoginMemberDto);
 
+    MemberDto findMemberDtoByMemberId(String memberId);
+
 }
