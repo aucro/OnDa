@@ -1,34 +1,19 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/Pannel'
 import { useSelector, useDispatch } from 'react-redux'
-import { addMemo } from 'core/store/modules/diary'
+import { getMemoAction } from 'core/store/actions/memo'
 
 const diary = () => {
-  const value = useSelector((state) => state)
+  const value = useSelector((state) => state.diary)
   console.log(value)
 
   const dispatch = useDispatch()
 
   // 컴포넌트(떡메)의 위치, 크기 정보
   // 추 후에 고유번호(백엔드와 협의 후 결정)값이 추가되어야 함.
-  const [content, setContent] = useState([
-    {
-      width: 200,
-      height: 200,
-      x: 10,
-      y: 10,
-      memoTypeSeq: 1,
-    },
-    {
-      width: 500,
-      height: 200,
-      x: 40,
-      y: 310,
-      memoTypeSeq: 2,
-    },
-  ])
+  const [content, setContent] = useState(value.diary)
   const [draggableState, setDraggableState] = useState(true)
   const test = {
     background: '#898989',
@@ -56,23 +41,21 @@ const diary = () => {
     //   },
     // ])
 
-    dispatch(
-      addMemo({
-        width: 200,
-        height: 200,
-        x: 10,
-        y: 10,
-        memoTypeSeq: params,
-      }),
-    )
+    dispatch(getMemoAction(content))
+
     // alert('추가되었습니다.')
   }
 
   console.log('reload')
 
+  useEffect(() => {
+    dispatch(getMemoAction(content))
+  }, [])
+
   return (
     <>
-      {content.map((c, index) => (
+      <button>저장하기</button>
+      {value.map((c, index) => (
         <RND
           style={test}
           content={c}
