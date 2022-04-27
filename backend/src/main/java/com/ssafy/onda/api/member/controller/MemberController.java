@@ -147,18 +147,12 @@ public class MemberController {
             throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        MemberDto memberDto = details.getMemberDto();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("memberId", memberDto.getMemberId());
-        data.put("email", memberDto.getEmail());
-        data.put("nickname", memberDto.getNickname());
-
         return BaseResponseDto.builder()
                 .status(OK.value())
                 .msg("회원정보 조회에 성공했습니다.")
-                .data(data)
+                .data(new HashMap<>(){{
+                    put("memberInfo", memberService.findResMemberDto((CustomUserDetails) authentication.getDetails()));
+                }})
                 .build();
     }
 }
