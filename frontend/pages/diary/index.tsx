@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
+import Pannel from 'component/diary/Pannel'
 
 const diary = () => {
   // 컴포넌트(떡메)의 위치, 크기 정보
@@ -11,33 +12,51 @@ const diary = () => {
       height: '200px',
       x: 10,
       y: 10,
+      memoTypeSeq: 1,
     },
     {
       width: '500px',
-      height: '100px',
+      height: '200px',
       x: 40,
       y: 310,
+      memoTypeSeq: 2,
     },
   ])
-  const [draggableState, setDraggableState] = useState(true);
+  const [draggableState, setDraggableState] = useState(true)
   const test = {
     background: '#898989',
     overflow: 'hidden',
   } as const
 
-  console.log(content)
-
   const enableDragging = () => {
-    setDraggableState(true);
-    console.log("enable dragging")
+    setDraggableState(true)
+    console.log('enable dragging')
   }
-  const disableDragging = () =>{
-    setDraggableState(false);
-    console.log("disable dragging")
+  const disableDragging = () => {
+    setDraggableState(false)
+    console.log('disable dragging')
   }
+
+  const onClickPannel = (params, e) => {
+    setContent([
+      ...content,
+      {
+        width: '',
+        height: '',
+        x: 10,
+        y: 10,
+        memoTypeSeq: params,
+      },
+    ])
+    console.log(params)
+    alert('추가되었습니다.')
+  }
+
+  console.log('reload')
 
   return (
     <>
+      {console.log(content)}
       {content.map((c, index) => (
         <RND
           style={test}
@@ -77,11 +96,12 @@ const diary = () => {
             height={Number(c.height.substring(0, c.height.length - 2))}
             content={'helloWorld'}
             header={'this is header'}
-            memoTypeSeq={2}
-            drag={{enableDragging, disableDragging}}
+            memoTypeSeq={c.memoTypeSeq}
+            drag={{ enableDragging, disableDragging }}
           />
         </RND>
       ))}
+      <Pannel onClick={onClickPannel} />
     </>
   )
 }
