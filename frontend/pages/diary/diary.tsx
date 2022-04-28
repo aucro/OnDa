@@ -14,9 +14,12 @@ const diary = () => {
 
   const dispatch = useDispatch()
 
-  const [draggableState, setDraggableState] = useState(
-    Array(value.diary.length).fill(true),
-  )
+  console.log(len)
+
+  const [draggableState, setDraggableState] = useState(Array(len).fill(true))
+
+  console.log(draggableState)
+
   const test = {
     background: '#898989',
     overflow: 'hidden',
@@ -53,6 +56,10 @@ const diary = () => {
     dispatch(getMemoAction(1))
     // setIsChanged(false)
   }, [isChanged])
+
+  useEffect(() => {
+    setDraggableState(Array(len).fill(true))
+  }, [len])
 
   return (
     <>
