@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import styles from 'styles/scss/Signup.module.scss'
-// import checkId from 'api'
 
 const signupForm = () => {
   const [state, setState] = useState({
@@ -27,6 +26,7 @@ const signupForm = () => {
     nicknameRegex: false,
     emailRegex: false,
     emailUnique: false,
+    emailConfirm: false,
   });
 
   // error Message
@@ -39,30 +39,38 @@ const signupForm = () => {
     emailRegex: '잘못된 이메일 형식입니다.',
     emailUnique: '중복되는 이메일이 있습니다. ',
   };
+
+  const signUpBtnMsg = {
+    idInput: "아이디를 입력해주세요.",
+    idUnique: "아이디 중복확인을 해주세요.",
+    pwInput: "비밀번호를 입력해주세요.",
+    nickInput: "닉네임을 입력해주세요.",
+    emailInput: "이메일 형식을 확인해주세요.",
+    emailUnique: "이메일 중복 확인을 해주세요.",
+    emailConfirm: "이메일 인증을 해주세요.",
+    signUp: "가입이 완료되었습니다.",
+  }
   
   // 아이디 유효성 검사
   const checkIdValid = (e) => {
-    console.log(e.target.value);
-    const checkId = /^[A-Za-z]{1}[a-z|A-Z|0-9+|]{3,15}$/g.test(state.userId);
+    const checkId = /^[A-Za-z]{1}[a-z|A-Z|0-9+|]{3,15}$/g.test(e.target.value);
     if (!checkId) {
       setErrorState({
         ...errorState,
         userIdRegex: false,
       });
-
     } else {
       setErrorState({
         ...errorState,
         userIdRegex: true,
       })
     }
-    console.log(errorState.userIdRegex);
   };
   
   // 아이디 중복 확인
   const checkIdUnique = (e) => {
     console.log("아이디 중복 확인");
-    const result = false; // checkId(state.userId); true / false
+    const result = true; // checkIdDuplicate(state.userId); true / false
     if (state.userId.length == 0) {
       alert("아이디를 입력해주세요.");
     } else if (!errorState.userIdRegex) {
@@ -72,6 +80,7 @@ const signupForm = () => {
         ...errorState,
         userIdUnique: true,
       });
+      alert("사용할 수 있는 아이디입니다.")
     } else {
       setErrorState({
         ...errorState,
@@ -122,26 +131,87 @@ const signupForm = () => {
     }
   }
 
-  // 이메일 유효성 검사
-  const checkEmailValid = (e) => {
-    var checkEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/g.test(state.email);
-
-    
+  // 닉네임 유효성 검사
+  const checkNicknameValid = (e) => {
+    const checkNick = /^[a-zA-Zㄱ-힣0-9]{3,12}$/g.test(e.target.value);
+    if (!checkNick) {
+      setErrorState({
+        ...errorState,
+        nicknameRegex: false,
+      })
+    } else {
+      setErrorState({
+        ...errorState,
+        nicknameRegex: true,
+      })
+    }
   }
 
-  // 이메일 중복 확인 + 이메일 인증 HOW?
-  const emailCheck = (e) => {
+  // 이메일 유효성 검사
+  const checkEmailValid = (e) => {
+    var checkEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(state.email);
+    if (!checkEmail) {
+      setErrorState({
+        ...errorState,
+        emailRegex: false,
+      })
+    } else {
+      setErrorState({
+        ...errorState,
+        emailRegex: true,
+      })
+    }
+  }
+
+  // 이메일 중복 확인
+  const checkEmailUnique = (e) => {
     console.log("이메일 중복 확인")
+    const result = true; // checkEmailDuplicate(state.email);
+    if (state.email.length == 0) {
+      alert("이메일을 입력해주세요.");
+    } else if (!errorState.emailRegex) {
+      alert("유효한 형식의 이메일을 입력해주세요.");
+    } else if (result) {
+      setErrorState({
+        ...errorState,
+        emailUnique: true,
+      })
+      alert("사용할 수 있는 이메일입니다.");
+    } else {
+      setErrorState({
+        ...errorState,
+        emailUnique: false,
+      })
+      alert("중복된 이메일입니다.");
+    }
   }
   
 
   // 가입하기 버튼 클릭
   const signupFormSubmit = (e) => {
-    e.preventDefault();
-    // 1. 입력 조건 확인
-    // 2. 필수 입력란 확인
-    // 3. 중복체크 여부 확인
+    // e.preventDefault();
+    var result = "";
+    console.log(errorState);
+    if (!errorState.userIdRegex) {
+      result = signUpBtnMsg.idInput;
+    } else if (!errorState.userIdUnique) {
+      result = signUpBtnMsg.idUnique;
+    } else if (!errorState.passwordConfirm) {
+      result = signUpBtnMsg.pwInput;
+    } else if (!errorState.nicknameRegex) {
+      result = signUpBtnMsg.nickInput;
+    } else if (!errorState.emailRegex) {
+      result = signUpBtnMsg.emailInput;
+    } else if (!errorState.emailUnique) {
+      result = signUpBtnMsg.emailUnique;
+    // } else if (!errorState.emailConfirm) { // 이메일 인증
+    //   result = signUpBtnMsg.emailConfirm;
+    } else {
+      result = signUpBtnMsg.signUp;
+    }
     
+    alert(result);
+    return;
   }
 
   return (
@@ -185,12 +255,26 @@ const signupForm = () => {
             </tr>
             <tr>
               <th>닉네임</th>
-              <td><input type="text" name='nickname' value={state.nickname} onChange={handleChangeState} placeholder="닉네임을 입력해주세요" required /></td>
+              <td>
+                <input type="text" name='nickname' value={state.nickname} onChange={handleChangeState} onKeyUp={checkNicknameValid} maxLength={12} placeholder="닉네임을 입력해주세요" required />
+                <p className={ state.nickname.length==0 ? styles.txt_guide_none : errorState.nicknameRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                  <span>{errorMsg.nicknameRegex}</span>
+                </p>
+              </td>
             </tr>
             <tr>
               <th>이메일</th>
-              <td><input type="text" name='email' value={state.email} onChange={handleChangeState} placeholder="예:ondiary@onda.com" required /></td>
-              <td><button type='button' onClick={emailCheck} >중복확인</button></td>
+              <td>
+                <input type="text" name='email' value={state.email} onChange={handleChangeState} onKeyUp={checkEmailValid} placeholder="예:ondiary@onda.com" required />
+                <p className={ state.email.length==0 ? styles.txt_guide_none : errorState.emailRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                  <span>{errorMsg.emailRegex}</span>
+                </p>
+              </td>
+              <td>
+                <button type='button' onClick={checkEmailUnique} >중복확인</button>
+                {/* <button type='button' onClick={checkEmailUnique} >인증번호 받기</button> */}
+              </td>
+              
             </tr>
           </tbody>
         </table>
