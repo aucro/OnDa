@@ -18,7 +18,7 @@ const diarySlice = createSlice({
   initialState: initialMemo,
   reducers: {
     addMemo: (state, action) => {
-      state.push(action.payload)
+      state.memoList.push(action.payload)
     },
     changeMemoState: (state, action) => {
       let arr = state.memoList.filter((s) => s.id !== action.payload.id)
