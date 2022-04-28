@@ -1,14 +1,32 @@
 import { useEffect, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-
+import styles from '../../../styles/scss/Memo.module.scss'
 const fileTypes = ["JPEG", "PNG", "GIF"];
-
-export default function App() {
+interface Props {
+  width: number,
+  height: number,
+  content: any,
+  header: any,
+  drag: any,
+}
+export default function MemoImage({drag}) {
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [isEditable, setIsEditable] = useState(false);
   const handleChange = (file) => {
     setFile(file);
   };
+  const onUpdateButtonClick = () =>{
+    setIsEditable(true);
+    drag.disableDragging();
+  }
+  const onApproveUpdateClick = () => {
+      setIsEditable(false);
+      drag.enableDragging();
+  }
+  const onDeleteButtonClick = () =>{
+
+  }
   useEffect(()=>{
     if(file!==null){
       setPreviewImage(URL.createObjectURL(file[0]));
@@ -17,16 +35,24 @@ export default function App() {
   },[file])
   return (
     <div className="App">
-      <h1>Hello To Drag & Drop Files</h1>
-
-      <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
-      {previewImage!==null && <img src={previewImage}/>}
-      <FileUploader
-        multiple={true}
-        handleChange={handleChange}
-        name="file"
-        types={fileTypes}
-      />
+      <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+          ❌
+      </div>
+      {!isEditable && (<div className={styles.updateButton} onClick={onUpdateButtonClick}>✏️</div>)}
+      {previewImage!==null && <img src={previewImage} className={styles.image} />}
+      {isEditable && <div className={styles.fileUploader}>
+        <FileUploader
+          multiple={true}
+          handleChange={handleChange}
+          name="file"
+          types={fileTypes}
+        />
+      </div>}
+      {isEditable && (
+        <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
+          ✔️
+        </div>
+      )}
     </div>
   );
 }
