@@ -13,11 +13,7 @@ const diary = () => {
 
   const dispatch = useDispatch()
 
-  console.log(len)
-
   const [draggableState, setDraggableState] = useState(Array(len).fill(true))
-
-  console.log(draggableState)
 
   const test = {
     background: '#898989',
@@ -44,6 +40,7 @@ const diary = () => {
         x: 10,
         y: 10,
         memoTypeSeq: params,
+        info: {},
       }),
     )
     // alert('추가되었습니다.')
@@ -101,8 +98,7 @@ const diary = () => {
           <MemoSeparator
             width={c.width}
             height={c.height}
-            content={c.content}
-            header={'this is header'}
+            info={c.info}
             memoTypeSeq={c.memoTypeSeq}
             drag={{
               enableDragging: () => enableDragging(index),

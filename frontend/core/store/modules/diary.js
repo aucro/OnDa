@@ -30,6 +30,7 @@ const diarySlice = createSlice({
         // console.log('success')
         // console.log(action.payload)
         state.push(action.payload)
+        // state = action.payload
       })
       .addCase(setMemoAction.fulfilled, (state, action) => {
         console.log(action.payload)
