@@ -31,7 +31,7 @@ const signupForm = () => {
 
   // error Message
   const errorMsg = {
-    userIdRegex: '4자 이상의 영문 혹은 영문과 숫자를 조합',
+    userIdRegex: '4자 이상의 영문 혹은 영문과 숫자를 조합, 영문으로 시작',
     userIdUnique: '아이디 중복확인',
     passwordRegex: '8자 이상의 영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합',
     passwordConfirm: '동일한 비밀번호를 입력해주세요.',
@@ -43,7 +43,7 @@ const signupForm = () => {
   // 아이디 유효성 검사
   const checkIdValid = (e) => {
     console.log(e.target.value);
-    var checkId = /^[A-Za-z]{1}[a-z|A-Z|0-9+|]{3,15}$/g.test(state.userId);
+    const checkId = /^[A-Za-z]{1}[a-z|A-Z|0-9+|]{3,15}$/g.test(state.userId);
     if (!checkId) {
       setErrorState({
         ...errorState,
@@ -62,9 +62,12 @@ const signupForm = () => {
   // 아이디 중복 확인
   const checkIdUnique = (e) => {
     console.log("아이디 중복 확인");
-    // 중복 체크시 true / false 반환
-    const result = true; // checkId(state.userId);
-    if (result) {
+    const result = false; // checkId(state.userId); true / false
+    if (state.userId.length == 0) {
+      alert("아이디를 입력해주세요.");
+    } else if (!errorState.userIdRegex) {
+      alert("유효한 형식의 아이디를 입력해주세요.");
+    } else if (result) {
       setErrorState({
         ...errorState,
         userIdUnique: true,
@@ -74,18 +77,49 @@ const signupForm = () => {
         ...errorState,
         userIdUnique: false,
       });
+      alert("중복된 아이디입니다.")
     }
   };
   
   // 비밀번호 유효성 검사
   const checkPasswordValid = (e) => {
-    if (state.password.length < 8) {
-      errorState.passwordRegex = false;
+    const pw = e.target.value;
+    const num = pw.search(/[0-9]/g);
+    const eng = pw.search(/[A-Za-z]/ig);
+    const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+    if (pw.length < 8) {
+      setErrorState({
+        ...errorState,
+        passwordRegex: false,
+      })
+    } else if ((num<0 && eng<0) || (eng<0 && spe<0) || (spe<0 && num<0)) {
+      setErrorState({
+        ...errorState,
+        passwordRegex: false,
+      })
     } else {
-      errorState.passwordRegex = true;
+      setErrorState({
+        ...errorState,
+        passwordRegex: true,
+      })
     }
-    var chkNum = state.password.search(/[0-9]/g); // 숫자
-    
+  }
+
+  // 비밀번호 재입력 확인
+  const checkPasswordConfirm = (e) => {
+    const pwc = e.target.value;
+    if (pwc != state.password) {
+      setErrorState({
+        ...errorState,
+        passwordConfirm: false,
+      })
+    } else {
+      setErrorState({
+        ...errorState,
+        passwordConfirm: true,
+      })
+    }
   }
 
   // 이메일 유효성 검사
@@ -133,11 +167,21 @@ const signupForm = () => {
             </tr>
             <tr>
               <th>비밀번호</th>
-              <td><input type="password" name='password' value={state.password} onChange={handleChangeState} onKeyUp={checkPasswordValid} maxLength={16} placeholder="비밀번호를 입력해주세요." required /></td>
+              <td>
+                <input type="password" name='password' value={state.password} onChange={handleChangeState} onKeyUp={checkPasswordValid} maxLength={16} placeholder="비밀번호를 입력해주세요." required />
+                <p className={ state.password.length==0 ? styles.txt_guide_none : errorState.passwordRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                  <span>{errorMsg.passwordRegex}</span>
+                </p>
+              </td>
             </tr>
             <tr>
               <th>비밀번호확인</th>
-              <td><input type="password" name='confirmPassword' value={state.confirmPassword} onChange={handleChangeState} maxLength={16} placeholder="비밀번호를 한번 더 입력해주세요." required /></td>
+              <td>
+                <input type="password" name='confirmPassword' value={state.confirmPassword} onChange={handleChangeState} onKeyUp={checkPasswordConfirm} maxLength={16} placeholder="비밀번호를 한번 더 입력해주세요." required />
+                <p className={ state.confirmPassword.length==0 ? styles.txt_guide_none : errorState.passwordConfirm ? styles.txt_guide_none : styles.txt_guide_block}>
+                  <span>{errorMsg.passwordConfirm}</span>
+                </p>
+              </td>
             </tr>
             <tr>
               <th>닉네임</th>
