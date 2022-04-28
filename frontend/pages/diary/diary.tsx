@@ -9,7 +9,7 @@ import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 const diary = () => {
   const value = useSelector((state) => state)
   console.log(value)
-  const len = 7
+  const len = value.diary.memoList.length
 
   const dispatch = useDispatch()
 
