@@ -4,6 +4,7 @@ import MemoText from '../memoText/MemoText'
 import MemoFinancialLedger from '../memoFinancialLedger/MemoFinancialLedger'
 import MemoImage from '../memoImage/MemoImage'
 import MemoChecklist from '../memoCheckList/MemoChecklist'
+import MemoSticker from '../memoSticker/MemoSticker'
 /**
  * MemoTypeSeq index
  * 1번 : memoText 텍스트 떡메
@@ -42,6 +43,8 @@ const MemoSeparator: NextPage<Props> = ({
     return <MemoChecklist drag={drag} />
   } else if(memoTypeSeq===4){
     return <MemoImage drag={drag}/>
+  } else if(memoTypeSeq===5){
+    return <MemoSticker drag={drag}/>
 }
 }
 

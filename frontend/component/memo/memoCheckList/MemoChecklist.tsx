@@ -7,7 +7,7 @@ interface Props {
     header: any,
     drag: any,
   }
-const memoChecklist = ({drag}) => {
+const MemoChecklist = ({drag}) => {
     const [checkboxInfo, setCheckboxInfo] = useState([{
         content: 'test',
         isChecked: false
@@ -70,4 +70,4 @@ const memoChecklist = ({drag}) => {
     );
 };
 
-export default memoChecklist;
+export default MemoChecklist;

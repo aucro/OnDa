@@ -10,7 +10,7 @@ const QuillWrapper = dynamic(import('react-quill'), {
 const memoTest = () => {
   return (
     <div>
-       <MemoChecklist />
+       <MemoChecklist drag={true}/>
     </div>
   )
 }
