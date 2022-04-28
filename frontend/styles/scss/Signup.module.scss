@@ -1,0 +1,59 @@
+.signupForm {
+  width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tblComm {
+  width: 100%;
+  border-top: 2px solid #333;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.sub {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 12px;
+  color: #666;
+  line-height: 17px;
+  text-align: right;
+}
+.ico {
+  padding-right: 2px;
+  color: #ee6a7b;
+}
+
+.tblComm th {
+  padding: 20px 0 0 20px;
+  color: #333;
+  line-height: 20px;
+}
+
+.tblComm td {
+  padding: 10px 0;
+  
+}
+
+.tblComm input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.txt_guide_block {
+  display: block;
+  padding: 10px 0 9px;
+  margin: 0;
+  font-size: 12px;
+  color:#ee6a7b;
+}
+
+.txt_guide_none {
+  display: none;
+}
