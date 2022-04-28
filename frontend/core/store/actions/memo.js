@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 export const getMemoAction = createAsyncThunk(
   'memo/getMemo',
   async (params, thunkAPI) => {
-    // api 요청
+    // api get 요청
     const res = {
       id: 0,
       width: 200,
@@ -12,6 +12,20 @@ export const getMemoAction = createAsyncThunk(
       y: 40,
       memoTypeSeq: 2,
     }
+
+    // 요청 response가지고 reducer에 return
+    return res
+  },
+)
+
+export const setMemoAction = createAsyncThunk(
+  'memo/setMemo',
+  async (params, thunkAPI) => {
+    // api post 요청
+    const res = {
+      status: 200,
+    }
+    console.log(params)
 
     // 요청 response가지고 reducer에 return
     return res

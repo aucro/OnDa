@@ -4,7 +4,7 @@ import RND from 'component/diary/RND'
 import Pannel from 'component/diary/Pannel'
 import { useSelector, useDispatch } from 'react-redux'
 import { changeMemoState, addMemo } from 'core/store/modules/diary'
-import { getMemoAction } from 'core/store/actions/memo'
+import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 
 const diary = () => {
   const value = useSelector((state) => state)
@@ -61,8 +61,13 @@ const diary = () => {
     setDraggableState(Array(len).fill(true))
   }, [len])
 
+  const onClickSave = () => {
+    dispatch(setMemoAction(value.diary))
+  }
+
   return (
     <>
+      <button onClick={onClickSave}>저장하기</button>
       {value.diary.map((c, index) => (
         <RND
           style={test}
