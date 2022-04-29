@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
 import InputEmoji from 'react-input-emoji'
-const MemoSticker= ({width, height, drag}) => {
+const MemoSticker= ({memoInfo, drag}) => {
+    const { width, height, info } = memoInfo
     const [isEditable, setIsEditable] = useState(false);
     const [text, setText] = useState('')
     const [finalEmoji, setFinalEmoji] = useState('');
     const [size, setSize] = useState(width*height/500);
 
     useEffect(()=>{
-        setSize(width*height/500)
+        setSize(Math.pow(Math.min(width, height),2)/500)
         console.log(width)
     },[width, height])
     const handleOnEnter = (text) => {
@@ -21,6 +22,7 @@ const MemoSticker= ({width, height, drag}) => {
     }
     const onApproveUpdateClick = () => {
         setIsEditable(false);
+        handleOnEnter(text);
         drag.enableDragging();
     }
     const onDeleteButtonClick = () =>{
@@ -40,7 +42,7 @@ const MemoSticker= ({width, height, drag}) => {
                     onChange={setText}
                     cleanOnEnter
                     onEnter={handleOnEnter}
-                    placeholder="이모지를 선택하기 위해서 엔터키를 눌러주세요!"
+                    placeholder="이모지를 선택해주세요!"
                     maxLength={1}
                     />
                 </div>)}

@@ -13,13 +13,7 @@ interface Props {
 const MemoChecklist = ({memoInfo, drag}) => {
     const { width, height, info } = memoInfo
     const dispatch = useDispatch();
-    const [checkboxInfo, setCheckboxInfo] = useState([{
-        content: 'test',
-        isChecked: false
-    },{
-        content: 'test2',
-        isChecked: true
-    }])
+    const [checkboxInfo, setCheckboxInfo] = useState(info)
     const [content, setContent] = useState('');
     const [isEditable, setIsEditable] = useState(false);
     const onCheckboxClick = (index) =>{

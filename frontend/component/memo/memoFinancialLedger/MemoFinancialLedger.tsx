@@ -6,9 +6,12 @@ interface Props {
     content: any,
     header: any,
     drag: any,
+    memoInfo: any,
   }
-const MemoFinancialLedger = ({drag}) => {
-    const [financeLedger, setFinanceLedger] = useState([])
+const MemoFinancialLedger = ({memoInfo, drag}) => {
+    const { width, height, info } = memoInfo
+
+    const [financeLedger, setFinanceLedger] = useState(info)
     const [inputData, setInputData] = useState({
         content: '',
         income: '',

@@ -8,10 +8,12 @@ interface Props {
   content: any,
   header: any,
   drag: any,
+  memoInfo: any,
 }
-export default function MemoImage({drag}) {
+export default function MemoImage({memoInfo, drag}) {
+  const { width, height, info } = memoInfo
   const [file, setFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(info);
   const [isEditable, setIsEditable] = useState(false);
   const handleChange = (file) => {
     setFile(file);

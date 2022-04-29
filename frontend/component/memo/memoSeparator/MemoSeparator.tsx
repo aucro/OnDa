@@ -31,13 +31,13 @@ const MemoSeparator: NextPage<Props> = ({
   if (memoTypeSeq === 1) {
     return <MemoText memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 2) {
-    return <MemoFinancialLedger drag={drag} />
+    return <MemoFinancialLedger memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 3) {
     return <MemoChecklist memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 4) {
-    return <MemoImage drag={drag} />
+    return <MemoImage memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 5) {
-    return <MemoSticker width={width} height={height} drag={drag} />
+    return <MemoSticker memoInfo={memoInfo} drag={drag} />
   }
 }
 

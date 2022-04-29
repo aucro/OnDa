@@ -34,7 +34,22 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
-    const tempInfoType = params===3 ? [] : {};
+    
+    let returnType: any;
+    if(params===1){
+      returnType={
+        content: '',
+        header: '',
+      }
+    }
+    else if(params===2 || params===3){
+      returnType=[]
+    }
+    else if(params===4){
+      returnType=null
+    }
+    else if(params===5){
+    }
     dispatch(
       addMemo({
         id: len + 1,
@@ -43,10 +58,7 @@ const diary = () => {
         x: 10,
         y: 10,
         memoTypeSeq: params,
-        info: {
-          content: '테스트',
-          header: '테스트',
-        },
+        info: returnType,
       }),
     )
     // alert('추가되었습니다.')
