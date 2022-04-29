@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
 import InputEmoji from 'react-input-emoji'
-
-const MemoSticker= ({drag}) => {
+const MemoSticker= ({width, height, drag}) => {
     const [isEditable, setIsEditable] = useState(false);
     const [text, setText] = useState('')
     const [finalEmoji, setFinalEmoji] = useState('');
+    const [size, setSize] = useState(width*height/500);
+
+    useEffect(()=>{
+        setSize(width*height/500)
+        console.log(width)
+    },[width, height])
     const handleOnEnter = (text) => {
         console.log('enter', text)
         setFinalEmoji(text);
@@ -27,7 +32,7 @@ const MemoSticker= ({drag}) => {
                 ❌
             </div>
             {!isEditable && (<div className={styles.updateButton} onClick={onUpdateButtonClick}>✏️</div>)}
-            {finalEmoji !== '' && finalEmoji}
+            {finalEmoji !== '' && <div style={{fontSize: size.toString()+'px'}}>{finalEmoji}</div>}
             {isEditable && (
                 <div className={styles.emojiInput}>
                     <InputEmoji

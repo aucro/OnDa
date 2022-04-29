@@ -49,7 +49,7 @@ const diary = () => {
   console.log('reload')
 
   const memberSeq = 3
-
+  
   useEffect(() => {
     dispatch(getMemoAction(memberSeq))
   }, [])

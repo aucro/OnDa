@@ -1,5 +1,5 @@
 import { NextPage } from 'next/types'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MemoText from '../memoText/MemoText'
 import MemoFinancialLedger from '../memoFinancialLedger/MemoFinancialLedger'
 import MemoImage from '../memoImage/MemoImage'
@@ -44,7 +44,7 @@ const MemoSeparator: NextPage<Props> = ({
   } else if(memoTypeSeq===4){
     return <MemoImage drag={drag}/>
   } else if(memoTypeSeq===5){
-    return <MemoSticker drag={drag}/>
+    return <MemoSticker width={width} height={height} drag={drag}/>
 }
 }
 
