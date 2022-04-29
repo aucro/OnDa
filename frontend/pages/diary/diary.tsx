@@ -42,7 +42,10 @@ const diary = () => {
         x: 10,
         y: 10,
         memoTypeSeq: params,
-        info: {},
+        info: {
+          content: '테스트',
+          header: '테스트',
+        },
       }),
     )
     // alert('추가되었습니다.')
