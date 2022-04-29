@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
-interface Props {
-    width: number,
-    height: number,
-    content: any,
-    header: any,
-    drag: any,
-  }
-const MemoSticker = ({drag}) => {
+import InputEmoji from 'react-input-emoji'
+
+const MemoSticker= ({drag}) => {
     const [isEditable, setIsEditable] = useState(false);
+    const [text, setText] = useState('')
+    const [finalEmoji, setFinalEmoji] = useState('');
+    const handleOnEnter = (text) => {
+        console.log('enter', text)
+        setFinalEmoji(text);
+    }
     const onUpdateButtonClick = () =>{
         setIsEditable(true);
         drag.disableDragging();
@@ -26,7 +27,18 @@ const MemoSticker = ({drag}) => {
                 ❌
             </div>
             {!isEditable && (<div className={styles.updateButton} onClick={onUpdateButtonClick}>✏️</div>)}
-           
+            {finalEmoji !== '' && finalEmoji}
+            {isEditable && (
+                <div className={styles.emojiInput}>
+                    <InputEmoji
+                    value={text}
+                    onChange={setText}
+                    cleanOnEnter
+                    onEnter={handleOnEnter}
+                    placeholder="이모지를 선택하기 위해서 엔터키를 눌러주세요!"
+                    maxLength={1}
+                    />
+                </div>)}
             {isEditable && (
                 <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
                 ✔️

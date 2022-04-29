@@ -101,3 +101,11 @@
 .image{
     -webkit-user-drag: none;
 }
+//스티커
+.emojiInput{
+    position: absolute;
+    bottom: 0%;
+    left: 0px;
+    width: 90%;
+    z-index: 0;
+}

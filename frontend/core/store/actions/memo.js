@@ -25,7 +25,7 @@ export const getMemoAction = createAsyncThunk(
           height: 200,
           x: 120,
           y: 410,
-          memoTypeSeq: 1,
+          memoTypeSeq: 5,
           info: {
             header: 'test',
             content: 'content',
