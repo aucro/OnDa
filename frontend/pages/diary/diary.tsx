@@ -51,7 +51,7 @@ const diary = () => {
   console.log('reload')
 
   const memberSeq = 3
-  
+
   useEffect(() => {
     appDispatch(getMemoAction(memberSeq)) //수정
   }, [])
@@ -103,7 +103,7 @@ const diary = () => {
           <MemoSeparator
             width={c.width}
             height={c.height}
-            info={c.info}
+            memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
             memoTypeSeq={c.memoTypeSeq}
             drag={{
               enableDragging: () => enableDragging(index),

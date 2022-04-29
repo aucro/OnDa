@@ -16,36 +16,29 @@ interface Props {
   height: number
   // content: any,
   // header: any,
-  info: any
+  memoInfo: any
   memoTypeSeq: number
   drag: any
 }
 const MemoSeparator: NextPage<Props> = ({
   width,
   height,
-  info,
+  memoInfo, //memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
   memoTypeSeq,
   drag,
 }) => {
+  console.log(memoInfo)
   if (memoTypeSeq === 1) {
-    return (
-      <MemoText
-        width={width}
-        height={height}
-        content={info.content}
-        header={info.header}
-        drag={drag}
-      />
-    )
+    return <MemoText memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 2) {
     return <MemoFinancialLedger drag={drag} />
   } else if (memoTypeSeq === 3) {
     return <MemoChecklist drag={drag} />
-  } else if(memoTypeSeq===4){
-    return <MemoImage drag={drag}/>
-  } else if(memoTypeSeq===5){
-    return <MemoSticker width={width} height={height} drag={drag}/>
-}
+  } else if (memoTypeSeq === 4) {
+    return <MemoImage drag={drag} />
+  } else if (memoTypeSeq === 5) {
+    return <MemoSticker width={width} height={height} drag={drag} />
+  }
 }
 
 export default MemoSeparator
