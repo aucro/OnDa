@@ -3,9 +3,10 @@ import styles from '../../../styles/scss/Memo.module.scss'
 import InputEmoji from 'react-input-emoji'
 const MemoSticker= ({memoInfo, drag}) => {
     const { width, height, info } = memoInfo
+    console.log(info)
     const [isEditable, setIsEditable] = useState(false);
-    const [text, setText] = useState('')
-    const [finalEmoji, setFinalEmoji] = useState('');
+    const [text, setText] = useState(info)
+    const [finalEmoji, setFinalEmoji] = useState(info);
     const [size, setSize] = useState(width*height/500);
 
     useEffect(()=>{
@@ -22,7 +23,7 @@ const MemoSticker= ({memoInfo, drag}) => {
     }
     const onApproveUpdateClick = () => {
         setIsEditable(false);
-        handleOnEnter(text);
+        if(text!=='') handleOnEnter(text);
         drag.enableDragging();
     }
     const onDeleteButtonClick = () =>{

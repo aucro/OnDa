@@ -49,6 +49,7 @@ const diary = () => {
       returnType=null
     }
     else if(params===5){
+      returnType=''
     }
     dispatch(
       addMemo({
