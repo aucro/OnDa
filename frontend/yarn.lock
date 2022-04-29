@@ -468,10 +468,17 @@
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.0.8.tgz"
   integrity sha512-ZK5v4bJwgXldAUA8r3q9YKfCwOqoHTK/ZqRjSeRXQrBXWouoPnS4MQtgC4AXGiiBuUu5wxrRgTlv0ktmM4P1Aw==
 
+<<<<<<< HEAD
 "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz"
   integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+=======
+"@types/hoist-non-react-statics@^3.3.0", "@types/hoist-non-react-statics@^3.3.1":
+  "integrity" "sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA=="
+  "resolved" "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz"
+  "version" "3.3.1"
+>>>>>>> 735647fc17ec16fdd8b29d0ebef753a89bdb9456
   dependencies:
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
@@ -514,6 +521,16 @@
   integrity sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==
   dependencies:
     "@types/react" "*"
+
+"@types/react-redux@^7.1.24":
+  "integrity" "sha512-7FkurKcS1k0FHZEtdbbgN8Oc6b+stGSfZYjQGicofJ0j4U0qIn/jaSvnP2pLwZKiai3/17xqqxkkrxTgN8UNbQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-redux/-/react-redux-7.1.24.tgz"
+  "version" "7.1.24"
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.0"
+    "@types/react" "*"
+    "hoist-non-react-statics" "^3.3.0"
+    "redux" "^4.0.0"
 
 "@types/react-transition-group@^4.4.4":
   version "4.4.4"
@@ -2688,6 +2705,7 @@ recast@^0.11.17:
     private "~0.1.5"
     source-map "~0.5.0"
 
+<<<<<<< HEAD
 redux-thunk@^2.4.1:
   version "2.4.1"
   resolved "https://registry.npmjs.org/redux-thunk/-/redux-thunk-2.4.1.tgz"
@@ -2697,6 +2715,12 @@ redux@^4.1.2:
   version "4.2.0"
   resolved "https://registry.npmjs.org/redux/-/redux-4.2.0.tgz"
   integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==
+=======
+"redux@^4", "redux@^4.0.0", "redux@^4.1.2":
+  "integrity" "sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA=="
+  "resolved" "https://registry.npmjs.org/redux/-/redux-4.2.0.tgz"
+  "version" "4.2.0"
+>>>>>>> 735647fc17ec16fdd8b29d0ebef753a89bdb9456
   dependencies:
     "@babel/runtime" "^7.9.2"
 
