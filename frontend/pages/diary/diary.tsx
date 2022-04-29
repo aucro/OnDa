@@ -34,6 +34,7 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
+    const tempInfoType = params===3 ? [] : {};
     dispatch(
       addMemo({
         id: len + 1,
@@ -42,7 +43,7 @@ const diary = () => {
         x: 10,
         y: 10,
         memoTypeSeq: params,
-        info: {},
+        info: tempInfoType,
       }),
     )
     // alert('추가되었습니다.')

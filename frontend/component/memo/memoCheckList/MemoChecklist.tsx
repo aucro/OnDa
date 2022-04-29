@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
+import { useDispatch } from 'react-redux'
+import { changeText } from '../../../core/store/modules/diary'
 interface Props {
-    width: number,
-    height: number,
-    content: any,
-    header: any,
+    memoInfo: any
+    // width: number,
+    // height: number,
+    // content: any,
+    // header: any,
     drag: any,
   }
-const MemoChecklist = ({drag}) => {
+const MemoChecklist = ({memoInfo, drag}) => {
+    const { width, height, info } = memoInfo
+    const dispatch = useDispatch();
     const [checkboxInfo, setCheckboxInfo] = useState([{
         content: 'test',
         isChecked: false
@@ -39,6 +44,12 @@ const MemoChecklist = ({drag}) => {
     const onApproveUpdateClick = () => {
         setIsEditable(false);
         drag.enableDragging();
+        dispatch(
+            changeText({
+              ...memoInfo,
+              info: [...checkboxInfo],
+            }),
+          )
     }
     const onDeleteButtonClick = () =>{
 
