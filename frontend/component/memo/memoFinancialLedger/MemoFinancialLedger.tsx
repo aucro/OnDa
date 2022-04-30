@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeMemoState } from 'core/store/modules/diary'
 import styles from '../../../styles/scss/Memo.module.scss'
 interface Props {
     width: number,
@@ -9,6 +11,7 @@ interface Props {
     memoInfo: any,
   }
 const MemoFinancialLedger = ({memoInfo, drag}) => {
+    const dispatch = useDispatch();
     const { width, height, info } = memoInfo
 
     const [financeLedger, setFinanceLedger] = useState(info)
@@ -53,10 +56,22 @@ const MemoFinancialLedger = ({memoInfo, drag}) => {
     const onUpdateButtonClick = () =>{
         setIsEditable(true);
         drag.disableDragging();
+        dispatch(
+            changeMemoState({
+                ...memoInfo,
+                isEditing: true,
+            }),
+        )
     }
     const onApproveUpdateClick = () => {
         setIsEditable(false);
         drag.enableDragging();
+        dispatch(
+            changeMemoState({
+                ...memoInfo,
+                isEditing: false,
+            }),
+        )
     }
     const onDeleteButtonClick = () =>{
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/scss/Memo.module.scss'
 import InputEmoji from 'react-input-emoji'
+import { useDispatch } from 'react-redux';
+import { changeMemoState } from 'core/store/modules/diary'
 const MemoSticker= ({memoInfo, drag}) => {
+    const dispatch = useDispatch();
     const { width, height, info } = memoInfo
-    console.log(info)
+    console.log(memoInfo)
     const [isEditable, setIsEditable] = useState(false);
     const [text, setText] = useState(info)
     const [finalEmoji, setFinalEmoji] = useState(info);
@@ -18,13 +21,28 @@ const MemoSticker= ({memoInfo, drag}) => {
         setFinalEmoji(text);
     }
     const onUpdateButtonClick = () =>{
+        console.log("d")
         setIsEditable(true);
         drag.disableDragging();
+        dispatch(
+            changeMemoState({
+                ...memoInfo,
+                isEditing: true,
+            }),
+        )
     }
     const onApproveUpdateClick = () => {
+        console.log("d")
         setIsEditable(false);
         if(text!=='') handleOnEnter(text);
         drag.enableDragging();
+        dispatch(
+            changeMemoState({
+                ...memoInfo,
+                isEditing: false,
+            }),
+        )
+
     }
     const onDeleteButtonClick = () =>{
 

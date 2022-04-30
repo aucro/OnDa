@@ -33,6 +33,7 @@ const diarySlice = createSlice({
               x: action.payload.x,
               y: action.payload.y,
               info: action.payload.info,
+              isEditing: action.payload.isEditing,
             }
           : memo,
       )

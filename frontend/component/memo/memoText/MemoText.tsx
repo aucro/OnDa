@@ -5,7 +5,7 @@ import MemoFrame from './MemoText.view'
 import dynamic from 'next/dynamic'
 import styles from '../../../styles/scss/Memo.module.scss'
 import 'react-quill/dist/quill.snow.css'
-import { changeText } from '../../../core/store/modules/diary'
+import { changeText, changeMemoState } from '../../../core/store/modules/diary'
 
 interface Props {
   memoInfo: any
@@ -79,6 +79,12 @@ const MemoText: NextPage<Props> = ({ memoInfo, drag }) => {
     setTextContent(showInputTag('CONTENT'))
     setHeaderContent(showInputTag('HEADER'))
     drag.disableDragging()
+    dispatch(
+      changeMemoState({
+          ...memoInfo,
+          isEditing: true,
+      }),
+  )
   }
   const onApproveUpdateClick = () => {
     setTextEditMode(false)
@@ -96,6 +102,12 @@ const MemoText: NextPage<Props> = ({ memoInfo, drag }) => {
         },
       }),
     )
+    dispatch(
+      changeMemoState({
+          ...memoInfo,
+          isEditing: false,
+      }),
+  )
   }
   return (
     <MemoFrame

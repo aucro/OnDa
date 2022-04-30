@@ -87,8 +87,14 @@ const diary = () => {
       {value.memoList.map((c, index) => (
         <RND
           style={{
-            background: '#898989',
-            overflow: 'hidden',
+            // background: '#898989',
+            // background: '#ffc',
+            // background: 'transparent',
+            background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
+            borderRadius: '10px',
+            boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
+            borderStyle: `${c.isEditing ? 'dashed' : 'none' }`
+            // overflow: 'hidden',
           }}
           content={c}
           key={index}

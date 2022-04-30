@@ -35,7 +35,7 @@ const MemoSeparator: NextPage<Props> = ({
   } else if (memoTypeSeq === 3) {
     return <MemoChecklist memoInfo={memoInfo} drag={drag} />
   } else if (memoTypeSeq === 4) {
-    return <MemoImage memoInfo={memoInfo} drag={drag} />
+    return <MemoImage memoInfo={memoInfo} drag={drag}  />
   } else if (memoTypeSeq === 5) {
     return <MemoSticker memoInfo={memoInfo} drag={drag} />
   }
