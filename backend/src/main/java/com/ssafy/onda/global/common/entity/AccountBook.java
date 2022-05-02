@@ -23,7 +23,7 @@ public class AccountBook extends BaseMemoEntity {
     private Long totalWithdraw;
 
     @Builder
-    public AccountBook(Double x, Double y, Double width, Double height, Long accountBookSeq, Long totalDeposit, Long totalWithdraw) {
+    public AccountBook(Long x, Long y, Long width, Long height, Long accountBookSeq, Long totalAmount, Long totalDeposit, Long totalWithdraw) {
         super(x, y, width, height);
         this.accountBookSeq = accountBookSeq;
         this.totalDeposit = totalDeposit;

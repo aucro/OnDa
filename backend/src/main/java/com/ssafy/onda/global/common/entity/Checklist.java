@@ -19,7 +19,7 @@ public class Checklist extends BaseMemoEntity {
     private String checklistTitle;
 
     @Builder
-    public Checklist(Double x, Double y, Double width, Double height, Long checklistSeq, String checklistTitle) {
+    public Checklist(Long x, Long y, Long width, Long height, Long checklistSeq, String checklistHeader) {
         super(x, y, width, height);
         this.checklistSeq = checklistSeq;
         this.checklistTitle = checklistTitle;

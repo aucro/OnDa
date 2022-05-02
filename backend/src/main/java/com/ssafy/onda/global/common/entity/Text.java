@@ -20,7 +20,7 @@ public class Text extends BaseMemoEntity {
     private String textContent;
 
     @Builder
-    public Text(Double x, Double y, Double width, Double height, Long textSeq, String textContent) {
+    public Text(Long x, Long y, Long width, Long height, Long textSeq, String textHeader, String textContent) {
         super(x, y, width, height);
         this.textSeq = textSeq;
         this.textContent = textContent;
