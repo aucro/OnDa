@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@ToString(of = {"textSeq", "textContent"})
+@ToString(of = {"textSeq", "textHeader", "textContent"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_text")
 @Entity

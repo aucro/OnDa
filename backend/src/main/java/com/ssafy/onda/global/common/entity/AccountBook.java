@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@ToString(of = {"accountBookSeq", "totalDeposit", "totalWithdraw"})
+@ToString(of = {"accountBookSeq", "totalAmount", "totalDeposit", "totalWithdraw"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_account_book")
 @Entity
