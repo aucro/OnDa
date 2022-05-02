@@ -53,6 +53,11 @@ const diarySlice = createSlice({
 
       state.memoList = arr
     },
+    deleteMemo: (state, action) => {
+      const id = action.payload
+      let arr = state.memoList.filter((memo) => memo.id !== id)
+      state.memoList = arr
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -67,5 +72,6 @@ const diarySlice = createSlice({
       }),
 })
 
-export const { addMemo, changeMemoState, changeText } = diarySlice.actions
+export const { addMemo, changeMemoState, changeText, deleteMemo } =
+  diarySlice.actions
 export default diarySlice.reducer

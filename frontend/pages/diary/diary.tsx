@@ -3,7 +3,7 @@ import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/pannel'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeMemoState, addMemo } from 'core/store/modules/diary'
+import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
 import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
 
@@ -14,14 +14,9 @@ const diary = () => {
   const lastId = value.lastId
 
   const dispatch = useDispatch()
-  const appDispatch: AppDispatch = useDispatch() // 추가됨.
+  const appDispatch: AppDispatch = useDispatch()
 
   const [draggableState, setDraggableState] = useState(Array(len).fill(true))
-
-  // const test = {
-  //   background: '#898989',
-  //   overflow: 'hidden',
-  // } as const
 
   const enableDragging = (index) => {
     draggableState[index] = true
@@ -44,7 +39,7 @@ const diary = () => {
   const memberSeq = 3
 
   useEffect(() => {
-    appDispatch(getMemoAction(memberSeq)) //수정
+    appDispatch(getMemoAction(memberSeq))
   }, [])
 
   useEffect(() => {
@@ -52,7 +47,11 @@ const diary = () => {
   }, [len])
 
   const onClickSave = () => {
-    appDispatch(setMemoAction(value)) //수정
+    appDispatch(setMemoAction(value))
+  }
+
+  const onDeleteMemo = (id) => {
+    appDispatch(deleteMemo(id))
   }
 
   return (
@@ -106,6 +105,7 @@ const diary = () => {
               enableDragging: () => enableDragging(index),
               disableDragging: () => disableDragging(index),
             }}
+            onDeleteMemo={onDeleteMemo}
           />
         </RND>
       ))}
