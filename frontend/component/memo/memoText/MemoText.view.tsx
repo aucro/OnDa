@@ -10,6 +10,7 @@ interface Props {
   onDeleteButtonClick: any
   onApproveUpdateClick: any
   isEditable: boolean
+  memoInfo: any
 }
 
 const MemoFrame: NextPage<Props> = ({
@@ -19,8 +20,10 @@ const MemoFrame: NextPage<Props> = ({
   onDeleteButtonClick,
   onApproveUpdateClick,
   isEditable,
+  memoInfo,
 }) => {
   // const [text, setText] = useState(JSON.stringify(content))
+  const { width, height, info } = memoInfo;
   return (
     <div>
       <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
@@ -33,7 +36,16 @@ const MemoFrame: NextPage<Props> = ({
       )}
       <div className={styles.header}>{header}</div>
       
-      {!isEditable ? (<div className={styles.content}  > {ReactHtmlParser(content)}</div>) : (<div className={styles.content}  > {(content)}</div>)}
+      {
+        !isEditable ? 
+          (<div className={styles.content} style={{ wordBreak: 'break-all', margin: 10}}  >  
+            {ReactHtmlParser(content)}
+          </div>) : 
+          (<div className={styles.content}  > 
+            <div>
+              {(content)}
+            </div>
+          </div>)}
       {isEditable && (
         <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
           ✔️
