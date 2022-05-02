@@ -97,8 +97,6 @@ const diary = () => {
         >
           {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
-            width={c.width}
-            height={c.height}
             memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
             memoTypeSeq={c.memoTypeSeq}
             drag={{
