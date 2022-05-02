@@ -28,22 +28,23 @@
 }
 
 .tblComm th {
-  padding: 20px 0 0 20px;
+  padding: 20px 8px 0 10px;
   color: #333;
-  line-height: 20px;
+  vertical-align: top;
 }
 
 .tblComm td {
   padding: 10px 0;
-  
 }
 
 .tblComm input {
-  width: 100%;
+  width: 380px;
   height: 44px;
   padding: 0 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-right: 15px;
+  vertical-align: top;
 }
 
 .txt_guide_block {
@@ -56,4 +57,45 @@
 
 .txt_guide_none {
   display: none;
+}
+
+.tblComm button {
+  width: 120px;
+  height: 44px;
+  background-color: #fff;
+  border: solid 1px rgb(19, 88, 141);
+  border-radius: 5px;
+  color: rgb(19, 88, 141);
+  cursor: pointer;
+  outline: none;
+}
+
+.footer {
+  height: 44px;
+  line-height: 44px;
+  margin-top: 20px;
+}
+
+.cancle { 
+  width: 140px;
+  height: 44px;
+  line-height: 44px;
+  display: inline-block;
+  background-color: #fff;
+  border: solid 1px rgb(19, 88, 141);
+  border-radius: 5px;
+  color: rgb(19, 88, 141);
+  margin-right: 8px;
+  font-size: 13px;
+}
+
+.footer button {
+  width: 140px;
+  height: 44px;
+  background-color: rgb(19, 88, 141);
+  border: solid 1px rgb(19, 88, 141);
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
 }

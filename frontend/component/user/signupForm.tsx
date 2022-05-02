@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styles from 'styles/scss/Signup.module.scss'
+import { checkId, checkEmail } from 'pages/api/memberApi'
+import { signup } from 'pages/api/authApi'
 
 const signupForm = () => {
-  const [state, setState] = useState({
-    userId: "",
+  const [member, setMember] = useState({
+    memberId: "",
     password: "",
     confirmPassword: "",
     nickname: "",
@@ -11,28 +13,53 @@ const signupForm = () => {
   })
 
   const handleChangeState = (e) => {
-    setState({
-      ...state,
+    setMember({
+      ...member,
       [e.currentTarget.name]: e.currentTarget.value
-    })
+    });
+    if (e.currentTarget.name == "memberId") {
+      setErrorState({
+        ...errorState,
+        memberIdUnique: false,
+      })
+    } else if (e.currentTarget.name == "email") {
+      setErrorState({
+        ...errorState,
+        emailUnique: false,
+      })
+    }
+
   }
 
   // error State
   const [errorState, setErrorState] = useState({
-    userIdRegex: false,
-    userIdUnique: false,
+    memberIdRegex: false, // 유효성
+    memberIdUnique: false, // 중복
     passwordRegex: false,
     passwordConfirm: false,
     nicknameRegex: false,
     emailRegex: false,
     emailUnique: false,
-    emailConfirm: false,
+    emailConfirm: false, // 인증
   });
+
+  const toggleIsEmailConfirm = () => {
+    if(errorState.emailUnique) {
+      setErrorState({
+      ...errorState,
+      emailConfirm: !errorState.emailConfirm,
+    })
+    } else if(errorState.emailRegex) {
+      alert("이메일 중복확인을 해주세요.")
+    } else {
+      alert("이메일을 입력해주세요.")
+    }
+  }
 
   // error Message
   const errorMsg = {
-    userIdRegex: '4자 이상의 영문 혹은 영문과 숫자를 조합, 영문으로 시작',
-    userIdUnique: '아이디 중복확인',
+    memberIdRegex: '4자 이상의 영문 혹은 영문과 숫자를 조합, 영문으로 시작',
+    memberIdUnique: '아이디 중복확인',
     passwordRegex: '8자 이상의 영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합',
     passwordConfirm: '동일한 비밀번호를 입력해주세요.',
     nicknameRegex: '3자 이상의 한글/영문/숫자 조합',
@@ -57,36 +84,35 @@ const signupForm = () => {
     if (!checkId) {
       setErrorState({
         ...errorState,
-        userIdRegex: false,
+        memberIdRegex: false,
       });
     } else {
       setErrorState({
         ...errorState,
-        userIdRegex: true,
+        memberIdRegex: true,
       })
     }
   };
   
   // 아이디 중복 확인
-  const checkIdUnique = (e) => {
-    console.log("아이디 중복 확인");
-    const result = true; // checkIdDuplicate(state.userId); true / false
-    if (state.userId.length == 0) {
+  const checkIdUnique = async (id) => {
+    if (id.length == 0) {
       alert("아이디를 입력해주세요.");
-    } else if (!errorState.userIdRegex) {
-      alert("유효한 형식의 아이디를 입력해주세요.");
-    } else if (result) {
+      return;
+    }
+    const result = await checkId(id);
+    if (result.status == 204) {
       setErrorState({
         ...errorState,
-        userIdUnique: true,
+        memberIdUnique: true,
       });
-      alert("사용할 수 있는 아이디입니다.")
-    } else {
+      alert(result.msg);
+    } else if(result.status == 200 || result.status == 400) {
       setErrorState({
         ...errorState,
-        userIdUnique: false,
+        memberIdUnique: false,
       });
-      alert("중복된 아이디입니다.")
+      alert(result.msg);
     }
   };
   
@@ -118,7 +144,7 @@ const signupForm = () => {
   // 비밀번호 재입력 확인
   const checkPasswordConfirm = (e) => {
     const pwc = e.target.value;
-    if (pwc != state.password) {
+    if (pwc != member.password) {
       setErrorState({
         ...errorState,
         passwordConfirm: false,
@@ -148,8 +174,8 @@ const signupForm = () => {
   }
 
   // 이메일 유효성 검사
-  const checkEmailValid = (e) => {
-    var checkEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(state.email);
+  const checkEmailValid = () => {
+    var checkEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(member.email);
     if (!checkEmail) {
       setErrorState({
         ...errorState,
@@ -164,37 +190,35 @@ const signupForm = () => {
   }
 
   // 이메일 중복 확인
-  const checkEmailUnique = (e) => {
-    console.log("이메일 중복 확인")
-    const result = true; // checkEmailDuplicate(state.email);
-    if (state.email.length == 0) {
+  const checkEmailUnique = async (email) => {
+    if (email.length == 0) {
       alert("이메일을 입력해주세요.");
-    } else if (!errorState.emailRegex) {
-      alert("유효한 형식의 이메일을 입력해주세요.");
-    } else if (result) {
+      return;
+    }
+    const result = await checkEmail(email);
+    if (result.status == 204) {
       setErrorState({
         ...errorState,
         emailUnique: true,
       })
-      alert("사용할 수 있는 이메일입니다.");
-    } else {
+      alert(result.msg);
+    } else if (result.status == 200 || result.status == 400) {
       setErrorState({
         ...errorState,
         emailUnique: false,
       })
-      alert("중복된 이메일입니다.");
+      alert(result.msg);
     }
   }
   
 
   // 가입하기 버튼 클릭
-  const signupFormSubmit = (e) => {
+  const signupFormSubmit = () => {
     // e.preventDefault();
     var result = "";
-    console.log(errorState);
-    if (!errorState.userIdRegex) {
+    if (!errorState.memberIdRegex) {
       result = signUpBtnMsg.idInput;
-    } else if (!errorState.userIdUnique) {
+    } else if (!errorState.memberIdUnique) {
       result = signUpBtnMsg.idUnique;
     } else if (!errorState.passwordConfirm) {
       result = signUpBtnMsg.pwInput;
@@ -208,38 +232,43 @@ const signupForm = () => {
     //   result = signUpBtnMsg.emailConfirm;
     } else {
       result = signUpBtnMsg.signUp;
+      handleSignup();
     }
-    
     alert(result);
-    return;
+  }
+
+  const handleSignup = async () => {
+    const result = await signup(member);
+    if (result.status == 201) { // 회원가입 완료
+      alert(result.msg);
+    } else {
+      alert(result.msg);
+    }
   }
 
   return (
     <div className={styles.signupForm}>
       <div className={styles.title}>
         <h2>회원가입</h2>
-      </div>
-      {/* <p className={styles.sub}>
-        <span className={styles.ico}>*</span>필수입력사항
-      </p> */}
+      </div>    
       <div className={styles.content}>
         <table className={styles.tblComm}>
           <tbody>
             <tr>
               <th>아이디</th>
               <td>
-                <input type="text" name='userId' value={state.userId} onChange={handleChangeState} onKeyUp={checkIdValid} maxLength={16} placeholder="4자 이상의 영문 혹은 영문과 숫자를 조합" required />
-                <p className={ state.userId.length==0 ? styles.txt_guide_none : errorState.userIdRegex ? styles.txt_guide_none : styles.txt_guide_block}>
-                  <span>{errorMsg.userIdRegex}</span>
+                <input type="text" name='memberId' value={member.memberId} onChange={handleChangeState} onKeyUp={checkIdValid} maxLength={16} placeholder="4자 이상의 영문 혹은 영문과 숫자를 조합" required />
+                <button type='button' onClick={() => checkIdUnique(member.memberId)} >중복확인</button>
+                <p className={ member.memberId.length==0 ? styles.txt_guide_none : errorState.memberIdRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                  <span>{errorMsg.memberIdRegex}</span>
                 </p>
               </td>
-              <td><button type='button' onClick={checkIdUnique} >중복확인</button></td>
             </tr>
             <tr>
               <th>비밀번호</th>
               <td>
-                <input type="password" name='password' value={state.password} onChange={handleChangeState} onKeyUp={checkPasswordValid} maxLength={16} placeholder="비밀번호를 입력해주세요." required />
-                <p className={ state.password.length==0 ? styles.txt_guide_none : errorState.passwordRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                <input type="password" name='password' value={member.password} onChange={handleChangeState} onKeyUp={checkPasswordValid} maxLength={16} placeholder="비밀번호를 입력해주세요." required />
+                <p className={ member.password.length==0 ? styles.txt_guide_none : errorState.passwordRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.passwordRegex}</span>
                 </p>
               </td>
@@ -247,8 +276,8 @@ const signupForm = () => {
             <tr>
               <th>비밀번호확인</th>
               <td>
-                <input type="password" name='confirmPassword' value={state.confirmPassword} onChange={handleChangeState} onKeyUp={checkPasswordConfirm} maxLength={16} placeholder="비밀번호를 한번 더 입력해주세요." required />
-                <p className={ state.confirmPassword.length==0 ? styles.txt_guide_none : errorState.passwordConfirm ? styles.txt_guide_none : styles.txt_guide_block}>
+                <input type="password" name='confirmPassword' value={member.confirmPassword} onChange={handleChangeState} onKeyUp={checkPasswordConfirm} maxLength={16} placeholder="비밀번호를 한번 더 입력해주세요." required />
+                <p className={ member.confirmPassword.length==0 ? styles.txt_guide_none : errorState.passwordConfirm ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.passwordConfirm}</span>
                 </p>
               </td>
@@ -256,8 +285,8 @@ const signupForm = () => {
             <tr>
               <th>닉네임</th>
               <td>
-                <input type="text" name='nickname' value={state.nickname} onChange={handleChangeState} onKeyUp={checkNicknameValid} maxLength={12} placeholder="닉네임을 입력해주세요" required />
-                <p className={ state.nickname.length==0 ? styles.txt_guide_none : errorState.nicknameRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                <input type="text" name='nickname' value={member.nickname} onChange={handleChangeState} onKeyUp={checkNicknameValid} maxLength={12} placeholder="닉네임을 입력해주세요" required />
+                <p className={ member.nickname.length==0 ? styles.txt_guide_none : errorState.nicknameRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.nicknameRegex}</span>
                 </p>
               </td>
@@ -265,21 +294,25 @@ const signupForm = () => {
             <tr>
               <th>이메일</th>
               <td>
-                <input type="text" name='email' value={state.email} onChange={handleChangeState} onKeyUp={checkEmailValid} placeholder="예:ondiary@onda.com" required />
-                <p className={ state.email.length==0 ? styles.txt_guide_none : errorState.emailRegex ? styles.txt_guide_none : styles.txt_guide_block}>
+                <input type="text" name='email' value={member.email} onChange={handleChangeState} onKeyUp={checkEmailValid} placeholder="예:ondiary@onda.com" required />
+                <button type='button' onClick={() => checkEmailUnique(member.email)} >중복확인</button>
+                <p className={ member.email.length==0 ? styles.txt_guide_none : errorState.emailRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.emailRegex}</span>
                 </p>
               </td>
+            </tr>
+            <tr>
+              <th></th>
               <td>
-                <button type='button' onClick={checkEmailUnique} >중복확인</button>
-                {/* <button type='button' onClick={checkEmailUnique} >인증번호 받기</button> */}
+                {errorState.emailConfirm ? <input type="text" placeholder='인증번호 입력' /> : <input type="text" placeholder='인증번호 입력' disabled />}
+                <button type='button' onClick={checkEmail} >인증번호 받기</button>
               </td>
-              
             </tr>
           </tbody>
         </table>
-        <div>
-          <button type='button' onClick={signupFormSubmit}>가입하기</button>
+        <div className={styles.footer}>
+          <a href="#" className={styles.cancle}>취소하기</a>
+          <button type='button' onClick={signupFormSubmit} className="submit">가입하기</button>
         </div>
       </div>
     </div>
