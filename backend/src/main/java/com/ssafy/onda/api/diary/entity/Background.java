@@ -12,8 +12,10 @@ import java.time.LocalDate;
 @Table(
         name = "tb_background",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "member_seq"),
-                @UniqueConstraint(columnNames = "diaryDate")
+                @UniqueConstraint(
+                        name = "unique_between_member_seq_and_diary_date",
+                        columnNames = {"member_seq", "diaryDate"}
+                )
         }
 )
 @Entity

@@ -10,8 +10,10 @@ import javax.persistence.*;
 @Table(
         name = "tb_member",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "memberId"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(
+                        name = "unique_between_member_id_and_email",
+                        columnNames = {"memberId", "email"}
+                )
         }
 )
 @Entity
