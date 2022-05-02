@@ -1,6 +1,6 @@
 package com.ssafy.onda.api.member.entity;
 
-import com.ssafy.onda.api.main.entity.Background;
+import com.ssafy.onda.api.diary.entity.Background;
 import com.ssafy.onda.global.common.entity.MemoType;
 import lombok.*;
 

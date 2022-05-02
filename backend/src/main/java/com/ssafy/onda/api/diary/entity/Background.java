@@ -1,4 +1,4 @@
-package com.ssafy.onda.api.main.entity;
+package com.ssafy.onda.api.diary.entity;
 
 import com.ssafy.onda.api.member.entity.Member;
 import lombok.*;
