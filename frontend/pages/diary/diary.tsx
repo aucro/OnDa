@@ -11,6 +11,7 @@ const diary = () => {
   const value = useSelector(({ diary }) => diary)
   console.log(value)
   const len = value.memoList.length
+  const lastId = value.lastId
 
   const dispatch = useDispatch()
   const appDispatch: AppDispatch = useDispatch() // 추가됨.
@@ -34,7 +35,7 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
-    dispatch(addMemo({ ...params, id: len }))
+    dispatch(addMemo({ ...params, id: lastId + 1 }))
     // alert('추가되었습니다.')
   }
 
