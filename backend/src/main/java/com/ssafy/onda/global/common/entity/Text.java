@@ -16,6 +16,9 @@ public class Text extends BaseMemoEntity {
     @Id
     private Long textSeq;
 
+    @Column(nullable = false)
+    private String textHeader;
+
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String textContent;
 
@@ -23,6 +26,7 @@ public class Text extends BaseMemoEntity {
     public Text(Long x, Long y, Long width, Long height, Long textSeq, String textHeader, String textContent) {
         super(x, y, width, height);
         this.textSeq = textSeq;
+        this.textHeader = textHeader;
         this.textContent = textContent;
     }
 }

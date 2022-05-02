@@ -17,6 +17,9 @@ public class AccountBook extends BaseMemoEntity {
     private Long accountBookSeq;
 
     @Column(nullable = false)
+    private Long totalAmount;
+
+    @Column(nullable = false)
     private Long totalDeposit;
 
     @Column(nullable = false)
@@ -26,6 +29,7 @@ public class AccountBook extends BaseMemoEntity {
     public AccountBook(Long x, Long y, Long width, Long height, Long accountBookSeq, Long totalAmount, Long totalDeposit, Long totalWithdraw) {
         super(x, y, width, height);
         this.accountBookSeq = accountBookSeq;
+        this.totalAmount = totalAmount;
         this.totalDeposit = totalDeposit;
         this.totalWithdraw = totalWithdraw;
     }
