@@ -61,7 +61,7 @@ export default function MemoImage({ memoInfo, drag, onDeleteMemo }) {
         </div>
       )}
       {previewImage !== null && (
-        <img src={previewImage} className={styles.image} />
+        <img className={styles.image} src={previewImage} style={{width: width, height: height}}  />
       )}
       {isEditable && (
         <div className={styles.fileUploader}>

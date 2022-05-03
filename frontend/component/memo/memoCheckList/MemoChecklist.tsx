@@ -22,6 +22,7 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
         const temp = JSON.parse(JSON.stringify(checkboxInfo));
         temp[index].isChecked = !temp[index].isChecked
         setCheckboxInfo([...temp])
+    }
   const inputChecklistContent = (e) => {
     setContent(e.target.value)
   }
@@ -104,7 +105,6 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
       )}
     </div>
   )
-}
 }
 
 export default MemoChecklist
