@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SignupForm from 'component/user/signupForm'
-import { checkId, checkEmail } from 'pages/api/memberApi'
-import { onSignup } from 'pages/api/authApi'
+import { checkId, checkEmail, onSignup } from 'pages/api/memberApi'
 
 const signup = () => {
   const [member, setMember] = useState({

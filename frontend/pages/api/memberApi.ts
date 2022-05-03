@@ -23,3 +23,9 @@ export const emailConfirm = async (userEmail) => {
   });
   return response.data;
 };
+
+// 회원가입
+export const onSignup = async (memberData) => {
+  const response = await instance.post(COMMON, memberData);
+  return response.data;
+};
