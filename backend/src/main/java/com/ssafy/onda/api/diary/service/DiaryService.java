@@ -12,4 +12,5 @@ public interface DiaryService {
 
     void delete(Background background);
 
+    void saveMemoType();
 }

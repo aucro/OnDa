@@ -158,6 +158,11 @@ public class DiaryServiceImpl implements DiaryService {
                 .member(member)
                 .build());
 
+        MemoType memoTypeSeq = memoTypeRepository.findByMemoTypeSeq(1L);
+        if (memoTypeSeq == null) {
+            saveMemoType();
+        }
+
         // member과 background로 MemberMemo 만들기
         List<MemberMemo> memberMemos = new ArrayList<>();
         for (Text savedText : savedTexts) {
@@ -265,5 +270,31 @@ public class DiaryServiceImpl implements DiaryService {
         } catch (ParseException e) {
             throw new CustomException(LogUtil.getElement(), INVALID_DATE_FORMAT);
         }
+    }
+
+    @Transactional
+    @Override
+    public void saveMemoType() {
+        List<MemoType> memoTypes = new ArrayList<>();
+        memoTypes.add(MemoType.builder()
+                .memoType("text")
+                .build());
+        memoTypes.add(MemoType.builder()
+                .memoType("account book")
+                .build());
+        memoTypes.add(MemoType.builder()
+                .memoType("checklist")
+                .build());
+        memoTypes.add(MemoType.builder()
+                .memoType("image")
+                .build());
+        memoTypes.add(MemoType.builder()
+                .memoType("video")
+                .build());
+        memoTypes.add(MemoType.builder()
+                .memoType("sticker")
+                .build());
+
+        memoTypeRepository.saveAll(memoTypes);
     }
 }
