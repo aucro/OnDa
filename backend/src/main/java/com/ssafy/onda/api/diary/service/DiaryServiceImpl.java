@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ssafy.onda.global.error.dto.ErrorStatus.*;
 
@@ -188,6 +185,74 @@ public class DiaryServiceImpl implements DiaryService {
 
         // member memo 저장
         memberMemoRepository.saveAll(memberMemos);
+    }
+
+    @Transactional
+    @Override
+    public void deleteByMemberAndDiaryDate(CustomUserDetails details, String diaryDate) {
+
+        // 회원 확인
+        Member member = memberRepository.findByMemberId(details.getUsername())
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
+
+        // 날짜 확인
+        checkDateValidation(diaryDate);
+
+        // 멤버와 날짜로 배경판을 찾기
+        Background background = backgroundRepository.findByMemberAndDiaryDate(member, LocalDate.parse(diaryDate))
+                .orElseThrow(() -> new CustomException(LogUtil.getElement(), BACKGROUND_NOT_FOUND));
+
+        delete(background);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Background background) {
+
+        // 배경판으로 회원떡메에서 떡메타입과 떡메식별자 찾기
+        List<MemberMemo> memberMemos = memberMemoRepository.findAllByBackground(background);
+        List<Long> textSeqs = new ArrayList<>();
+        List<Long> accountBookSeqs = new ArrayList<>();
+        List<Long> checklistSeqs = new ArrayList<>();
+
+        for (MemberMemo memberMemo : memberMemos) {
+            Long memoTypeSeq = memberMemo.getMemoType().getMemoTypeSeq();
+            if (memoTypeSeq == 1L) {
+                textSeqs.add(memberMemo.getMemoSeq());
+            } else if (memoTypeSeq == 2L) {
+                accountBookSeqs.add(memberMemo.getMemoSeq());
+            } else if (memoTypeSeq == 3L) {
+                checklistSeqs.add(memberMemo.getMemoSeq());
+            } else {
+                throw new CustomException(LogUtil.getElement(), INVALID_MEMO_TYPE);
+            }
+        }
+
+        // 떡메 찾기
+        List<Text> texts = textRepository.findAllByTextSeqIn(textSeqs);
+        List<AccountBook> accountBooks = accountBookRepository.findAllByAccountBookSeqIn(accountBookSeqs);
+        List<Checklist> checklists = checklistRepository.findAllByChecklistSeqIn(checklistSeqs);
+
+        // 떡메 아이템 찾기
+        List<AccountBookItem> accountBookItems = accountBookItemRepository.findAllByAccountBookIn(accountBooks);
+        List<ChecklistItem> checklistItems = checklistItemRepository.findAllByChecklistIn(checklists);
+
+        // 떡메 아이템 삭제
+        accountBookItemRepository.deleteAllInBatch(accountBookItems);
+        checklistItemRepository.deleteAllInBatch(checklistItems);
+
+        // 떡메 삭제
+        textRepository.deleteAllInBatch(texts);
+        accountBookRepository.deleteAllInBatch(accountBooks);
+        checklistRepository.deleteAllInBatch(checklists);
+
+        // 회원떡메 삭제
+        memberMemoRepository.deleteAllInBatch(memberMemos);
+
+        // 배경판 삭제
+        backgroundRepository.deleteAllInBatch(new ArrayList<>(){{
+            add(background);
+        }});
     }
 
     private void checkDateValidation(String date) {
