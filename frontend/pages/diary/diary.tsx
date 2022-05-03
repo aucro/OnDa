@@ -1,87 +1,113 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
+import Pannel from 'component/diary/pannel'
+import { useSelector, useDispatch } from 'react-redux'
+import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
+import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
+import { AppDispatch } from 'core/store'
 
 const diary = () => {
-  // 컴포넌트(떡메)의 위치, 크기 정보
-  // 추 후에 고유번호(백엔드와 협의 후 결정)값이 추가되어야 함.
-  const [content, setContent] = useState([
-    {
-      width: '200px',
-      height: '200px',
-      x: 10,
-      y: 10,
-    },
-    {
-      width: '500px',
-      height: '100px',
-      x: 40,
-      y: 310,
-    },
-  ])
-  const [draggableState, setDraggableState] = useState(true);
-  const test = {
-    background: '#898989',
-    overflow: 'hidden',
-  } as const
+  const value = useSelector(({ diary }) => diary)
+  console.log(value)
+  const len = value.memoList.length
+  const lastId = value.lastId
 
-  console.log(content)
+  const dispatch = useDispatch()
+  const appDispatch: AppDispatch = useDispatch()
 
-  const enableDragging = () => {
-    setDraggableState(true);
-    console.log("enable dragging")
+  const [draggableState, setDraggableState] = useState(Array(len).fill(true))
+
+  const enableDragging = (index) => {
+    draggableState[index] = true
+    setDraggableState([...draggableState])
+    console.log('enable dragging')
   }
-  const disableDragging = () =>{
-    setDraggableState(false);
-    console.log("disable dragging")
+  const disableDragging = (index) => {
+    draggableState[index] = false
+    setDraggableState([...draggableState])
+    console.log('disable dragging')
+  }
+
+  const onClickPannel = (params, e) => {
+    dispatch(addMemo({ ...params, id: lastId + 1 }))
+    // alert('추가되었습니다.')
+  }
+
+  console.log('reload')
+
+  const memberSeq = 3
+
+  useEffect(() => {
+    appDispatch(getMemoAction(memberSeq))
+  }, [])
+
+  useEffect(() => {
+    setDraggableState(Array(len).fill(true))
+  }, [len])
+
+  const onClickSave = () => {
+    appDispatch(setMemoAction(value))
+  }
+
+  const onDeleteMemo = (id) => {
+    appDispatch(deleteMemo(id))
   }
 
   return (
     <>
-      {content.map((c, index) => (
+      <button onClick={onClickSave}>저장하기</button>
+      {value.memoList.map((c, index) => (
         <RND
-          style={test}
+          style={{
+            // background: '#898989',
+            // background: '#ffc',
+            // background: 'transparent',
+            background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
+            borderRadius: '10px',
+            boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
+            borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
+            // overflow: 'hidden',
+          }}
           content={c}
           key={index}
           onDragStop={(e, d) => {
-            console.log(d)
-            setContent(
-              content.map((con, idx) =>
-                idx === index ? { ...con, x: d.x, y: d.y } : con,
-              ),
+            dispatch(
+              changeMemoState({
+                ...c,
+                x: d.x,
+                y: d.y,
+              }),
             )
           }}
           onResizeStop={(e, direction, ref, delta, position) => {
-            setContent(
-              content.map((con, idx) =>
-                idx === index
-                  ? { ...con, width: ref.style.width, height: ref.style.height }
-                  : con,
-              ),
+            dispatch(
+              changeMemoState({
+                ...c,
+                width: Number(
+                  ref.style.width.substring(0, ref.style.width.length - 2),
+                ),
+                height: Number(
+                  ref.style.height.substring(0, ref.style.height.length - 2),
+                ),
+              }),
             )
           }}
-          onResize={(e, direction, ref, delta, position) => {
-            setContent(
-              content.map((con, idx) =>
-                idx === index
-                  ? { ...con, width: ref.style.width, height: ref.style.height }
-                  : con,
-              ),
-            )
-          }}
-          disableDragging={!draggableState}
+          disableDragging={!draggableState[index]}
         >
           {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
-            width={Number(c.width.substring(0, c.width.length - 2))}
-            height={Number(c.height.substring(0, c.height.length - 2))}
-            content={'helloWorld'}
-            header={'this is header'}
-            memoTypeSeq={1}
-            drag={{enableDragging, disableDragging}}
+            memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
+            memoTypeSeq={c.memoTypeSeq}
+            drag={{
+              enableDragging: () => enableDragging(index),
+              disableDragging: () => disableDragging(index),
+            }}
+            onDeleteMemo={onDeleteMemo}
           />
         </RND>
       ))}
+      <Pannel onClick={onClickPannel} />
     </>
   )
 }

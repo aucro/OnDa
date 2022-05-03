@@ -5,15 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@ToString(of = {"memberSeq", "memberId", "memberPw", "email", "nickname"})
+@ToString(of = {"memberSeq", "memberId", "password", "email", "nickname"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(
-        name = "tb_member",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "memberId"),
-                @UniqueConstraint(columnNames = "email")
-        }
-)
+@Table(name = "tb_member")
 @Entity
 public class Member {
 
@@ -25,7 +19,7 @@ public class Member {
     private String memberId;
 
     @Column(nullable = false)
-    private String memberPw;
+    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -34,11 +28,15 @@ public class Member {
     private String nickname;
 
     @Builder
-    public Member(Long memberSeq, String memberId, String memberPw, String email, String nickname) {
+    public Member(Long memberSeq, String memberId, String password, String email, String nickname) {
         this.memberSeq = memberSeq;
         this.memberId = memberId;
-        this.memberPw = memberPw;
+        this.password = password;
         this.email = email;
         this.nickname = nickname;
+    }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 }
