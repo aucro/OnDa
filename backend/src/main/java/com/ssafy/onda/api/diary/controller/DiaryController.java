@@ -51,7 +51,7 @@ public class DiaryController {
             CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
             diaryService.save(details, reqDiaryDto);
 
-            status = OK.value();
+            status = CREATED.value();
             msg = "다이어리 저장 성공";
         }
 

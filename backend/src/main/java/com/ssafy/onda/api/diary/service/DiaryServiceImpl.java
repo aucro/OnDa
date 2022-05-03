@@ -149,7 +149,8 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         // 회원떡메(memberMemo), 회원떡메가 가지고 있는 떡메모지 삭제
-        // delete method 구현 이후에 추가
+        Optional<Background> optionalBackground = backgroundRepository.findByMemberAndDiaryDate(member, LocalDate.parse(diaryDate));
+        optionalBackground.ifPresent(this::delete);
 
         // background 생성
         Background savedBackground = backgroundRepository.save(Background.builder()
