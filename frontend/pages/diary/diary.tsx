@@ -3,7 +3,7 @@ import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/pannel'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeMemoState, addMemo } from 'core/store/modules/diary'
+import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
 import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
 
@@ -11,16 +11,12 @@ const diary = () => {
   const value = useSelector(({ diary }) => diary)
   console.log(value)
   const len = value.memoList.length
+  const lastId = value.lastId
 
   const dispatch = useDispatch()
-  const appDispatch: AppDispatch = useDispatch() // 추가됨.
+  const appDispatch: AppDispatch = useDispatch()
 
   const [draggableState, setDraggableState] = useState(Array(len).fill(true))
-
-  // const test = {
-  //   background: '#898989',
-  //   overflow: 'hidden',
-  // } as const
 
   const enableDragging = (index) => {
     draggableState[index] = true
@@ -34,34 +30,7 @@ const diary = () => {
   }
 
   const onClickPannel = (params, e) => {
-    
-    let returnType: any;
-    if(params===1){
-      returnType={
-        content: '',
-        header: '',
-      }
-    }
-    else if(params===2 || params===3){
-      returnType=[]
-    }
-    else if(params===4){
-      returnType=null
-    }
-    else if(params===5){
-      returnType=''
-    }
-    dispatch(
-      addMemo({
-        id: len + 1,
-        width: 400,
-        height: 200,
-        x: 10,
-        y: 10,
-        memoTypeSeq: params,
-        info: returnType,
-      }),
-    )
+    dispatch(addMemo({ ...params, id: lastId + 1 }))
     // alert('추가되었습니다.')
   }
 
@@ -70,7 +39,7 @@ const diary = () => {
   const memberSeq = 3
 
   useEffect(() => {
-    appDispatch(getMemoAction(memberSeq)) //수정
+    appDispatch(getMemoAction(memberSeq))
   }, [])
 
   useEffect(() => {
@@ -78,7 +47,11 @@ const diary = () => {
   }, [len])
 
   const onClickSave = () => {
-    appDispatch(setMemoAction(value)) //수정
+    appDispatch(setMemoAction(value))
+  }
+
+  const onDeleteMemo = (id) => {
+    appDispatch(deleteMemo(id))
   }
 
   return (
@@ -93,7 +66,7 @@ const diary = () => {
             background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
             borderRadius: '10px',
             boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
-            borderStyle: `${c.isEditing ? 'dashed' : 'none' }`
+            borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
             // overflow: 'hidden',
           }}
           content={c}
@@ -124,14 +97,13 @@ const diary = () => {
         >
           {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
-            width={c.width}
-            height={c.height}
             memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
             memoTypeSeq={c.memoTypeSeq}
             drag={{
               enableDragging: () => enableDragging(index),
               disableDragging: () => disableDragging(index),
             }}
+            onDeleteMemo={onDeleteMemo}
           />
         </RND>
       ))}
