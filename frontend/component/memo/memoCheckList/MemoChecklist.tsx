@@ -99,8 +99,8 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
         })}
       {isEditable && (
         <div className={styles.checklistButton}>
-          <input value={content} onChange={inputChecklistContent} type="text" />
-          <button onClick={addCheckboxList}>추가하기</button>
+          <input style={{ width: width-30 }} className={styles.checklistInput} value={content} onChange={inputChecklistContent} type="text" placeholder='내용을 입력해주세요!' />
+          <button className={styles.checklistAddButton} onClick={addCheckboxList}>✓</button>
         </div>
       )}
       {mouseState && isEditable && (
