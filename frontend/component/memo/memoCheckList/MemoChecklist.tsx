@@ -61,17 +61,25 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
     )
   }
   const onDeleteButtonClick = () => {}
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
   return (
-    <div className={styles.checklist}>
-      <div
+    <div style={{width: width, height: height-30}} className={styles.checklist} onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent} >
+      {mouseState && <div
         className={styles.deleteButton}
         onClick={() => {
           onDeleteMemo(memoInfo.id)
         }}
       >
         ❌
-      </div>
-      {!isEditable && (
+      </div>}
+      {mouseState && !isEditable && (
         <div className={styles.updateButton} onClick={onUpdateButtonClick}>
           ✏️
         </div>
@@ -95,7 +103,7 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
           <button onClick={addCheckboxList}>추가하기</button>
         </div>
       )}
-      {isEditable && (
+      {mouseState && isEditable && (
         <div
           className={styles.approveUpdateButton}
           onClick={onApproveUpdateClick}

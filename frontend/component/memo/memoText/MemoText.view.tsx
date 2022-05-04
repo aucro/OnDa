@@ -24,12 +24,20 @@ const MemoFrame: NextPage<Props> = ({
 }) => {
   // const [text, setText] = useState(JSON.stringify(content))
   const { width, height, info } = memoInfo;
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
   return (
-    <div>
-      <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+    <div className='temp' onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent} style={{width: width, height: height}}>
+      { mouseState && <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
         ❌
-      </div>
-      {!isEditable && (
+      </div>}
+      {mouseState && !isEditable && (
         <div className={styles.updateButton} onClick={onUpdateButtonClick}>
           ✏️
         </div>
@@ -46,7 +54,7 @@ const MemoFrame: NextPage<Props> = ({
               {(content)}
             </div>
           </div>)}
-      {isEditable && (
+      {mouseState && isEditable && (
         <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
           ✔️
         </div>

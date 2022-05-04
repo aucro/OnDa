@@ -50,12 +50,20 @@ export default function MemoImage({ memoInfo, drag, onDeleteMemo }) {
       setPreviewImage(URL.createObjectURL(file[0]))
     }
   }, [file])
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
   return (
-    <div className="App">
-      <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+    <div className="App" onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent}>
+      {mouseState && <div className={styles.deleteButton} onClick={onDeleteButtonClick} >
         ❌
-      </div>
-      {!isEditable && (
+      </div>}
+      {mouseState && !isEditable && (
         <div className={styles.updateButton} onClick={onUpdateButtonClick}>
           ✏️
         </div>
@@ -73,7 +81,7 @@ export default function MemoImage({ memoInfo, drag, onDeleteMemo }) {
           />
         </div>
       )}
-      {isEditable && (
+      {mouseState && isEditable && (
         <div
           className={styles.approveUpdateButton}
           onClick={onApproveUpdateClick}

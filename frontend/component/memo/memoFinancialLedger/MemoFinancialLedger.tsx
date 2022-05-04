@@ -89,12 +89,20 @@ const MemoFinancialLedger = ({memoInfo, drag, onDeleteMemo}) => {
   const onDeleteButtonClick = () => {
     onDeleteMemo(memoInfo.id)
   }
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
   return (
-    <div className={styles.financialLedger}>
-      <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+    <div style={{width: width, height: height}} className={styles.financialLedger} onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent}>
+      {mouseState && <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
         ❌
-      </div>
-      {!isEditable && (
+      </div>}
+      {mouseState && !isEditable && (
         <div className={styles.updateButton} onClick={onUpdateButtonClick}>
           ✏️
         </div>
@@ -145,7 +153,7 @@ const MemoFinancialLedger = ({memoInfo, drag, onDeleteMemo}) => {
           </div>
         </div>
       </div>
-      {isEditable && (
+      {mouseState && isEditable && (
         <div
           className={styles.approveUpdateButton}
           onClick={onApproveUpdateClick}
