@@ -77,6 +77,11 @@ public class DiaryServiceImpl implements DiaryService {
 
         // 입력을 떡메 단위로 분류
         List<MemoListDto> memoListDtos = reqDiaryDto.getMemoList();
+
+        if (memoListDtos.size() == 0) {
+            throw new CustomException(LogUtil.getElement(), NO_MEMO_AVAILABLE);
+        }
+
         for (MemoListDto memoListDto : memoListDtos) {
             if (memoListDto.getMemoTypeSeq() == 1) {
                 TextDto textDto = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
@@ -153,12 +158,11 @@ public class DiaryServiceImpl implements DiaryService {
         // 회원떡메(memberMemo), 회원떡메가 가지고 있는 떡메모지 삭제
         Optional<Background> optionalBackground = backgroundRepository.findByMemberAndDiaryDate(member, LocalDate.parse(diaryDate));
         optionalBackground.ifPresent(this::delete);
-
-        // background 생성
-        Background savedBackground = backgroundRepository.save(Background.builder()
+        Background savedBackground = optionalBackground.orElseGet(() -> backgroundRepository.save(Background.builder()
                 .diaryDate(LocalDate.parse(diaryDate))
                 .member(member)
-                .build());
+                .build())
+        );
 
         MemoType memoTypeSeq = memoTypeRepository.findByMemoTypeSeq(1L);
         if (memoTypeSeq == null) {
@@ -211,6 +215,11 @@ public class DiaryServiceImpl implements DiaryService {
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), BACKGROUND_NOT_FOUND));
 
         delete(background);
+
+        // 배경판 삭제
+        backgroundRepository.deleteAllInBatch(new ArrayList<>(){{
+            add(background);
+        }});
     }
 
     @Transactional
@@ -219,51 +228,23 @@ public class DiaryServiceImpl implements DiaryService {
 
         // 배경판으로 회원떡메에서 떡메타입과 떡메식별자 찾기
         List<MemberMemo> memberMemos = memberMemoRepository.findAllByBackground(background);
-        List<Long> textSeqs = new ArrayList<>();
-        List<Long> accountBookSeqs = new ArrayList<>();
-        List<Long> checklistSeqs = new ArrayList<>();
-
-        for (MemberMemo memberMemo : memberMemos) {
-            Long memoTypeSeq = memberMemo.getMemoType().getMemoTypeSeq();
-            if (memoTypeSeq == 1L) {
-                textSeqs.add(memberMemo.getMemoSeq());
-            } else if (memoTypeSeq == 2L) {
-                accountBookSeqs.add(memberMemo.getMemoSeq());
-            } else if (memoTypeSeq == 3L) {
-                checklistSeqs.add(memberMemo.getMemoSeq());
-            } else {
-                throw new CustomException(LogUtil.getElement(), INVALID_MEMO_TYPE);
-            }
-        }
-
-        // 떡메 찾기
-        List<Text> texts = textRepository.findAllByTextSeqIn(textSeqs);
-        List<AccountBook> accountBooks = accountBookRepository.findAllByAccountBookSeqIn(accountBookSeqs);
-        List<Checklist> checklists = checklistRepository.findAllByChecklistSeqIn(checklistSeqs);
-
-        // 떡메 아이템 찾기
-        List<AccountBookItem> accountBookItems = accountBookItemRepository.findAllByAccountBookIn(accountBooks);
-        List<ChecklistItem> checklistItems = checklistItemRepository.findAllByChecklistIn(checklists);
+        FindMemosDto findMemosDto = find(memberMemos);
 
         // 떡메 아이템 삭제
-        accountBookItemRepository.deleteAllInBatch(accountBookItems);
-        checklistItemRepository.deleteAllInBatch(checklistItems);
+        accountBookItemRepository.deleteAllInBatch(findMemosDto.getAccountBookItems());
+        checklistItemRepository.deleteAllInBatch(findMemosDto.getChecklistItems());
 
         // 떡메 삭제
-        textRepository.deleteAllInBatch(texts);
-        accountBookRepository.deleteAllInBatch(accountBooks);
-        checklistRepository.deleteAllInBatch(checklists);
+        textRepository.deleteAllInBatch(findMemosDto.getTexts());
+        accountBookRepository.deleteAllInBatch(findMemosDto.getAccountBooks());
+        checklistRepository.deleteAllInBatch(findMemosDto.getChecklists());
 
         // 회원떡메 삭제
         memberMemoRepository.deleteAllInBatch(memberMemos);
-
-        // 배경판 삭제
-        backgroundRepository.deleteAllInBatch(new ArrayList<>(){{
-            add(background);
-        }});
     }
 
-    private void checkDateValidation(String date) {
+    @Override
+    public void checkDateValidation(String date) {
 
         SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
