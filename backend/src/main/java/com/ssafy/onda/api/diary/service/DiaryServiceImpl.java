@@ -94,18 +94,16 @@ public class DiaryServiceImpl implements DiaryService {
                         .textContent(textDto.getTextContent())
                         .build());
             } else if (memoListDto.getMemoTypeSeq() == 2) {
-                AccountBookDto accountBookDto = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
+
+                List<AccountBookItemDto> accountBookItemDtos = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
                 AccountBook accountBook = AccountBook.builder()
                         .x(memoListDto.getX())
                         .y(memoListDto.getY())
                         .width(memoListDto.getWidth())
                         .height(memoListDto.getHeight())
-                        .totalAmount(accountBookDto.getTotalAmount())
-                        .totalDeposit(accountBookDto.getTotalDeposit())
-                        .totalWithdraw(accountBookDto.getTotalWithdraw())
                         .build();
                 accountBooks.add(accountBook);
-                accountBookMap.put(accountBook, accountBookDto.getAccountBookItems());
+                accountBookMap.put(accountBook, accountBookItemDtos);
             } else if (memoListDto.getMemoTypeSeq() == 3) {
                 ChecklistDto checklistDto = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
                 Checklist checklist = Checklist.builder()
@@ -324,21 +322,16 @@ public class DiaryServiceImpl implements DiaryService {
                     .x(accountBook.getX())
                     .y(accountBook.getY())
                     .memoTypeSeq(2)
-                    .info(new HashMap<>(){{
-                        put("totalAmount", accountBook.getTotalAmount());
-                        put("totalDeposit", accountBook.getTotalDeposit());
-                        put("totalWithdraw", accountBook.getTotalWithdraw());
-                        put("accountBookItems", new LinkedList<AccountBookItemDto>(){{
-                            for (AccountBookItem accountBookItem : findMemosDto.getAccountBookItems()) {
-                                if (accountBookItem.getAccountBook().equals(accountBook)) {
-                                    add(AccountBookItemDto.builder()
-                                            .description(accountBookItem.getDescription())
-                                            .deposit(accountBookItem.getDeposit())
-                                            .withdraw(accountBookItem.getWithdraw())
-                                            .build());
-                                }
+                    .info(new LinkedList<AccountBookItemDto>(){{
+                        for (AccountBookItem accountBookItem : findMemosDto.getAccountBookItems()) {
+                            if (accountBookItem.getAccountBook().equals(accountBook)) {
+                                add(AccountBookItemDto.builder()
+                                        .content(accountBookItem.getContent())
+                                        .income(accountBookItem.getIncome())
+                                        .outcome(accountBookItem.getOutcome())
+                                        .build());
                             }
-                        }});
+                        }
                     }})
                     .build());
         }
