@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'styles/scss/Signup.module.scss'
+import styles from 'styles/scss/User.module.scss'
 
 const signupForm = ({member, handleChangeState, errorState, errorMsg, checkIdValid, checkIdUnique, checkPasswordValid, checkPasswordConfirm, checkNicknameValid, checkEmailValid, checkEmailUnique, signupFormSubmit}) => {
   return (

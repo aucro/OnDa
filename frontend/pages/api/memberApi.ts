@@ -29,3 +29,20 @@ export const onSignup = async (memberData) => {
   const response = await instance.post(COMMON, memberData);
   return response.data;
 };
+
+// 로그인
+export const onLogin = async (memberData) => {
+  const response = await instance.post(COMMON + '/login', memberData);
+  console.log(response);
+  if (response.data.accessToken) {
+    // save JWT token
+    localStorage.setItem('member', JSON.stringify(response.data));
+  }
+  return response.data;
+}
+
+// 로그아웃
+export const onLogout = () => {
+  // remove JWT from LocalStorage
+  localStorage.removeItem('member');
+}
