@@ -86,7 +86,8 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         for (MemoListDto memoListDto : memoListDtos) {
-            if (memoListDto.getMemoTypeSeq() == 1) {
+            Integer memoTypeSeq = memoListDto.getMemoTypeSeq();
+            if (memoTypeSeq == 1) {
                 TextDto textDto = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
                 texts.add(Text.builder()
                         .x(memoListDto.getX())
@@ -96,8 +97,7 @@ public class DiaryServiceImpl implements DiaryService {
                         .header(textDto.getHeader())
                         .content(textDto.getContent())
                         .build());
-            } else if (memoListDto.getMemoTypeSeq() == 2) {
-
+            } else if (memoTypeSeq == 2) {
                 List<AccountBookItemDto> accountBookItemDtos = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
                 AccountBook accountBook = AccountBook.builder()
                         .x(memoListDto.getX())
@@ -107,7 +107,7 @@ public class DiaryServiceImpl implements DiaryService {
                         .build();
                 accountBooks.add(accountBook);
                 accountBookMap.put(accountBook, accountBookItemDtos);
-            } else if (memoListDto.getMemoTypeSeq() == 3) {
+            } else if (memoTypeSeq == 3) {
                 ChecklistDto checklistDto = mapper.convertValue(memoListDto.getInfo(), new TypeReference<>() {});
                 Checklist checklist = Checklist.builder()
                         .x(memoListDto.getX())
@@ -413,12 +413,12 @@ public class DiaryServiceImpl implements DiaryService {
 
         for (MemberMemo memberMemo : memberMemos) {
             Long memoTypeSeq = memberMemo.getMemoType().getMemoTypeSeq();
+            Long memoSeq = memberMemo.getMemoSeq();
             if (memoTypeSeq == 1L) {
-                textSeqs.add(memberMemo.getMemoSeq());
+                textSeqs.add(memoSeq);
             } else if (memoTypeSeq == 2L) {
-                accountBookSeqs.add(memberMemo.getMemoSeq());
+                accountBookSeqs.add(memoSeq);
             } else if (memoTypeSeq == 3L) {
-                checklistSeqs.add(memberMemo.getMemoSeq());
                 checklistSeqs.add(memoSeq);
             } else if (memoTypeSeq == 6L) {
                 stickerSeqs.add(memoSeq);
