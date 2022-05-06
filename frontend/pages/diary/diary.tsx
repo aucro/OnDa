@@ -34,14 +34,6 @@ const diary = () => {
     // alert('추가되었습니다.')
   }
 
-  console.log('reload')
-
-  const memberSeq = 3
-
-  useEffect(() => {
-    appDispatch(getMemoAction(memberSeq))
-  }, [])
-
   useEffect(() => {
     setDraggableState(Array(len).fill(true))
   }, [len])
@@ -54,21 +46,23 @@ const diary = () => {
     appDispatch(deleteMemo(id))
   }
 
-  const [w, setW] = useState(0)
-  const [h, setH] = useState(0)
-
+  const [viewSize, setViewSize] = useState({
+    width: 0,
+    height: 0,
+  })
+  const [pannelIsOpen, setPannelIsOpen] = useState(true)
+  const memberSeq = 3
   useEffect(() => {
-    setW(window.innerWidth)
-    setH(window.innerHeight)
+    appDispatch(getMemoAction(memberSeq))
+    setViewSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
   }, [])
 
   return (
     <>
       <button onClick={onClickSave}>저장하기</button>
-      <span>
-        height : {h}
-        width : {w}
-      </span>
       {value.memoList.map((c, index) => (
         <RND
           style={{
@@ -80,7 +74,7 @@ const diary = () => {
           content={c}
           key={index}
           onDragStop={(e, d) => {
-            if (d.x > 0 && d.y > 0 && d.x < w * 0.55) {
+            if (d.x > 0 && d.y > 0 && d.x < viewSize.width) {
               dispatch(
                 changeMemoState({
                   ...c,
@@ -88,8 +82,6 @@ const diary = () => {
                   y: d.y,
                 }),
               )
-            } else {
-              alert('배경판 내부로만 이동이 가능합니다.')
             }
           }}
           onResizeStop={(e, direction, ref, delta, position) => {
@@ -107,7 +99,6 @@ const diary = () => {
           }}
           disableDragging={!draggableState[index]}
         >
-          {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
             memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
             memoTypeSeq={c.memoTypeSeq}
@@ -119,7 +110,24 @@ const diary = () => {
           />
         </RND>
       ))}
-      <Pannel onClick={onClickPannel} />
+      {pannelIsOpen ? (
+        <button
+          onClick={(e) => {
+            setPannelIsOpen(false)
+          }}
+        >
+          X
+        </button>
+      ) : (
+        <button
+          onClick={(e) => {
+            setPannelIsOpen(true)
+          }}
+        >
+          open
+        </button>
+      )}
+      <Pannel open={pannelIsOpen} onClick={onClickPannel} />
     </>
   )
 }
