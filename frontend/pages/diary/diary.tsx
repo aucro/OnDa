@@ -54,31 +54,43 @@ const diary = () => {
     appDispatch(deleteMemo(id))
   }
 
+  const [w, setW] = useState(0)
+  const [h, setH] = useState(0)
+
+  useEffect(() => {
+    setW(window.innerWidth)
+    setH(window.innerHeight)
+  }, [])
+
   return (
     <>
       <button onClick={onClickSave}>저장하기</button>
+      <span>
+        height : {h}
+        width : {w}
+      </span>
       {value.memoList.map((c, index) => (
         <RND
           style={{
-            // background: '#898989',
-            // background: '#ffc',
-            // background: 'transparent',
             background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
             borderRadius: '10px',
             boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
             borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
-            // overflow: 'hidden',
           }}
           content={c}
           key={index}
           onDragStop={(e, d) => {
-            dispatch(
-              changeMemoState({
-                ...c,
-                x: d.x,
-                y: d.y,
-              }),
-            )
+            if (d.x > 0 && d.y > 0 && d.x < w * 0.55) {
+              dispatch(
+                changeMemoState({
+                  ...c,
+                  x: d.x,
+                  y: d.y,
+                }),
+              )
+            } else {
+              alert('배경판 내부로만 이동이 가능합니다.')
+            }
           }}
           onResizeStop={(e, direction, ref, delta, position) => {
             dispatch(
