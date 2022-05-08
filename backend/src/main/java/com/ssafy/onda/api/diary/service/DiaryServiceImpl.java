@@ -137,7 +137,7 @@ public class DiaryServiceImpl implements DiaryService {
                 checklistMap.put(checklist, checklistDto.getChecklistItems());
             } else if (memoTypeSeq == 4) {
                 int fileIdx = (Integer) memoListDto.getInfo();
-                if (multipartFiles.size() >= fileIdx) {
+                if (multipartFiles.size() <= fileIdx) {
                     throw new CustomException(LogUtil.getElement(), FILE_INDEX_OUT_OF_BOUNDS);
                 }
 
