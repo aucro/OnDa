@@ -239,6 +239,7 @@ const signup = () => {
     const result = await onSignup(member);
     if (result.status == 201) { // 회원가입 완료
       alert(result.msg);
+      document.location.href = '/user/login';
     } else {
       alert(result.msg);
     }

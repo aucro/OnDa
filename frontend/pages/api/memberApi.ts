@@ -1,4 +1,5 @@
 import {instance} from './axios'
+import { setCookie } from './cookie';
 
 const COMMON = '/members';
 
@@ -31,18 +32,8 @@ export const onSignup = async (memberData) => {
 };
 
 // 로그인
-export const onLogin = async (memberData) => {
-  const response = await instance.post(COMMON + '/login', memberData);
+export const onLogin = async ({memberId, password}) => {
+  const response = await instance.post(COMMON + '/login', { memberId, password });
   console.log(response);
-  if (response.data.accessToken) {
-    // save JWT token
-    localStorage.setItem('member', JSON.stringify(response.data));
-  }
   return response.data;
-}
-
-// 로그아웃
-export const onLogout = () => {
-  // remove JWT from LocalStorage
-  localStorage.removeItem('member');
 }
