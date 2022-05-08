@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
-    Image findByImageSeq(Long imageSeq);
-
     List<Image> findAllByImageSeqIn(List<Long> imageSeqs);
 
 }

@@ -517,42 +517,4 @@ public class DiaryServiceImpl implements DiaryService {
                 .checklistItems(checklistItems)
                 .build();
     }
-
-    @Transactional
-    @Override
-    public void saveImage(List<MultipartFile> multipartFiles) {
-
-        for (MultipartFile multipartFile : multipartFiles) {
-            Image image = Image.builder()
-                    .memo(Memo.builder()
-                            .x(1L)
-                            .y(1L)
-                            .width(1L)
-                            .height(1L)
-                            .build())
-                    .build();
-
-            try {
-                fileInfoService.save(image, multipartFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Transactional
-    @Override
-    public void deleteImage(Long imageSeq) {
-
-        fileInfoService.delete(imageRepository.findByImageSeq(imageSeq));
-
-    }
-
-    @Override
-    public String loadImage(Long imageSeq) {
-
-        // image null check
-        return fileInfoService.loadPath(imageRepository.findByImageSeq(imageSeq));
-
-    }
 }

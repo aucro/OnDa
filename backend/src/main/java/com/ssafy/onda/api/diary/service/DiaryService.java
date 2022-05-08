@@ -26,10 +26,4 @@ public interface DiaryService {
 
     FindMemosDto find(List<MemberMemo> memberMemos);
 
-    void saveImage(List<MultipartFile> multipartFiles);
-
-    void deleteImage(Long imageSeq);
-
-    String loadImage(Long imageSeq);
-
 }
