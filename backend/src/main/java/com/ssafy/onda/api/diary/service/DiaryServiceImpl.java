@@ -15,7 +15,7 @@ import com.ssafy.onda.api.member.repository.MemberRepository;
 import com.ssafy.onda.global.common.auth.CustomUserDetails;
 import com.ssafy.onda.global.common.dto.*;
 import com.ssafy.onda.global.common.entity.*;
-import com.ssafy.onda.global.common.entity.base.Memo;
+import com.ssafy.onda.global.common.entity.embedded.Memo;
 import com.ssafy.onda.global.common.repository.*;
 import com.ssafy.onda.global.common.util.LogUtil;
 import com.ssafy.onda.global.error.exception.CustomException;
