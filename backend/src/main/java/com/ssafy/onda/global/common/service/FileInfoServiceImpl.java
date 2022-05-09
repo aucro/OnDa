@@ -68,9 +68,7 @@ public class FileInfoServiceImpl implements FileInfoService {
         FileInfo fileInfo = image.getFileInfo();
 
         if (fileInfo != null) {
-            String savedPath = fileInfo.getSavedPath() + File.separator + fileInfo.getEncodedName();
-            System.out.println("savedPath = " + savedPath);
-            return savedPath;
+            return "http://k6a107.p.ssafy.io/" + fileInfo.getSavedPath() + File.separator + fileInfo.getEncodedName();
         } else {
             throw new CustomException(LogUtil.getElement(), NO_MEMO_AVAILABLE);
         }
