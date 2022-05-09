@@ -26,7 +26,7 @@ export const getMemoAction = createAsyncThunk<
     })
     if (res.data.status == 200) {
       return res.data.data
-    } else if ((res.data.status = 204)) {
+    } else if (res.data.status == 204) {
       // 불러올 정보가 없을때
       return {
         diaryDate: params.diaryDate,
@@ -119,6 +119,15 @@ export const getMemoAction = createAsyncThunk<
   // }
 })
 
+function transForm(param) {
+  const formData = new FormData()
+  const p = JSON.stringify(param)
+  const blob = new Blob([p], { type: 'application/json' })
+  formData.append('reqDiaryDto', blob)
+  formData.append('files', '')
+  return formData
+}
+
 export const setMemoAction = createAsyncThunk<
   any,
   any,
@@ -126,10 +135,10 @@ export const setMemoAction = createAsyncThunk<
 >('memo/setMemo', async (params, thunkAPI) => {
   // api post 요청
   try {
-    const res = await axios.post(BASE_URL + '/diary', params.param, {
+    const res = await axios.post(BASE_URL + '/diary', transForm(params.param), {
       headers: {
         Authorization: `Bearer ` + params.token,
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     })
     console.log(res)
