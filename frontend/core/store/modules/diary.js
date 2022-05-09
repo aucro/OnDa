@@ -9,7 +9,7 @@ import { getMemoAction, setMemoAction } from '../actions/memo'
 // }
 
 let initialMemo = {
-  date: '',
+  diaryDate: '',
   lastId: 0,
   memoList: [],
 }
@@ -63,7 +63,7 @@ const diarySlice = createSlice({
     builder
       .addCase(getMemoAction.fulfilled, (state, action) => {
         const list = action.payload.memoList
-        state.date = action.payload.date
+        state.diaryDate = action.payload.diaryDate
         state.lastId = list[list.length - 1].id
         list.map((memo) => state.memoList.push(memo))
       })
