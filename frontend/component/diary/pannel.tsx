@@ -2,6 +2,12 @@ import React, { useState, useRef } from 'react'
 import styles from './Pannel.module.scss'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import textMemoImg from 'public/asset/image/memoImage/textMemoImg.png'
+import textMemo from 'public/asset/image/memoImage/textMemo.png'
+import checklistMemo from 'public/asset/image/memoImage/checklistMemo.png'
+import financialMemo from 'public/asset/image/memoImage/financialMemo.png'
+import imageUploadLogo from 'public/asset/image/memoImage/imageUploadLogo.png'
+import stickerMemo from 'public/asset/image/memoImage/stickerMemo.png'
+
 import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
 import Image from 'next/image'
 
@@ -62,7 +68,13 @@ function getMemo(seq) {
   }
 }
 const Pannel = ({ onClick, onCloseBtn }) => {
-  const memoSeqList = [1, 2, 3, 4, 5]
+  const memoSeqList = [
+    { seq: 1, src: textMemo },
+    { seq: 2, src: financialMemo },
+    { seq: 3, src: checklistMemo },
+    { seq: 4, src: imageUploadLogo },
+    { seq: 5, src: stickerMemo },
+  ]
 
   return (
     <div className={styles.pannel}>
@@ -75,17 +87,17 @@ const Pannel = ({ onClick, onCloseBtn }) => {
           onClick={onCloseBtn}
         />
       </div>
-      {memoSeqList.map((seq, index) => (
+      {memoSeqList.map((memo, index) => (
         <div className={styles.container} key={index}>
-          <Image src={textMemoImg} className="image" width="" height="" />
+          <Image src={memo.src} className="image" width="" height="" />
           <div className={styles.middle}>
             <button
               className={styles.button}
               onClick={(e) => {
-                onClick(getMemo(seq), e)
+                onClick(getMemo(memo.seq), e)
               }}
             >
-              {seq}번
+              {memo.seq}번
             </button>
           </div>
         </div>
