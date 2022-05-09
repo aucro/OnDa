@@ -1,5 +1,4 @@
 import {instance} from './axios'
-import { setCookie } from './cookie';
 
 const COMMON = '/members';
 

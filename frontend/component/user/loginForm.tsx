@@ -1,48 +1,16 @@
-import { useEffect, useState } from 'react';
+
 import styles from 'styles/scss/User.module.scss'
-import { onLogin } from 'pages/api/memberApi';
-import { setCookie } from 'pages/api/cookie';
-import { useCookies } from 'react-cookie';
 
-const loginForm = () => {
-  const [memberId, setMemberId] = useState("");
-  const [password, setPassword] = useState("");
-  const [cookies, setCookie, removeCookie] = useCookies(['member']);
 
-  const memberIdHandler = (e) => {
-    setMemberId(e.currentTarget.value);
-  }
-
-  const passwordHandler = (e) => {
-    setPassword(e.currentTarget.value);
-  }
-
-  // 로그인 버튼 클릭
-  const loginFormSubmit = async () => {
-    const result = await onLogin({memberId, password});
-    if (result.status == 200) {
-      alert(result.msg);
-      setCookie("member", result.data, {
-        path: "/",
-        secure: true,
-        sameSite: "none",
-      })
-      window.location.href = '/diary/diary';
-    } else {
-      alert(result.msg);
-    }
-  }
-
-  // 로그아웃 테스트 버튼
-  const logout = () => {
-    console.log("logout btn")
-    removeCookie("member", {
-      path: "/",
-      secure: true,
-      sameSite: "none"
-    });
-    window.location.href = '/user/login';
-  }
+const loginForm = ({
+  memberId,
+    password,
+    memberIdHandler,
+    passwordHandler,
+    loginFormSubmit,
+    logout,
+}) => {
+  
 
   return (
     <div className={styles.loginForm}>
