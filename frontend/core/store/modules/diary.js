@@ -64,7 +64,8 @@ const diarySlice = createSlice({
       .addCase(getMemoAction.fulfilled, (state, action) => {
         const list = action.payload.memoList
         state.diaryDate = action.payload.diaryDate
-        state.lastId = list[list.length - 1].id
+        if (list.length > 0) state.lastId = list[list.length - 1].id
+        else state.lastId = 0
         list.map((memo) => state.memoList.push(memo))
       })
       .addCase(setMemoAction.fulfilled, (state, action) => {

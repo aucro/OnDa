@@ -12,7 +12,7 @@ interface memoAttributes {
 }
 
 export const getMemoAction = createAsyncThunk<
-  memoAttributes,
+  any,
   any,
   { rejectValue: MyKnownError }
 >('memo/getMemo', async (params, thunkAPI) => {
@@ -25,11 +25,13 @@ export const getMemoAction = createAsyncThunk<
       },
     })
     if (res.data.status == 200) {
-      const result = {
-        diaryDate: res.data.data.date,
-        memoList: res.data.data.memoList,
+      return res.data.data
+    } else if ((res.data.status = 204)) {
+      // 불러올 정보가 없을때
+      return {
+        diaryDate: params.diaryDate,
+        memoList: [],
       }
-      return result
     }
   } catch (error) {
     console.log(error)
