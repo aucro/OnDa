@@ -67,11 +67,15 @@ const diary = () => {
   const [pannelIsOpen, setPannelIsOpen] = useState(false)
 
   const router = useRouter()
-  const { diaryDate } = router.query || {}
+  const { diaryDate } = router.query
+  // console.log(diaryDate)
 
   console.log('load')
   useEffect(() => {
+    // console.log(diaryDate)
+
     if (diaryDate != null && diaryDate != '' && diaryDate != undefined) {
+      // console.log(diaryDate)
       const params = {
         diaryDate: diaryDate,
         token: token,
@@ -106,7 +110,7 @@ const diary = () => {
           </span>
           <button
             onClick={() => {
-              router.push(`/diary/${calNextDate(diaryDate)}`)
+              router.replace(`/diary/${calNextDate(diaryDate)}`)
             }}
           >
             &gt;
