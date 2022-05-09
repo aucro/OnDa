@@ -5,10 +5,6 @@ import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
-/**
- * HttpStatus.NO_CONTENT 사용 자제
- * 프론트까지 결과가 송출되지 않음
- */
 @Getter
 public enum ErrorStatus {
 
@@ -43,7 +39,14 @@ public enum ErrorStatus {
     // diary
     INVALID_DATE_FORMAT(BAD_REQUEST.value(), "날짜를 다시 확인해주세요."),
     INVALID_MEMO_TYPE(BAD_REQUEST.value(), "올바르지 않은 요청입니다."),
-    BACKGROUND_NOT_FOUND(ACCEPTED.value(), "해당 날짜에 작성한 다이어리가 존재하지 않습니다.")
+    BACKGROUND_NOT_FOUND(NO_CONTENT.value(), "해당 날짜에 작성한 다이어리가 존재하지 않습니다."),
+    NO_MEMO_AVAILABLE(BAD_REQUEST.value(), "저장 가능한 메모가 없습니다."),
+
+    // file save
+    NO_DATA_TO_SAVE(BAD_REQUEST.value(), "빈 메모는 저장이 불가능합니다."),
+    FAIL_TO_SAVE_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 저장 실패"),
+    MISMATCH_IN_NUMBER_OF_FILES_AND_IMAGES(BAD_REQUEST.value(), "전송된 파일과 이미지 메모지의 개수가 일치하지 않습니다."),
+    FILE_INDEX_OUT_OF_BOUNDS(BAD_REQUEST.value(), "파일 인덱스 초과")
     ;
 
     private Integer status;

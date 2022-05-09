@@ -1,6 +1,7 @@
 package com.ssafy.onda.global.common.entity;
 
-import com.ssafy.onda.global.common.entity.base.BaseMemoEntity;
+import com.ssafy.onda.global.common.entity.embedded.FileInfo;
+import com.ssafy.onda.global.common.entity.embedded.Memo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,27 +11,33 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_image")
 @Entity
-public class Image extends BaseMemoEntity {
+public class Image {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long imageSeq;
 
-    @Column(nullable = false)
-    private String originImageName;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "originName", column = @Column(name = "origin_name", nullable = false)),
+            @AttributeOverride(name = "encodedName", column = @Column(name = "encoded_name", nullable = false)),
+            @AttributeOverride(name = "savedPath", column = @Column(name = "saved_path", nullable = false))
+    })
+    private FileInfo fileInfo;
 
-    @Column(nullable = false)
-    private String encodingImageName;
-
-    @Column(nullable = false)
-    private String savedImagePath;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x", nullable = false)),
+            @AttributeOverride(name = "y", column = @Column(name = "y", nullable = false)),
+            @AttributeOverride(name = "width", column = @Column(name = "width", nullable = false)),
+            @AttributeOverride(name = "height", column = @Column(name = "height", nullable = false))
+    })
+    private Memo memo;
 
     @Builder
-    public Image(Long x, Long y, Long width, Long height, Long imageSeq, String originImageName, String encodingImageName, String savedImagePath) {
-        super(x, y, width, height);
+    public Image(Long imageSeq, FileInfo fileInfo, Memo memo) {
         this.imageSeq = imageSeq;
-        this.originImageName = originImageName;
-        this.encodingImageName = encodingImageName;
-        this.savedImagePath = savedImagePath;
+        this.fileInfo = fileInfo;
+        this.memo = memo;
     }
 }

@@ -2,21 +2,21 @@ package com.ssafy.onda.global.common.dto;
 
 import lombok.*;
 
-@ToString(of = { "description", "deposit", "withdraw" })
+@ToString(of = { "content", "income", "outcome" })
 @NoArgsConstructor
 @Getter
 public class AccountBookItemDto {
 
-    private String description;
+    private String content;
 
-    private Long deposit;
+    private String income;
 
-    private Long withdraw;
+    private String outcome;
 
     @Builder
-    public AccountBookItemDto(String description, Long deposit, Long withdraw) {
-        this.description = description;
-        this.deposit = deposit;
-        this.withdraw = withdraw;
+    public AccountBookItemDto(String content, String income, String outcome) {
+        this.content = content;
+        this.income = income;
+        this.outcome = outcome;
     }
 }
