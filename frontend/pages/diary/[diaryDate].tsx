@@ -13,6 +13,7 @@ import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
 import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
 import { truncate } from 'fs'
 import { useRouter } from 'next/router'
+import { calNextDate, calPrevDate } from 'core/common/date'
 
 const diary = () => {
   const todaysInfo = useSelector(({ diary }) => diary)
@@ -93,11 +94,23 @@ const diary = () => {
           height="40"
         />
         <span>
-          <button> &lt;</button>
+          <button
+            onClick={() => {
+              router.push(`/diary/${calPrevDate(diaryDate)}`)
+            }}
+          >
+            &lt;
+          </button>
           <span>
             <h2>{todaysInfo.diaryDate}</h2>
           </span>
-          <button>&gt;</button>
+          <button
+            onClick={() => {
+              router.push(`/diary/${calNextDate(diaryDate)}`)
+            }}
+          >
+            &gt;
+          </button>
         </span>
         <span className={styles.closeBtnImgContainer}>
           {!pannelIsOpen && (
