@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SignupForm from 'component/user/signupForm'
-import { checkId, checkEmail, onSignup } from 'pages/api/memberApi'
+import { checkId, checkEmail, onSignup, emailAuth, emailAuthCheck } from 'pages/api/memberApi'
 
 const signup = () => {
   const [member, setMember] = useState({
@@ -9,6 +9,7 @@ const signup = () => {
     confirmPassword: "",
     nickname: "",
     email: "",
+    authCode: "",
   })
 
   const handleChangeState = (e) => {
@@ -25,8 +26,9 @@ const signup = () => {
       setErrorState({
         ...errorState,
         emailUnique: false,
+        emailConfirm: false,
       })
-    }
+    } 
   }
 
   // error State
@@ -38,21 +40,9 @@ const signup = () => {
     nicknameRegex: false,
     emailRegex: false,
     emailUnique: false,
+    emailSend: false,
     emailConfirm: false, // 인증
   });
-
-  const toggleIsEmailConfirm = () => {
-    if(errorState.emailUnique) {
-      setErrorState({
-      ...errorState,
-      emailConfirm: !errorState.emailConfirm,
-    })
-    } else if(errorState.emailRegex) {
-      alert("이메일 중복확인을 해주세요.")
-    } else {
-      alert("이메일을 입력해주세요.")
-    }
-  }
 
   // error Message
   const errorMsg = {
@@ -63,9 +53,10 @@ const signup = () => {
     nicknameRegex: '3자 이상의 한글/영문/숫자 조합',
     emailRegex: '잘못된 이메일 형식입니다.',
     emailUnique: '중복되는 이메일이 있습니다. ',
+    emailConfirm: '이메일 인증을 진행해주세요.'
   };
 
-  const signUpBtnMsg = {
+  const infoMsg = {
     idInput: "아이디를 입력해주세요.",
     idUnique: "아이디 중복확인을 해주세요.",
     pwInput: "비밀번호를 입력해주세요.",
@@ -73,6 +64,7 @@ const signup = () => {
     emailInput: "이메일 형식을 확인해주세요.",
     emailUnique: "이메일 중복 확인을 해주세요.",
     emailConfirm: "이메일 인증을 해주세요.",
+    emailSend: "이메일에서 인증번호를 확인해주세요.",
     signUp: "가입이 완료되었습니다.",
   }
   
@@ -95,7 +87,7 @@ const signup = () => {
   // 아이디 중복 확인
   const checkIdUnique = async (id) => {
     if (id.length == 0) {
-      alert("아이디를 입력해주세요.");
+      alert(infoMsg.idInput);
       return;
     }
     const result = await checkId(id);
@@ -209,27 +201,63 @@ const signup = () => {
     }
   }
   
+  // 이메일 인증
+  const emailSend = async () => {
+    console.log("signup email 인증" +  member.authCode)
+    const result = await emailAuth(member.email);
+    if (result.status == 200) {
+      alert(infoMsg.emailSend);
+      setErrorState({
+        ...errorState,
+        emailSend: true,
+      })
+    } else {
+      alert(result.msg);
+      setErrorState({
+        ...errorState,
+        emailSend: false,
+      })
+    }
+  }
+
+  const emailSendCheck = async () => {
+    console.log("인증번호" + member.authCode);
+    const result = await emailAuthCheck(member.email, member.authCode);
+    if (result.status == 200) {
+      alert(result.msg);
+      setErrorState({
+        ...errorState,
+        emailConfirm: true,
+      })
+    } else {
+      setErrorState({
+        ...errorState,
+        emailSend: false,
+        emailConfirm: false,
+      })
+    }
+  }
 
   // 가입하기 버튼 클릭
   const signupFormSubmit = () => {
     // e.preventDefault();
     var result = "";
     if (!errorState.memberIdRegex) {
-      result = signUpBtnMsg.idInput;
+      result = infoMsg.idInput;
     } else if (!errorState.memberIdUnique) {
-      result = signUpBtnMsg.idUnique;
+      result = infoMsg.idUnique;
     } else if (!errorState.passwordConfirm) {
-      result = signUpBtnMsg.pwInput;
+      result = infoMsg.pwInput;
     } else if (!errorState.nicknameRegex) {
-      result = signUpBtnMsg.nickInput;
+      result = infoMsg.nickInput;
     } else if (!errorState.emailRegex) {
-      result = signUpBtnMsg.emailInput;
+      result = infoMsg.emailInput;
     } else if (!errorState.emailUnique) {
-      result = signUpBtnMsg.emailUnique;
-    // } else if (!errorState.emailConfirm) { // 이메일 인증
-    //   result = signUpBtnMsg.emailConfirm;
+      result = infoMsg.emailUnique;
+    } else if (!errorState.emailConfirm) { // 이메일 인증
+      result = infoMsg.emailConfirm;
     } else {
-      result = signUpBtnMsg.signUp;
+      result = infoMsg.signUp;
       handleSignup();
     }
     alert(result);
@@ -255,7 +283,9 @@ const signup = () => {
     checkPasswordConfirm,
     checkNicknameValid,
     checkEmailValid,
-    checkEmailUnique, 
+    checkEmailUnique,
+    emailSend,
+    emailSendCheck,
     signupFormSubmit
   }
   return (

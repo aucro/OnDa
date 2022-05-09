@@ -1,7 +1,22 @@
 import React from 'react';
 import styles from 'styles/scss/Signup.module.scss'
 
-const signupForm = ({member, handleChangeState, errorState, errorMsg, checkIdValid, checkIdUnique, checkPasswordValid, checkPasswordConfirm, checkNicknameValid, checkEmailValid, checkEmailUnique, signupFormSubmit}) => {
+const signupForm = ({
+  member,
+  handleChangeState,
+  errorState,
+  errorMsg,
+  checkIdValid,
+  checkIdUnique,
+  checkPasswordValid,
+  checkPasswordConfirm,
+  checkNicknameValid,
+  checkEmailValid,
+  checkEmailUnique,
+  emailSend,
+  emailSendCheck,
+  signupFormSubmit
+}) => {
   return (
     <div className={styles.signupForm}>
       <div className={styles.title}>
@@ -33,7 +48,7 @@ const signupForm = ({member, handleChangeState, errorState, errorMsg, checkIdVal
               <th>비밀번호확인</th>
               <td>
                 <input type="password" name='confirmPassword' value={member.confirmPassword} onChange={handleChangeState} onKeyUp={checkPasswordConfirm} maxLength={16} placeholder="비밀번호를 한번 더 입력해주세요." required />
-                <p className={ member.confirmPassword.length==0 ? styles.txt_guide_none : errorState.passwordConfirm ? styles.txt_guide_none : styles.txt_guide_block}>
+                <p className={ member.confirmPassword.length==0 ? styles.txt_guide_none : member.password == member.confirmPassword ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.passwordConfirm}</span>
                 </p>
               </td>
@@ -60,8 +75,10 @@ const signupForm = ({member, handleChangeState, errorState, errorMsg, checkIdVal
             <tr>
               <th></th>
               <td>
-                {errorState.emailConfirm ? <input type="text" placeholder='인증번호 입력' /> : <input type="text" placeholder='인증번호 입력' disabled />}
-                <button type='button' >인증번호 받기</button>
+                {errorState.emailRegex && errorState.emailUnique ?
+                  <input type="text" value={member.authCode} onChange={(e) => handleChangeState(e.currentTarget.value)} placeholder='인증번호 입력' />
+                  : <input type="text" placeholder='인증번호 입력' disabled />}
+                {errorState.emailSend ? <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button> : <button type='button' onClick={emailSend} >인증번호 받기</button> }
               </td>
             </tr>
           </tbody>
