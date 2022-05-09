@@ -9,7 +9,7 @@ import { getMemoAction, setMemoAction } from '../actions/memo'
 // }
 
 let initialMemo = {
-  date: '',
+  diaryDate: '',
   lastId: 0,
   memoList: [],
 }
@@ -37,20 +37,7 @@ const diarySlice = createSlice({
             }
           : memo,
       )
-
-      state.memoList = arr
-    },
-    // memoText 수정시 dispatch 되는 리듀서
-    changeText: (state, action) => {
-      let arr = state.memoList.map((memo) =>
-        memo.id === action.payload.id
-          ? {
-              ...memo,
-              info: action.payload.info,
-            }
-          : memo,
-      )
-
+      console.log(arr)
       state.memoList = arr
     },
     deleteMemo: (state, action) => {
@@ -63,8 +50,9 @@ const diarySlice = createSlice({
     builder
       .addCase(getMemoAction.fulfilled, (state, action) => {
         const list = action.payload.memoList
-        state.date = action.payload.date
-        state.lastId = list[list.length - 1].id
+        state.diaryDate = action.payload.diaryDate
+        if (list.length > 0) state.lastId = list[list.length - 1].id
+        else state.lastId = 0
         list.map((memo) => state.memoList.push(memo))
       })
       .addCase(setMemoAction.fulfilled, (state, action) => {
@@ -72,6 +60,5 @@ const diarySlice = createSlice({
       }),
 })
 
-export const { addMemo, changeMemoState, changeText, deleteMemo } =
-  diarySlice.actions
+export const { addMemo, changeMemoState, deleteMemo } = diarySlice.actions
 export default diarySlice.reducer

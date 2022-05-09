@@ -10,10 +10,10 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [text, setText] = useState(info)
   const [finalEmoji, setFinalEmoji] = useState(info)
-  const [size, setSize] = useState((width * height) / 500)
-
+  const [size, setSize] = useState((width * height) / 400)
+  
   useEffect(() => {
-    setSize(Math.pow(Math.min(width, height), 2) / 500)
+    setSize(Math.pow(Math.min(width, height), 2) / 400)
     console.log(width)
   }, [width, height])
   const handleOnEnter = (text) => {
@@ -36,9 +36,11 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
     setIsEditable(false)
     if (text !== '') handleOnEnter(text)
     drag.enableDragging()
+    console.log(finalEmoji)
     dispatch(
       changeMemoState({
         ...memoInfo,
+        info: finalEmoji,
         isEditing: false,
       }),
     )
@@ -46,12 +48,21 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
   const onDeleteButtonClick = () => {
     onDeleteMemo(memoInfo.id)
   }
+
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
   return (
-    <div className={styles.checklist}>
-      <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+    <div className={styles.checklist} onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent}>
+      {mouseState && <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
         ❌
-      </div>
-      {!isEditable && (
+      </div>}
+      {mouseState && !isEditable && (
         <div className={styles.updateButton} onClick={onUpdateButtonClick}>
           ✏️
         </div>
@@ -71,7 +82,7 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
           />
         </div>
       )}
-      {isEditable && (
+      {mouseState && isEditable && (
         <div
           className={styles.approveUpdateButton}
           onClick={onApproveUpdateClick}

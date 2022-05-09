@@ -6,12 +6,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
 import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
+import calendarIcon from 'public/asset/image/diaryImage/calendarIcon.png'
+import Image from 'next/image'
+import styles from './diary.module.scss'
+import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
+import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
+import { truncate } from 'fs'
 
 const diary = () => {
-  const value = useSelector(({ diary }) => diary)
-  console.log(value)
-  const len = value.memoList.length
-  const lastId = value.lastId
+  const todaysInfo = useSelector(({ diary }) => diary)
+  console.log(todaysInfo)
+  const len = todaysInfo.memoList.length
+  const lastId = todaysInfo.lastId
 
   const dispatch = useDispatch()
   const appDispatch: AppDispatch = useDispatch()
@@ -34,51 +40,97 @@ const diary = () => {
     // alert('추가되었습니다.')
   }
 
-  console.log('reload')
-
-  const memberSeq = 3
-
-  useEffect(() => {
-    appDispatch(getMemoAction(memberSeq))
-  }, [])
-
   useEffect(() => {
     setDraggableState(Array(len).fill(true))
   }, [len])
 
   const onClickSave = () => {
-    appDispatch(setMemoAction(value))
+    const params = {
+      param: todaysInfo,
+      token:
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg',
+    }
+    appDispatch(setMemoAction(params))
   }
 
   const onDeleteMemo = (id) => {
     appDispatch(deleteMemo(id))
   }
 
+  const [viewSize, setViewSize] = useState({
+    width: 0,
+    height: 0,
+  })
+  const [pannelIsOpen, setPannelIsOpen] = useState(false)
+  const memberSeq = 3
+  const diaryDate = '2022-04-28'
+  useEffect(() => {
+    const params = {
+      diaryDate: diaryDate,
+      token:
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg',
+    }
+    appDispatch(getMemoAction(params))
+    setViewSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }, [])
+
   return (
     <>
-      <button onClick={onClickSave}>저장하기</button>
-      {value.memoList.map((c, index) => (
+      <div className={styles.dateContainer}>
+        <Image
+          src={calendarIcon}
+          className={styles.calendarIcon}
+          width="40"
+          height="40"
+        />
+        <span>
+          <button> &lt;</button>
+          <span>
+            <h2>{todaysInfo.diaryDate}</h2>
+          </span>
+          <button>&gt;</button>
+        </span>
+        <span className={styles.closeBtnImgContainer}>
+          {!pannelIsOpen && (
+            <Image
+              src={hamburgerIcon}
+              width="36"
+              height="36"
+              onClick={(e) => {
+                setPannelIsOpen(true)
+              }}
+            />
+          )}
+        </span>
+      </div>
+      <div className={styles.saveBtnWrapper}>
+        <button className={styles.saveBtn} onClick={onClickSave}>
+          저장하기
+        </button>
+      </div>
+      {todaysInfo.memoList.map((c, index) => (
         <RND
           style={{
-            // background: '#898989',
-            // background: '#ffc',
-            // background: 'transparent',
             background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
             borderRadius: '10px',
             boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
             borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
-            // overflow: 'hidden',
           }}
           content={c}
           key={index}
           onDragStop={(e, d) => {
-            dispatch(
-              changeMemoState({
-                ...c,
-                x: d.x,
-                y: d.y,
-              }),
-            )
+            if (d.x > 0 && d.y > 0 && d.x < viewSize.width) {
+              dispatch(
+                changeMemoState({
+                  ...c,
+                  x: d.x,
+                  y: d.y,
+                }),
+              )
+            }
           }}
           onResizeStop={(e, direction, ref, delta, position) => {
             dispatch(
@@ -95,7 +147,6 @@ const diary = () => {
           }}
           disableDragging={!draggableState[index]}
         >
-          {/* 여기에 이런식으로 넣고자하는 컴포넌트 넣기*/}
           <MemoSeparator
             memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
             memoTypeSeq={c.memoTypeSeq}
@@ -107,7 +158,15 @@ const diary = () => {
           />
         </RND>
       ))}
-      <Pannel onClick={onClickPannel} />
+
+      {pannelIsOpen && (
+        <Pannel
+          onClick={onClickPannel}
+          onCloseBtn={() => {
+            setPannelIsOpen(false)
+          }}
+        />
+      )}
     </>
   )
 }

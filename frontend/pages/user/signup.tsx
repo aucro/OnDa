@@ -235,6 +235,7 @@ const signup = () => {
     } else if (!errorState.emailConfirm) { // 이메일 인증
       result = infoMsg.emailConfirm;
     } else {
+      result = infoMsg.signUp;
       handleSignup();
     }
     alert(result);
