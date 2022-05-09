@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/scss/Memo.module.scss'
 import { useDispatch } from 'react-redux'
-import { changeText, changeMemoState } from '../../../core/store/modules/diary'
+import { changeMemoState } from '../../../core/store/modules/diary'
 
 interface Props {
   memoInfo: any
@@ -47,19 +47,14 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
   }
   const onApproveUpdateClick = () => {
     setIsEditable(false)
-    drag.enableDragging()
+    drag.enableDragging()      
     dispatch(
-      changeText({
+      changeMemoState({
         ...memoInfo,
         info: {
           checklistHeader: header,
           checklistItems: [...checkboxInfo],
         },
-      }),
-    )
-    dispatch(
-      changeMemoState({
-        ...memoInfo,
         isEditing: false,
       }),
     )
@@ -75,7 +70,7 @@ const MemoChecklist = ({memoInfo, drag, onDeleteMemo}) => {
   }
   const [header, setHeader] = useState(info.checklistHeader);
   return (
-    <div className={styles.checklist} style={{width: width-10, height: height}}  onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent} >
+    <div className={styles.checklist} style={{width: width-10, height: height-30}}  onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent} >
       {mouseState && <div
         className={styles.deleteButton}
         onClick={() => {

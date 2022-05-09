@@ -36,7 +36,7 @@ const MemoFinancialLedger = ({memoInfo, drag, onDeleteMemo}) => {
             if(financeLedger[i].outcome!=='') tempOutcome+=parseInt(financeLedger[i].outcome);
         }
         setTotal({...total, total: (tempIncome-tempOutcome).toString(), income: tempIncome.toString(), outcome: tempOutcome.toString()})
-        console.log(tempIncome, tempOutcome)
+        console.log(financeLedger)
     },[financeLedger])
 
     const onInputContent = (type, event) => {
@@ -82,6 +82,9 @@ const MemoFinancialLedger = ({memoInfo, drag, onDeleteMemo}) => {
     dispatch(
       changeMemoState({
         ...memoInfo,
+        info: {
+          ...financeLedger
+        },
         isEditing: false,
       }),
     )
