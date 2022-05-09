@@ -76,12 +76,13 @@ const signupForm = ({
             <tr>
               <th></th>
               <td>
-                {errorState.emailRegex?
+                {/* {errorState.emailRegex?
                   <input type="text" value={member.authCode} onChange={handleChangeState} placeholder='인증번호 입력' />
-                  : <input type="text" placeholder='인증번호 입력' disabled />}
+                  : <input type="text" placeholder='인증번호 입력' disabled />} */}
                 {/* {errorState.emailSend ?
                   <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button>
                   : <button type='button' onClick={emailSend} >인증번호 받기</button>} */}
+                <input type="text" name='authCode' value={member.authCode} onChange={handleChangeState} placeholder='인증번호 입력' />
                 <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button>
               </td>
             </tr>

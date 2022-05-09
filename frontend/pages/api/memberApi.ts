@@ -16,15 +16,15 @@ export const checkId = async (memberId) => {
 
 // 이메일 인증 메일 발송
 export const emailAuth = async (email) => {
-  const response = await instance.post(COMMON + '/email/auth', {email});
+  const response = await instance.post(COMMON + '/email/auth', { email });
   return response.data;
 };
 
 // 이메일 인증번호 확인
 export const emailAuthCheck = async (email, emailAuth) => {
-  console.log(email);
-  console.log(emailAuth);
-  const response = await instance.post(COMMON + 'email/auth/check', {email, emailAuth})
+  const auth = { email, emailAuth };
+  console.log(auth);
+  const response = await instance.post(COMMON + 'email/auth/check', { email, emailAuth });
   console.log(response);
   return response.data;
 }

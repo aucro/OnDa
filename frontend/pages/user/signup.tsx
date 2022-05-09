@@ -204,9 +204,9 @@ const signup = () => {
   // 이메일 인증
   const emailSend = async () => {
     if (errorState.emailRegex) {
-      console.log("signup email 인증" +  member.authCode)
       const result = await emailAuth(member.email);
-      if (result.status == 200) {
+      console.log("result: " + result.status)
+      if (result.status == 204) { // 인증번호 전송
         alert(infoMsg.emailSend);
         setErrorState({
           ...errorState,
@@ -222,15 +222,14 @@ const signup = () => {
     } else {
       alert(infoMsg.emailInput)
     }
-    
+    console.log("emailSend : " + errorState.emailSend)
+    console.log("emailSend : " + errorState.emailConfirm)
   }
 
   const emailSendCheck = async () => {
-    console.log(errorState.emailSend)
-    console.log("인증번호" + member.authCode);
     if (errorState.emailSend) {
       const result = await emailAuthCheck(member.email, member.authCode);
-      if (result.status == 200) {
+      if (result.status == 200) { // 이메일 인증 성공
         alert(result.msg);
         setErrorState({
           ...errorState,
@@ -239,13 +238,15 @@ const signup = () => {
       } else {
         setErrorState({
           ...errorState,
-          emailSend: false,
+          // emailSend: false,
           emailConfirm: false,
         })
       }
     } else {
       alert("인증번호 받기를 진행해주세요.")
     }
+    console.log("emailConfirm : " + errorState.emailSend)
+    console.log("emailConfirm : " + errorState.emailConfirm)
   }
 
   // 가입하기 버튼 클릭
