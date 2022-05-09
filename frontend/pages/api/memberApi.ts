@@ -9,10 +9,10 @@ export const checkId = async (memberId) => {
 };
 
 // 이메일 중복검사
-export const checkEmail = async (memberEmail) => {
-  const response = await instance.get(COMMON + '/email/' + memberEmail);
-  return response.data;
-};
+// export const checkEmail = async (memberEmail) => {
+//   const response = await instance.get(COMMON + '/email/' + memberEmail);
+//   return response.data;
+// };
 
 // 이메일 인증 메일 발송
 export const emailAuth = async (email) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SignupForm from 'component/user/signupForm'
-import { checkId, checkEmail, onSignup, emailAuth, emailAuthCheck } from 'pages/api/memberApi'
+import { checkId, onSignup, emailAuth, emailAuthCheck } from 'pages/api/memberApi'
 
 const signup = () => {
   const [member, setMember] = useState({
@@ -180,61 +180,71 @@ const signup = () => {
   }
 
   // 이메일 중복 확인
-  const checkEmailUnique = async (email) => {
-    if (email.length == 0) {
-      alert("이메일을 입력해주세요.");
-      return;
-    }
-    const result = await checkEmail(email);
-    if (result.status == 204) {
-      setErrorState({
-        ...errorState,
-        emailUnique: true,
-      })
-      alert(result.msg);
-    } else if (result.status == 200 || result.status == 400) {
-      setErrorState({
-        ...errorState,
-        emailUnique: false,
-      })
-      alert(result.msg);
-    }
-  }
+  // const checkEmailUnique = async (email) => {
+  //   if (email.length == 0) {
+  //     alert("이메일을 입력해주세요.");
+  //     return;
+  //   }
+  //   const result = await checkEmail(email);
+  //   if (result.status == 204) {
+  //     setErrorState({
+  //       ...errorState,
+  //       emailUnique: true,
+  //     })
+  //     alert(result.msg);
+  //   } else if (result.status == 200 || result.status == 400) {
+  //     setErrorState({
+  //       ...errorState,
+  //       emailUnique: false,
+  //     })
+  //     alert(result.msg);
+  //   }
+  // }
   
   // 이메일 인증
   const emailSend = async () => {
-    console.log("signup email 인증" +  member.authCode)
-    const result = await emailAuth(member.email);
-    if (result.status == 200) {
-      alert(infoMsg.emailSend);
-      setErrorState({
-        ...errorState,
-        emailSend: true,
-      })
+    if (errorState.emailRegex) {
+      console.log("signup email 인증" +  member.authCode)
+      const result = await emailAuth(member.email);
+      if (result.status == 200) {
+        alert(infoMsg.emailSend);
+        setErrorState({
+          ...errorState,
+          emailSend: true,
+        })
+      } else {
+        alert(result.msg);
+        setErrorState({
+          ...errorState,
+          emailSend: false,
+        })
+      }  
     } else {
-      alert(result.msg);
-      setErrorState({
-        ...errorState,
-        emailSend: false,
-      })
+      alert(infoMsg.emailInput)
     }
+    
   }
 
   const emailSendCheck = async () => {
+    console.log(errorState.emailSend)
     console.log("인증번호" + member.authCode);
-    const result = await emailAuthCheck(member.email, member.authCode);
-    if (result.status == 200) {
-      alert(result.msg);
-      setErrorState({
-        ...errorState,
-        emailConfirm: true,
-      })
+    if (errorState.emailSend) {
+      const result = await emailAuthCheck(member.email, member.authCode);
+      if (result.status == 200) {
+        alert(result.msg);
+        setErrorState({
+          ...errorState,
+          emailConfirm: true,
+        })
+      } else {
+        setErrorState({
+          ...errorState,
+          emailSend: false,
+          emailConfirm: false,
+        })
+      }
     } else {
-      setErrorState({
-        ...errorState,
-        emailSend: false,
-        emailConfirm: false,
-      })
+      alert("인증번호 받기를 진행해주세요.")
     }
   }
 
@@ -252,8 +262,8 @@ const signup = () => {
       result = infoMsg.nickInput;
     } else if (!errorState.emailRegex) {
       result = infoMsg.emailInput;
-    } else if (!errorState.emailUnique) {
-      result = infoMsg.emailUnique;
+    // } else if (!errorState.emailUnique) { // 이메일 중복 체크 -> 백에서 진행
+    //   result = infoMsg.emailUnique;
     } else if (!errorState.emailConfirm) { // 이메일 인증
       result = infoMsg.emailConfirm;
     } else {
@@ -283,7 +293,7 @@ const signup = () => {
     checkPasswordConfirm,
     checkNicknameValid,
     checkEmailValid,
-    checkEmailUnique,
+    // checkEmailUnique,
     emailSend,
     emailSendCheck,
     signupFormSubmit

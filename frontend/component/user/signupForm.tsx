@@ -12,7 +12,7 @@ const signupForm = ({
   checkPasswordConfirm,
   checkNicknameValid,
   checkEmailValid,
-  checkEmailUnique,
+  // checkEmailUnique,
   emailSend,
   emailSendCheck,
   signupFormSubmit
@@ -66,7 +66,8 @@ const signupForm = ({
               <th>이메일</th>
               <td>
                 <input type="text" name='email' value={member.email} onChange={handleChangeState} onKeyUp={checkEmailValid} placeholder="예:ondiary@onda.com" required />
-                <button type='button' onClick={() => checkEmailUnique(member.email)} >중복확인</button>
+                {/* <button type='button' onClick={() => checkEmailUnique(member.email)} >중복확인</button> */}
+                <button type='button' onClick={() => emailSend(member.email)} >인증번호 받기</button>
                 <p className={ member.email.length==0 ? styles.txt_guide_none : errorState.emailRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.emailRegex}</span>
                 </p>
@@ -75,10 +76,13 @@ const signupForm = ({
             <tr>
               <th></th>
               <td>
-                {errorState.emailRegex && errorState.emailUnique ?
-                  <input type="text" value={member.authCode} onChange={(e) => handleChangeState(e.currentTarget.value)} placeholder='인증번호 입력' />
+                {errorState.emailRegex?
+                  <input type="text" value={member.authCode} onChange={handleChangeState} placeholder='인증번호 입력' />
                   : <input type="text" placeholder='인증번호 입력' disabled />}
-                {errorState.emailSend ? <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button> : <button type='button' onClick={emailSend} >인증번호 받기</button> }
+                {/* {errorState.emailSend ?
+                  <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button>
+                  : <button type='button' onClick={emailSend} >인증번호 받기</button>} */}
+                <button type='button' onClick={() => emailSendCheck(member.email, member.authCode)} >인증번호 확인</button>
               </td>
             </tr>
           </tbody>
