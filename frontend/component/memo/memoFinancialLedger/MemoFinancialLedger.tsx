@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { changeMemoState } from 'core/store/modules/diary'
 import styles from '../../../styles/scss/Memo.module.scss'
 interface Props {
-    width: number,
-    height: number,
-    content: any,
-    header: any,
-    drag: any,
-  }
-const MemoFinancialLedger = ({drag}) => {
-    const [financeLedger, setFinanceLedger] = useState([])
+  width: number
+  height: number
+  content: any
+  header: any
+  drag: any
+  memoInfo: any
+  onDeleteMemo: any
+}
+const MemoFinancialLedger = ({memoInfo, drag, onDeleteMemo}) => {
+    const dispatch = useDispatch();
+    const { width, height, info } = memoInfo
+
+    const [financeLedger, setFinanceLedger] = useState(info)
     const [inputData, setInputData] = useState({
         content: '',
         income: '',
@@ -43,64 +50,119 @@ const MemoFinancialLedger = ({drag}) => {
             setInputData({...inputData, outcome: event.target.value.toString()})
         }
     }
-    const addFinanceLedger = () =>{
-        setFinanceLedger(prevState => [...prevState, {content: inputData.content, income: inputData.income, outcome: inputData.outcome}])
-        setInputData({content: '', income: '', outcome: ''})
-    }
-    const onUpdateButtonClick = () =>{
-        setIsEditable(true);
-        drag.disableDragging();
-    }
-    const onApproveUpdateClick = () => {
-        setIsEditable(false);
-        drag.enableDragging();
-    }
-    const onDeleteButtonClick = () =>{
 
+  const addFinanceLedger = () => {
+    if(inputData.income==='' && inputData.outcome===''){
+      alert("수입 혹은 지출을 하나라도 입력해주세요!");
+      return;
     }
-    return (
-        <div className={styles.financialLedger}>
-            <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
-                ❌
-            </div>
-            {!isEditable && (<div className={styles.updateButton} onClick={onUpdateButtonClick}>✏️</div>)}
-
-            <div className={styles.financeContentHeader}>내용</div>
-            <div className={styles.financeContentHeader}>들어온 돈</div>
-            <div className={styles.financeContentHeader}>나간 돈</div>
-            {financeLedger.map((fin)=>{
-                return(<div className={styles.financeContent}>
-                    <div>{fin.content}</div>
-                    <div className={styles.financeIncome}>{fin.income.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
-                    <div className={styles.financeOutcome}>{fin.outcome.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
-                </div>)
-            })}
-            {isEditable &&<><div className={styles.financeContent}>
-                <input value={inputData.content} onChange={()=>onInputContent("CONTENT", event)} />
-                <input type='number' value={inputData.income} onChange={()=>onInputContent("INCOME", event)}/>
-                <input type='number' value={inputData.outcome} onChange={()=>onInputContent("OUTCOME", event)}/>
-            </div>
-            <button className={styles.financeAddButton} onClick={addFinanceLedger}>추가하기</button></>}
-            <div className={styles.financeFooter}>
-                <div className={styles.financeContent}>
-                    {parseInt(total.total) >= 0 ? 
-                        <div className={styles.financeIncome}> 
-                            <div>총액: {total.total.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
-                        </div> : 
-                        <div className={styles.financeOutcome}>
-                            <div>총액: {total.total.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
-                        </div>}
-                    <div className={styles.financeIncome}>{total.income.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
-                    <div className={styles.financeOutcome}>{total.outcome.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
-                </div>
-            </div>
-            {isEditable && (
-                <div className={styles.approveUpdateButton} onClick={onApproveUpdateClick}>
-                ✔️
-                </div>
-            )}
+    setFinanceLedger((prevState) => [
+      ...prevState,
+      {
+        content: inputData.content,
+        income: inputData.income,
+        outcome: inputData.outcome,
+      },
+    ])
+    setInputData({ content: '', income: '', outcome: '' })
+  }
+  const onUpdateButtonClick = () => {
+    setIsEditable(true)
+    drag.disableDragging()
+    dispatch(
+      changeMemoState({
+        ...memoInfo,
+        isEditing: true,
+      }),
+    )
+  }
+  const onApproveUpdateClick = () => {
+    setIsEditable(false)
+    drag.enableDragging()
+    dispatch(
+      changeMemoState({
+        ...memoInfo,
+        isEditing: false,
+      }),
+    )
+  }
+  const onDeleteButtonClick = () => {
+    onDeleteMemo(memoInfo.id)
+  }
+  const [mouseState, setMouseState] = useState(false);
+  
+  const mouseOverEvent = () =>{
+    setMouseState(true);
+  }
+  const mouseLeaveEvent = () =>{
+    setMouseState(false);
+  }
+  return (
+    <div style={{width: width, height: height}} className={styles.financialLedger} onMouseOver={mouseOverEvent} onMouseLeave={mouseLeaveEvent}>
+      {mouseState && <div className={styles.deleteButton} onClick={onDeleteButtonClick}>
+        ❌
+      </div>}
+      {mouseState && !isEditable && (
+        <div className={styles.updateButton} onClick={onUpdateButtonClick}>
+          ✏️
         </div>
-    );
-};
+      )}
 
-export default MemoFinancialLedger;
+      <div className={styles.financeContentHeader}>내용</div>
+      <div className={styles.financeContentHeader}>들어온 돈</div>
+      <div className={styles.financeContentHeader}>나간 돈</div>
+      {financeLedger.map((fin) => {
+        return (
+          <div className={styles.financeContent}>
+            <div className={styles.financeContentTag}>{fin.content}</div>
+            <div className={styles.financeIncome}>
+              {fin.income.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </div>
+            <div className={styles.financeOutcome}>
+              {fin.outcome.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </div>
+          </div>
+        )
+      })}
+      {isEditable && (
+        <>
+          <div className={styles.financeContent}>
+            <input className={styles.financeContentInput} style={{ width: (width-30)/3 }} placeholder="내용 입력" value={inputData.content} onChange={()=>onInputContent("CONTENT", event)} />
+            <input className={styles.financeContentInput} style={{ width: (width-30)/3 }} placeholder="수입" type='number' value={inputData.income} onChange={()=>onInputContent("INCOME", event)}/>
+            <input className={styles.financeContentInput} style={{ width: (width-30)/3 }} placeholder="지출" type='number' value={inputData.outcome} onChange={()=>onInputContent("OUTCOME", event)}/>
+            <button className={styles.financeAddButton} onClick={addFinanceLedger}>✓</button>
+          </div>
+        </>
+      )}
+      <div className={styles.financeFooter}>
+        <div className={styles.financeContent}>
+          {parseInt(total.total) >= 0 ? (
+            <div className={styles.financeIncome}>
+              <div>{total.total.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
+            </div>
+          ) : (
+            <div className={styles.financeOutcome}>
+              <div>{total.total.replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원'}</div>
+            </div>
+          )}
+          <div className={styles.financeIncome}>
+            {total.income.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'}
+          </div>
+          <div className={styles.financeOutcome}>
+            {total.outcome.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'}
+          </div>
+        </div>
+      </div>
+      {mouseState && isEditable && (
+        <div
+          className={styles.approveUpdateButton}
+          onClick={onApproveUpdateClick}
+        >
+          ✔️
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default MemoFinancialLedger

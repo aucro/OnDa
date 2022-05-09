@@ -1,27 +1,37 @@
 package com.ssafy.onda.global.common.entity;
 
-import com.ssafy.onda.global.common.entity.base.BaseMemoEntity;
+import com.ssafy.onda.global.common.entity.base.Memo;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@ToString(of = {"checklistSeq", "checklistTitle"})
+@ToString(of = {"checklistSeq", "checklistHeader", "memo" })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_checklist")
 @Entity
-public class Checklist extends BaseMemoEntity {
+public class Checklist {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long checklistSeq;
 
-    private String checklistTitle;
+    @Column(nullable = false)
+    private String checklistHeader;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x", nullable = false)),
+            @AttributeOverride(name = "y", column = @Column(name = "y", nullable = false)),
+            @AttributeOverride(name = "width", column = @Column(name = "width", nullable = false)),
+            @AttributeOverride(name = "height", column = @Column(name = "height", nullable = false))
+    })
+    private Memo memo;
 
     @Builder
-    public Checklist(Double x, Double y, Double width, Double height, Long checklistSeq, String checklistTitle) {
-        super(x, y, width, height);
+    public Checklist(Long checklistSeq, String checklistHeader, Memo memo) {
         this.checklistSeq = checklistSeq;
-        this.checklistTitle = checklistTitle;
+        this.checklistHeader = checklistHeader;
+        this.memo = memo;
     }
 }

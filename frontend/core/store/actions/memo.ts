@@ -30,47 +30,72 @@ export const getMemoAction = createAsyncThunk<
           header: 'test',
           content: 'content',
         },
+        isEditing: false,
       },
       {
         id: 1,
         width: 200,
         height: 200,
-        x: 120,
-        y: 410,
-        memoTypeSeq: 1,
+        x: 310,
+        y: 40,
+        memoTypeSeq: 2,
+        info: [
+          {
+            content: '테스트 비용',
+            income: '10000',
+            outcome: '20000',
+          },
+        ],
+        isEditing: false,
+      },
+      {
+        id: 2,
+        width: 200,
+        height: 200,
+        x: 610,
+        y: 40,
+        memoTypeSeq: 3,
         info: {
-          header: 'test',
-          content: 'content',
-        },
+          checklistHeader: "this is checklist header",
+          checklistItems: [
+              {
+                  isChecked: true,
+                  content: "this is checklist item text 1"
+              },
+              {
+                  isChecked: false,
+                  content: "this is checklist item text 2"
+              },
+              {
+                  isChecked: true,
+                  content: "this is checklist item text 3"
+              }
+          ]
+      },
+        isEditing: false,
+      },
+      {
+        id: 3,
+        width: 200,
+        height: 200,
+        x: 10,
+        y: 340,
+        memoTypeSeq: 4,
+        info: {},
+        isEditing: false,
+      },
+      {
+        id: 4,
+        width: 200,
+        height: 200,
+        x: 310,
+        y: 340,
+        memoTypeSeq: 5,
+        info: '😘',
+        isEditing: false,
       },
     ],
   }
-
-  // [
-  //   {
-  //     id: 0,
-  //     width: 200,
-  //     height: 200,
-  //     x: 10,
-  //     y: 40,
-  //     memoTypeSeq: 1,
-  //     info: {
-  //       header: 'test',
-  //       content: 'content',
-  //     },
-  //   },
-  //   {
-  //     id: 0,
-  //     width: 200,
-  //     height: 200,
-  //     x: 120,
-  //     y: 410,
-  //     memoTypeSeq: 3,
-  //     info: {
-  //     },
-  //   },
-  // ]
-
   // 요청 response가지고 reducer에 return
   return res
 })
