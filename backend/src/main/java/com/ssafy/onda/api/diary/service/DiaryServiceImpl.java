@@ -156,7 +156,7 @@ public class DiaryServiceImpl implements DiaryService {
                 } catch (IOException e) {
                     throw new CustomException(LogUtil.getElement(), FAIL_TO_SAVE_IMAGE);
                 }
-            } else if (memoTypeSeq == 6) {
+            } else if (memoTypeSeq == 5) {
                 String emoji = (String) memoListDto.getInfo();
                 stickers.add(Sticker.builder()
                         .memo(Memo.builder()
@@ -348,9 +348,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .memoType("image")
                 .build());
         memoTypes.add(MemoType.builder()
-                .memoType("video")
-                .build());
-        memoTypes.add(MemoType.builder()
                 .memoType("sticker")
                 .build());
 
@@ -457,7 +454,7 @@ public class DiaryServiceImpl implements DiaryService {
                     .height(sticker.getMemo().getHeight())
                     .x(sticker.getMemo().getX())
                     .y(sticker.getMemo().getY())
-                    .memoTypeSeq(6)
+                    .memoTypeSeq(5)
                     .info(sticker.getEmoji())
                     .build());
         }
@@ -489,7 +486,7 @@ public class DiaryServiceImpl implements DiaryService {
                 checklistSeqs.add(memoSeq);
             } else if (memoTypeSeq == 4L) {
                 imageSeqs.add(memoSeq);
-            } else if (memoTypeSeq == 6L) {
+            } else if (memoTypeSeq == 5L) {
                 stickerSeqs.add(memoSeq);
             } else {
                 throw new CustomException(LogUtil.getElement(), INVALID_MEMO_TYPE);
