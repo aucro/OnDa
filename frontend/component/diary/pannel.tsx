@@ -67,15 +67,16 @@ function getMemo(seq) {
       }
   }
 }
-const Pannel = ({ onClick, onCloseBtn }) => {
-  const memoSeqList = [
-    { seq: 1, src: textMemo },
-    { seq: 2, src: financialMemo },
-    { seq: 3, src: checklistMemo },
-    { seq: 4, src: imageUploadLogo },
-    { seq: 5, src: stickerMemo },
-  ]
 
+const memoSeqList = [
+  { seq: 1, src: textMemo },
+  { seq: 2, src: financialMemo },
+  { seq: 3, src: checklistMemo },
+  { seq: 4, src: imageUploadLogo },
+  { seq: 5, src: stickerMemo },
+]
+
+const Pannel = ({ onClick, onCloseBtn }) => {
   return (
     <div className={styles.pannel}>
       <div className={styles.closeBtnImgContainer}>
