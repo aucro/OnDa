@@ -22,10 +22,7 @@ export const emailAuth = async (email) => {
 
 // 이메일 인증번호 확인
 export const emailAuthCheck = async (email, emailAuth) => {
-  const auth = { email, emailAuth };
-  console.log(auth);
-  const response = await instance.post(COMMON + 'email/auth/check', { email, emailAuth });
-  console.log(response);
+  const response = await instance.post(COMMON + '/email/auth/check', { email: email, emailAuth: emailAuth});
   return response.data;
 }
 
