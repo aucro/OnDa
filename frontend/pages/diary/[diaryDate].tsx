@@ -12,10 +12,11 @@ import styles from './diary.module.scss'
 import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
 import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
 import { truncate } from 'fs'
+import { useRouter } from 'next/router'
+import { calNextDate, calPrevDate } from 'core/common/date'
 
 const diary = () => {
   const todaysInfo = useSelector(({ diary }) => diary)
-  console.log(todaysInfo)
   const len = todaysInfo.memoList.length
   const lastId = todaysInfo.lastId
 
@@ -44,8 +45,15 @@ const diary = () => {
     setDraggableState(Array(len).fill(true))
   }, [len])
 
+  const token =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg'
+
   const onClickSave = () => {
-    appDispatch(setMemoAction(todaysInfo))
+    const params = {
+      param: todaysInfo,
+      token: token,
+    }
+    appDispatch(setMemoAction(params))
   }
 
   const onDeleteMemo = (id) => {
@@ -57,14 +65,24 @@ const diary = () => {
     height: 0,
   })
   const [pannelIsOpen, setPannelIsOpen] = useState(false)
-  const memberSeq = 3
+
+  const router = useRouter()
+  const { diaryDate } = router.query || {}
+
+  console.log('load')
   useEffect(() => {
-    appDispatch(getMemoAction(memberSeq))
-    setViewSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    })
-  }, [])
+    if (diaryDate != null && diaryDate != '' && diaryDate != undefined) {
+      const params = {
+        diaryDate: diaryDate,
+        token: token,
+      }
+      appDispatch(getMemoAction(params))
+      setViewSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
+  }, [diaryDate])
 
   return (
     <>
@@ -76,11 +94,23 @@ const diary = () => {
           height="40"
         />
         <span>
-          <button> &lt;</button>
+          <button
+            onClick={() => {
+              router.push(`/diary/${calPrevDate(diaryDate)}`)
+            }}
+          >
+            &lt;
+          </button>
           <span>
-            <h2>{todaysInfo.date}</h2>
+            <h2>{todaysInfo.diaryDate}</h2>
           </span>
-          <button>&gt;</button>
+          <button
+            onClick={() => {
+              router.push(`/diary/${calNextDate(diaryDate)}`)
+            }}
+          >
+            &gt;
+          </button>
         </span>
         <span className={styles.closeBtnImgContainer}>
           {!pannelIsOpen && (
