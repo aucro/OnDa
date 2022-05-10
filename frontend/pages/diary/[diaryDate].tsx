@@ -68,7 +68,10 @@ const diary = ({ diaryDate }) => {
 
   const router = useRouter()
 
+  const [goDate, setGoDate] = useState(diaryDate)
+
   const setTodaysInfo = (date) => {
+    console.log('setTodayInfo function is running')
     if (date != null && date != undefined) {
       const params = {
         diaryDate: date,
@@ -83,8 +86,10 @@ const diary = ({ diaryDate }) => {
   }
 
   useEffect(() => {
-    setTodaysInfo(diaryDate)
-  }, [diaryDate, router])
+    console.log('useEffect is running')
+    console.log(goDate)
+    setTodaysInfo(goDate)
+  }, [goDate])
 
   return (
     <>
@@ -97,9 +102,10 @@ const diary = ({ diaryDate }) => {
         />
         <span>
           <button
-            onClick={() => {
-              setTodaysInfo(calPrevDate(diaryDate))
-              router.push(`/diary/${calPrevDate(diaryDate)}`)
+            onClick={async () => {
+              const date = calPrevDate(diaryDate)
+              await setGoDate(date)
+              router.push(`/diary/${date}`)
             }}
           >
             &lt;
@@ -108,9 +114,10 @@ const diary = ({ diaryDate }) => {
             <h2>{diaryDate}</h2>
           </span>
           <button
-            onClick={() => {
-              setTodaysInfo(calPrevDate(diaryDate))
-              router.push(`/diary/${calNextDate(diaryDate)}`)
+            onClick={async () => {
+              const date = calNextDate(diaryDate)
+              await setGoDate(calNextDate(diaryDate))
+              router.push(`/diary/${date}`)
             }}
           >
             &gt;
