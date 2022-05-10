@@ -1,7 +1,6 @@
 package com.ssafy.onda.api.filter.service;
 
 import com.ssafy.onda.api.member.dto.MemberDto;
-import com.ssafy.onda.api.member.entity.MemberMemo;
 import com.ssafy.onda.api.member.repository.MemberMemoRepository;
 import com.ssafy.onda.api.member.repository.MemberRepository;
 import com.ssafy.onda.global.common.auth.CustomUserDetails;
@@ -28,8 +27,6 @@ public class FilterServiceImpl implements FilterService {
     private final MemberRepository memberRepository;
 
     private final MemberMemoRepository memberMemoRepository;
-
-    private final MemoTypeRepository memoTypeRepository;
 
     private final TextRepository textRepository;
 
