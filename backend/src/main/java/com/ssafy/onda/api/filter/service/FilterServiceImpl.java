@@ -59,12 +59,9 @@ public class FilterServiceImpl implements FilterService {
         }
 
         // 떡메 식별자와 떡메 타입 식별자로 회원 찾기
-        // 1. 떡메 식별자와 떡메 타입 식별자로 회원 떡메 찾기
-        MemoType memoType = memoTypeRepository.findByMemoTypeSeq((long) memoTypeSeq);
-        List<MemberMemo> memberMemos = memberMemoRepository.findAllByMemoTypeAndMemoSeqIn(memoType, memoSeqs);
-        // 2. 회원 떡메로 배경판 테이블에서 회원 식별자 찾기
-        for (MemberMemo memberMemo : memberMemos) {
-            if (!memberMemo.getBackground().getMember().getMemberSeq().equals(memberDto.getMemberSeq())) {
+        List<Long> foundMemberSeqs = memberMemoRepository.findAllMemberSeqsByMemoTypeSeqAndMemoSeqs(memoTypeSeq, memoSeqs);
+        for (Long foundMemberSeq : foundMemberSeqs) {
+            if (!memberDto.getMemberSeq().equals(foundMemberSeq)) {
                 throw new CustomException(LogUtil.getElement(), ACCESS_DENIED);
             }
         }

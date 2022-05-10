@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MemberMemoRepository extends JpaRepository<MemberMemo, Long> {
+public interface MemberMemoRepository extends JpaRepository<MemberMemo, Long>, MemberMemoRepositoryCustom {
 
     List<MemberMemo> findAllByBackground(Background background);
 
