@@ -1,10 +1,8 @@
 import LoginForm from "component/user/loginForm";
-import { removeCookie, setCookie } from "core/common/cookie";
+import { getCookie, removeCookie, setCookie } from "core/common/cookie";
 import { onLogin } from "core/api/memberApi";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
-
 
 const login = () => {
   const [memberId, setMemberId] = useState("");
@@ -38,13 +36,12 @@ const login = () => {
 
   // 로그아웃 테스트 버튼
   const logout = () => {
-    console.log("logout btn")
+    // console.log(getCookie("member"));
     removeCookie("member", {
       path: "/",
       secure: true,
       sameSite: "none"
     });
-    router.push(`/user/login`)
   }
 
   const props = {
