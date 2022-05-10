@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SignupForm from 'component/user/signupForm'
-import { checkId, onSignup, emailAuth, emailAuthCheck } from 'pages/api/memberApi'
+import { checkId, onSignup, emailAuth, emailAuthCheck } from 'core/api/memberApi'
 
 const signup = () => {
   const [member, setMember] = useState({

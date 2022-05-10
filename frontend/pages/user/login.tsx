@@ -1,6 +1,6 @@
 import LoginForm from "component/user/loginForm";
-import { removeCookie, setCookie } from "pages/api/cookie";
-import { onLogin } from "pages/api/memberApi";
+import { removeCookie, setCookie } from "core/common/cookie";
+import { onLogin } from "core/api/memberApi";
 import { useState } from "react";
 
 
