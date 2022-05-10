@@ -110,7 +110,7 @@ const diary = () => {
           </span>
           <button
             onClick={() => {
-              router.replace(`/diary/${calNextDate(diaryDate)}`)
+              router.push(`/diary/${calNextDate(diaryDate)}`)
             }}
           >
             &gt;
