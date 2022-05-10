@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum ErrorStatus {
 
     // Common
-    INVALID_INPUT_VALUE(BAD_REQUEST.value(), " Invalid Input Value"),
+    INVALID_INPUT_VALUE(BAD_REQUEST.value(), "올바르지 않은 요청입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED.value(), " Invalid Input Value"),
     ENTITY_NOT_FOUND(BAD_REQUEST.value(), "해당 정보가 존재하지 않습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Server Error"),

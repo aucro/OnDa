@@ -48,9 +48,14 @@ public class FilterServiceImpl implements FilterService {
         List<Long> memoSeqs = new ArrayList<>();
 
         StringTokenizer stringTokenizer = new StringTokenizer(memoSeqList, ",");
-        while (stringTokenizer.hasMoreTokens()) {
-            memoSeqs.add(Long.valueOf((stringTokenizer.nextToken())));
+        try {
+            while (stringTokenizer.hasMoreTokens()) {
+                memoSeqs.add(Long.valueOf((stringTokenizer.nextToken())));
+            }
+        } catch (NumberFormatException e) {
+            throw new CustomException(LogUtil.getElement(), INVALID_INPUT_VALUE);
         }
+
         if (memoSeqs.size() == 0) {
             throw new CustomException(LogUtil.getElement(), INVALID_INPUT_VALUE);
         }
