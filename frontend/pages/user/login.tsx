@@ -27,7 +27,7 @@ const login = () => {
         secure: true,
         sameSite: "none",
       })
-      window.location.href = '/diary/diary';
+      window.location.href = '/collection/month';
     } else {
       alert(result.msg);
     }
