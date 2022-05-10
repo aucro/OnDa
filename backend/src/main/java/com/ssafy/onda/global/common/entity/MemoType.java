@@ -19,6 +19,7 @@ public class MemoType {
     @Column(nullable = false, unique = true)
     private String memoTypeName;
 
+    @QueryProjection
     @Builder
     public MemoType(Long memoTypeSeq, String memoTypeName) {
         this.memoTypeSeq = memoTypeSeq;
