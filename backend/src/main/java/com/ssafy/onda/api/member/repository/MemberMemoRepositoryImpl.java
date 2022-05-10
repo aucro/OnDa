@@ -24,7 +24,6 @@ public class MemberMemoRepositoryImpl implements MemberMemoRepositoryCustom {
     public List<Long> findAllMemberSeqsByMemoTypeSeqAndMemoSeqs(int memoTypeSeq, List<Long> memoSeqs) {
 
         BooleanExpression or = memberMemo.memoSeq.eq(memoSeqs.get(0));
-        memoSeqs.remove(0);
 
         for (Long memoSeq : memoSeqs) {
             or = or.or(memberMemo.memoSeq.eq(memoSeq));
