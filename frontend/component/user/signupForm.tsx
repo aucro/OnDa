@@ -1,3 +1,4 @@
+import router from 'next/router';
 import React from 'react';
 import styles from 'styles/scss/User.module.scss'
 
@@ -81,7 +82,7 @@ const signupForm = ({
           </tbody>
         </table>
         <div className={styles.footer}>
-          <a href="#" className={styles.cancle}>취소하기</a>
+          <button className={styles.cancle} onClick={() => { router.push(`/user/login`)}}>취소하기</button>
           <button type='button' onClick={signupFormSubmit} className="submit">가입하기</button>
         </div>
       </div>

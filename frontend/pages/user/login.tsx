@@ -2,6 +2,7 @@ import LoginForm from "component/user/loginForm";
 import { removeCookie, setCookie } from "core/common/cookie";
 import { onLogin } from "core/api/memberApi";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 
@@ -17,6 +18,8 @@ const login = () => {
     setPassword(e.currentTarget.value);
   }
 
+  const router = useRouter()
+  
   // 로그인 버튼 클릭
   const loginFormSubmit = async () => {
     const result = await onLogin({memberId, password});
@@ -27,7 +30,7 @@ const login = () => {
         secure: true,
         sameSite: "none",
       })
-      window.location.href = '/collection/month';
+      router.push(`/collection/month`)
     } else {
       alert(result.msg);
     }
@@ -41,7 +44,7 @@ const login = () => {
       secure: true,
       sameSite: "none"
     });
-    window.location.href = '/user/login';
+    router.push(`/user/login`)
   }
 
   const props = {

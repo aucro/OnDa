@@ -1,14 +1,15 @@
 
+import router, { Router } from 'next/router';
 import styles from 'styles/scss/User.module.scss'
 
 
 const loginForm = ({
   memberId,
-    password,
-    memberIdHandler,
-    passwordHandler,
-    loginFormSubmit,
-    logout,
+  password,
+  memberIdHandler,
+  passwordHandler,
+  loginFormSubmit,
+  logout,
 }) => {
   
 
@@ -21,7 +22,7 @@ const loginForm = ({
         <input type="text" className='member_id' value={memberId} onChange={memberIdHandler} placeholder='아이디를 입력해주세요' required />
         <input type="password" className='password' value={password} onChange={passwordHandler} placeholder='비밀번호를 입력해주세요' />
         <button className={styles.btn_login} type='button' onClick={loginFormSubmit}>로그인</button>
-        <a href="/user/signup" className={styles.btn_signup}>회원가입</a>
+        <button className={styles.btn_signup} onClick={() => { router.push(`/user/signup`)}}>회원가입</button>
         <button className={styles.btn_login} type='button' onClick={logout}>로그아웃</button>
       </div>
     </div>
