@@ -1,6 +1,6 @@
 package com.ssafy.onda.api.filter.service;
 
-import com.ssafy.onda.api.member.entity.Member;
+import com.ssafy.onda.api.member.dto.MemberDto;
 import com.ssafy.onda.api.member.entity.MemberMemo;
 import com.ssafy.onda.api.member.repository.MemberMemoRepository;
 import com.ssafy.onda.api.member.repository.MemberRepository;
@@ -44,7 +44,7 @@ public class FilterServiceImpl implements FilterService {
     @Override
     public Object preview(CustomUserDetails details, int memoTypeSeq, String memoSeqList) {
 
-        Member member = memberRepository.findByMemberId(details.getUsername())
+        MemberDto memberDto = memberRepository.findMemberDtoByMemberId(details.getUsername())
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), MEMBER_NOT_FOUND));
 
         Object memoList = null;
@@ -64,7 +64,7 @@ public class FilterServiceImpl implements FilterService {
         List<MemberMemo> memberMemos = memberMemoRepository.findAllByMemoTypeAndMemoSeqIn(memoType, memoSeqs);
         // 2. 회원 떡메로 배경판 테이블에서 회원 식별자 찾기
         for (MemberMemo memberMemo : memberMemos) {
-            if (memberMemo.getBackground().getMember() != member) {
+            if (!memberMemo.getBackground().getMember().getMemberSeq().equals(memberDto.getMemberSeq())) {
                 throw new CustomException(LogUtil.getElement(), ACCESS_DENIED);
             }
         }
