@@ -15,7 +15,7 @@ import { truncate } from 'fs'
 import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
 
-const diary = () => {
+const diary = ({ diaryDate }) => {
   const todaysInfo = useSelector(({ diary }) => diary)
   const len = todaysInfo.memoList.length
   const lastId = todaysInfo.lastId
@@ -67,17 +67,11 @@ const diary = () => {
   const [pannelIsOpen, setPannelIsOpen] = useState(false)
 
   const router = useRouter()
-  const { diaryDate } = router.query
-  // console.log(diaryDate)
 
-  console.log('load')
-  useEffect(() => {
-    // console.log(diaryDate)
-
-    if (diaryDate != null && diaryDate != '' && diaryDate != undefined) {
-      // console.log(diaryDate)
+  const setTodaysInfo = (date) => {
+    if (date != null && date != undefined) {
       const params = {
-        diaryDate: diaryDate,
+        diaryDate: date,
         token: token,
       }
       appDispatch(getMemoAction(params))
@@ -86,7 +80,11 @@ const diary = () => {
         height: window.innerHeight,
       })
     }
-  }, [diaryDate])
+  }
+
+  useEffect(() => {
+    setTodaysInfo(diaryDate)
+  }, [diaryDate, router])
 
   return (
     <>
@@ -100,16 +98,18 @@ const diary = () => {
         <span>
           <button
             onClick={() => {
+              setTodaysInfo(calPrevDate(diaryDate))
               router.push(`/diary/${calPrevDate(diaryDate)}`)
             }}
           >
             &lt;
           </button>
           <span>
-            <h2>{todaysInfo.diaryDate}</h2>
+            <h2>{diaryDate}</h2>
           </span>
           <button
             onClick={() => {
+              setTodaysInfo(calPrevDate(diaryDate))
               router.push(`/diary/${calNextDate(diaryDate)}`)
             }}
           >
@@ -192,6 +192,12 @@ const diary = () => {
       )}
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: { diaryDate: context.params.diaryDate },
+  }
 }
 
 export default diary
