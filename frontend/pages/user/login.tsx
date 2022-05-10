@@ -1,13 +1,13 @@
 import LoginForm from "component/user/loginForm";
+import { removeCookie, setCookie } from "pages/api/cookie";
 import { onLogin } from "pages/api/memberApi";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
+
 
 
 const login = () => {
   const [memberId, setMemberId] = useState("");
   const [password, setPassword] = useState("");
-  const [cookies, setCookie, removeCookie] = useCookies(['member']);
 
   const memberIdHandler = (e) => {
     setMemberId(e.currentTarget.value);
@@ -21,7 +21,7 @@ const login = () => {
   const loginFormSubmit = async () => {
     const result = await onLogin({memberId, password});
     if (result.status == 200) {
-      alert(result.msg);
+      // alert(result.msg);
       setCookie("member", result.data, {
         path: "/",
         secure: true,
