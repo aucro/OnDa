@@ -1,6 +1,8 @@
 package com.ssafy.onda.api.filter.service;
 
 import com.ssafy.onda.api.member.entity.Member;
+import com.ssafy.onda.api.member.entity.MemberMemo;
+import com.ssafy.onda.api.member.repository.MemberMemoRepository;
 import com.ssafy.onda.api.member.repository.MemberRepository;
 import com.ssafy.onda.global.common.auth.CustomUserDetails;
 import com.ssafy.onda.global.common.dto.*;
@@ -21,9 +23,13 @@ import static com.ssafy.onda.global.error.dto.ErrorStatus.*;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class FilterServiceImpl implements FilterService{
+public class FilterServiceImpl implements FilterService {
 
     private final MemberRepository memberRepository;
+
+    private final MemberMemoRepository memberMemoRepository;
+
+    private final MemoTypeRepository memoTypeRepository;
 
     private final TextRepository textRepository;
 
@@ -50,6 +56,17 @@ public class FilterServiceImpl implements FilterService{
         }
         if (memoSeqs.size() == 0) {
             throw new CustomException(LogUtil.getElement(), INVALID_INPUT_VALUE);
+        }
+
+        // 떡메 식별자와 떡메 타입 식별자로 회원 찾기
+        // 1. 떡메 식별자와 떡메 타입 식별자로 회원 떡메 찾기
+        MemoType memoType = memoTypeRepository.findByMemoTypeSeq((long) memoTypeSeq);
+        List<MemberMemo> memberMemos = memberMemoRepository.findAllByMemoTypeAndMemoSeqIn(memoType, memoSeqs);
+        // 2. 회원 떡메로 배경판 테이블에서 회원 식별자 찾기
+        for (MemberMemo memberMemo : memberMemos) {
+            if (memberMemo.getBackground().getMember() != member) {
+                throw new CustomException(LogUtil.getElement(), ACCESS_DENIED);
+            }
         }
 
         switch (memoTypeSeq) {

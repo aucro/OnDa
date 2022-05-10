@@ -34,14 +34,11 @@ public class FilterController {
             throw new CustomException(LogUtil.getElement(), UNAUTHORIZED_ACCESS);
         }
 
-        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
-        Object memoList = filterService.preview(details, memoTypeSeq, memoSeqList);
-
         return BaseResponseDto.builder()
                 .status(OK.value())
                 .msg("미리보기 로드 성공")
                 .data(new HashMap<>() {{
-                    put("memoList", memoList);
+                    put("memoList", filterService.preview((CustomUserDetails) authentication.getDetails(), memoTypeSeq, memoSeqList));
                 }})
                 .build();
     }
