@@ -107,6 +107,10 @@
   text-align: center;
 }
 
+.loginForm .title, .loginForm .content {
+  margin-top: 35px;
+}
+
 .loginForm input[type=text], .loginForm input[type=password] {
   width: 100%;
   height: 50px;
