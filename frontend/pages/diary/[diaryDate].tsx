@@ -111,6 +111,7 @@ const diary = ({ diaryDate }) => {
                 setGoDate(d)
                 router.push(`/diary/${d}`)
               }}
+              days={[1, 2, 5, 7, 15, 23, 24, 25]}
             />
           </span>
           <button
