@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from '../../../styles/scss/Collection.module.scss'
-const CheckListView = ({info}) =>{
-
+const CheckListView = ({memoSeq}) =>{
+    const [info, setInfo] = useState();
     return (
         <div>
             <div className={styles.checklistHeader}>{info.checklistHeader}</div>

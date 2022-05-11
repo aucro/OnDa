@@ -1,6 +1,6 @@
 import React from "react";
 import styles from '../../../styles/scss/Collection.module.scss'
-const FinanceView = ({info}) =>{
+const FinanceView = ({memoSeq}) =>{
 
     return (
         <div>

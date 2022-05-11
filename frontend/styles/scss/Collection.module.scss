@@ -62,3 +62,23 @@
     border: 3px solid blueviolet;
     border-radius: 5px;
 }
+.textView{
+    position: relative;
+    background-color: #ffc;
+    width: 400px;
+    height: 200px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+.header{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    margin: 10px;
+}
+.content{
+    position: absolute;
+    margin: 20px;
+    top: 20px;
+    left: 0%;
+}
