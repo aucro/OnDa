@@ -1,4 +1,8 @@
-
+@mixin cursor {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 .month{
     text-align: center;
     display: flex;
@@ -7,6 +11,15 @@
 }
 .searchInput{
     width: 50%;
+    height: 30px;
+    border: 2px solid blueviolet;
+
+}
+.searchBtn{
+    width: 40px;
+    background-color: blueviolet;
+    border: 0;
+    color: white;
 }
 .dropdownBar{
     margin: 0 auto;
@@ -15,4 +28,37 @@
 }
 .calender{
     margin: 0 auto;
+    padding: 10px;
+    border: 20px solid blueviolet;
+    border-radius: 10px;
+}
+// 판넬
+.pannel {
+    width: 40%;
+    height: 100%;
+    // float: right;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    // border-left: solid 1px grey;
+    overflow: auto;
+    background-color: #cfe1ec;
+    .closeBtnImg {
+    right: 0;
+      // background-color: red;
+    @include cursor();
+    }
+    z-index: 1000;
+}
+.closeBtnImgContainer {
+    text-align: right;
+    padding: 20px;
+    padding-bottom: 0;
+}
+.selectBox {
+    width: 120px;
+    height: 30px;
+    border: 3px solid blueviolet;
+    border-radius: 5px;
 }
