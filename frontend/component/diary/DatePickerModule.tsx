@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import styles from './DatePickerModule.module.scss'
 
 const DatePickerModule = ({ startDate, setStartDate, days }) => {
+  console.log(days)
   return (
     <>
       <DatePicker

@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
 import DatePickerModule from 'component/diary/DatePickerModule'
 import moment from 'moment'
+import { getDiaryDays } from 'core/api/diary'
 
 const diary = ({ diaryDate }) => {
   const todaysInfo = useSelector(({ diary }) => diary)
@@ -81,12 +82,14 @@ const diary = ({ diaryDate }) => {
         width: window.innerWidth,
         height: window.innerHeight,
       })
+      getDiaryDays(params, (data) => {
+        setDiaryDays(data)
+      })
     }
   }
 
+  const [diaryDays, setDiaryDays] = useState()
   useEffect(() => {
-    console.log('useEffect is running')
-    console.log(goDate)
     setTodaysInfo(goDate)
   }, [goDate])
 
@@ -111,7 +114,7 @@ const diary = ({ diaryDate }) => {
                 setGoDate(d)
                 router.push(`/diary/${d}`)
               }}
-              days={[1, 2, 5, 7, 15, 23, 24, 25]}
+              days={diaryDays}
             />
           </span>
           <button
