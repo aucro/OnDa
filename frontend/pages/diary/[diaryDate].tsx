@@ -6,12 +6,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
 import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
-import calendarIcon from 'public/asset/image/diaryImage/calendarIcon.png'
 import Image from 'next/image'
 import styles from './diary.module.scss'
-import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
 import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
-import { truncate } from 'fs'
 import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
 import DatePickerModule from 'component/diary/DatePickerModule'
@@ -72,12 +69,6 @@ const diary = ({ diaryDate }) => {
 
   const [goDate, setGoDate] = useState(diaryDate)
 
-  const CustomInput = ({ value, onClick }, ref) => (
-    <button className={styles.customInput} onClick={onClick} ref={ref}>
-      {value}
-    </button>
-  )
-
   const setTodaysInfo = (date) => {
     console.log('setTodayInfo function is running')
     if (date != null && date != undefined) {
@@ -102,12 +93,6 @@ const diary = ({ diaryDate }) => {
   return (
     <>
       <div className={styles.dateContainer}>
-        {/* <Image
-          src={calendarIcon}
-          className={styles.calendarIcon}
-          width="40"
-          height="40"
-        /> */}
         <span>
           <button
             onClick={async () => {
@@ -126,7 +111,6 @@ const diary = ({ diaryDate }) => {
                 setGoDate(d)
                 router.push(`/diary/${d}`)
               }}
-              // CustomInput={<CustomInput />}
             />
           </span>
           <button
