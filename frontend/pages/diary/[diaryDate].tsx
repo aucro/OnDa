@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState, useEffect, forwardRef } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
 import Pannel from 'component/diary/pannel'
@@ -14,6 +14,8 @@ import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
 import { truncate } from 'fs'
 import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
+import DatePickerModule from 'component/diary/DatePickerModule'
+import moment from 'moment'
 
 const diary = ({ diaryDate }) => {
   const todaysInfo = useSelector(({ diary }) => diary)
@@ -70,6 +72,12 @@ const diary = ({ diaryDate }) => {
 
   const [goDate, setGoDate] = useState(diaryDate)
 
+  const CustomInput = ({ value, onClick }, ref) => (
+    <button className={styles.customInput} onClick={onClick} ref={ref}>
+      {value}
+    </button>
+  )
+
   const setTodaysInfo = (date) => {
     console.log('setTodayInfo function is running')
     if (date != null && date != undefined) {
@@ -94,12 +102,12 @@ const diary = ({ diaryDate }) => {
   return (
     <>
       <div className={styles.dateContainer}>
-        <Image
+        {/* <Image
           src={calendarIcon}
           className={styles.calendarIcon}
           width="40"
           height="40"
-        />
+        /> */}
         <span>
           <button
             onClick={async () => {
@@ -111,7 +119,15 @@ const diary = ({ diaryDate }) => {
             &lt;
           </button>
           <span>
-            <h2>{diaryDate}</h2>
+            <DatePickerModule
+              startDate={Date.parse(goDate)}
+              setStartDate={(date) => {
+                const d = moment(date).format('YYYY-MM-DD')
+                setGoDate(d)
+                router.push(`/diary/${d}`)
+              }}
+              // CustomInput={<CustomInput />}
+            />
           </span>
           <button
             onClick={async () => {
