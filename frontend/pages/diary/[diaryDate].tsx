@@ -11,7 +11,7 @@ import styles from './diary.module.scss'
 import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
 import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
-import DatePickerModule from 'component/diary/DatePickerModule'
+import DatePickerModule from 'component/diary/DatePickerModule/DatePickerModule'
 import moment from 'moment'
 import { getDiaryDays } from 'core/api/diary'
 
@@ -82,13 +82,9 @@ const diary = ({ diaryDate }) => {
         width: window.innerWidth,
         height: window.innerHeight,
       })
-      getDiaryDays(params, (data) => {
-        setDiaryDays(data)
-      })
     }
   }
 
-  const [diaryDays, setDiaryDays] = useState()
   useEffect(() => {
     setTodaysInfo(goDate)
   }, [goDate])
@@ -114,7 +110,6 @@ const diary = ({ diaryDate }) => {
                 setGoDate(d)
                 router.push(`/diary/${d}`)
               }}
-              days={diaryDays}
             />
           </span>
           <button
