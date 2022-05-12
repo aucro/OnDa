@@ -9,7 +9,7 @@ const month = () => {
     const [collectionPannelIsOpen, setCollectionPannelIsOpen] = useState(false);
     const [searchInput, setSearchInput] = useState();
     const [extendedProps, setExtendedProps] = useState();
-    const events = [{ title: "텍스트 +4", date: '2022-05-09', memoTypeSeq : 1, memoSeqList: ['3','4'] }];
+    const events = [{ title: "가계부 +1", date: '2022-05-09', memoTypeSeq : 2, memoSeqList: ['2'] }];
     const onCalenderEventClick=(e)=>{
         console.log(e.event._def);
         console.log(e.event._def.extendedProps.memoTypeSeq);
