@@ -41,8 +41,14 @@ function transForm(param) {
   console.log(param)
 
   const formData = new FormData()
-  let files = [];
-  let numbering = 0;
+  let files = []
+  let numbering = 0
+
+  param.memoList.forEach((memo) => {
+    if (memo.memoTypeSeq === 4) {
+      files.push(memo.info)
+    }
+  })
 
   param.memoList.forEach((memo)=>{
     console.log(typeof memo.info)
@@ -66,15 +72,19 @@ function transForm(param) {
       }
     : memo,
   )
-  const newParam = {diaryDate: param.diaryDate, lastId: param.lastId, memoList: arr}
+  const newParam = {
+    diaryDate: param.diaryDate,
+    lastId: param.lastId,
+    memoList: arr,
+  }
   console.log(typeof numbering)
   console.log(newParam)
   console.log(param)
-  files.forEach((file)=> console.log(file))
+  files.forEach((file) => console.log(file))
   const p = JSON.stringify(newParam)
   const blob = new Blob([p], { type: 'application/json' })
   formData.append('reqDiaryDto', blob)
-  files.forEach((file)=> formData.append('files', file))
+  files.forEach((file) => formData.append('files', file))
   return formData
 }
 
@@ -95,6 +105,25 @@ export const setMemoAction = createAsyncThunk<
     if (res.data.status == 201) {
       return res
     }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export const deleteDayDiary = createAsyncThunk<
+  any,
+  any,
+  { rejectValue: MyKnownError }
+>('memo/deleteDayDiary', async (params, thunkAPI) => {
+  // api post 요청
+  try {
+    const res = await axios.delete(BASE_URL + `/diary/${params.diaryDate}`, {
+      headers: {
+        Authorization: `Bearer ` + params.token,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return res
   } catch (error) {
     console.log(error)
   }

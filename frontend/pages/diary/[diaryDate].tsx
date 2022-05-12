@@ -4,7 +4,11 @@ import RND from 'component/diary/RND'
 import Pannel from 'component/diary/pannel'
 import { useSelector, useDispatch } from 'react-redux'
 import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
-import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
+import {
+  getMemoAction,
+  setMemoAction,
+  deleteDayDiary,
+} from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
 import Image from 'next/image'
 import styles from './diary.module.scss'
@@ -14,6 +18,7 @@ import { calNextDate, calPrevDate } from 'core/common/date'
 import DatePickerModule from 'component/diary/DatePickerModule/DatePickerModule'
 import moment from 'moment'
 import { getDiaryDays } from 'core/api/diary'
+import { getCookie } from 'core/common/cookie'
 
 const diary = ({ diaryDate }) => {
   const todaysInfo = useSelector(({ diary }) => diary)
@@ -45,13 +50,12 @@ const diary = ({ diaryDate }) => {
     setDraggableState(Array(len).fill(true))
   }, [len])
 
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg'
+  const token = getCookie('member')
 
   const onClickSave = () => {
     const params = {
       param: todaysInfo,
-      token: token,
+      token: token.jwtToken,
     }
     appDispatch(setMemoAction(params))
   }
@@ -71,11 +75,10 @@ const diary = ({ diaryDate }) => {
   const [goDate, setGoDate] = useState(diaryDate)
 
   const setTodaysInfo = (date) => {
-    console.log('setTodayInfo function is running')
     if (date != null && date != undefined) {
       const params = {
         diaryDate: date,
-        token: token,
+        token: token.jwtToken,
       }
       appDispatch(getMemoAction(params))
       setViewSize({
@@ -88,6 +91,17 @@ const diary = ({ diaryDate }) => {
   useEffect(() => {
     setTodaysInfo(goDate)
   }, [goDate])
+
+  const onClickDelete = (date) => {
+    // await setGoDate(date)
+    const params = {
+      diaryDate: date,
+      token: token,
+    }
+    appDispatch(deleteDayDiary(params))
+    // router.reload()
+    // alert('삭제완료')
+  }
 
   return (
     <>
@@ -120,6 +134,15 @@ const diary = ({ diaryDate }) => {
             }}
           >
             &gt;
+          </button>
+          <button
+            className={styles.deleteBtn}
+            onClick={async () => {
+              // await setGoDate(date)
+              onClickDelete(goDate)
+            }}
+          >
+            삭제하기
           </button>
         </span>
         <span className={styles.closeBtnImgContainer}>
