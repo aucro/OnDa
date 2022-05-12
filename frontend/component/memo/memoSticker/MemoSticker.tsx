@@ -40,7 +40,7 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
     dispatch(
       changeMemoState({
         ...memoInfo,
-        info: finalEmoji,
+        info: text,
         isEditing: false,
       }),
     )

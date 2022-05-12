@@ -45,13 +45,15 @@ function transForm(param) {
   let numbering = 0;
 
   param.memoList.forEach((memo)=>{
-      if(memo.memoTypeSeq===4){
+    console.log(typeof memo.info)
+      if(memo.memoTypeSeq===4 && typeof memo.info === 'object'){
         files.push(memo.info);
       }
     })
   
   let arr = param.memoList.map((memo) =>
-  memo.memoTypeSeq === 4
+  // 4번인데 info 부분이 string src 이면 그대로
+  memo.memoTypeSeq === 4 && typeof memo.info === 'object'
     ? {
         width: memo.width,
         height: memo.height,
@@ -82,6 +84,7 @@ export const setMemoAction = createAsyncThunk<
   { rejectValue: MyKnownError }
 >('memo/setMemo', async (params, thunkAPI) => {
   // api post 요청
+  console.log(params)
   try {
     const res = await axios.post(BASE_URL + '/diary', transForm(params.param), {
       headers: {
