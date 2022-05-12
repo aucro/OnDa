@@ -24,12 +24,12 @@ const MemoSticker = ({ memoInfo, drag, onDeleteMemo }) => {
     console.log('d')
     setIsEditable(true)
     drag.disableDragging()
-    // dispatch(
-    //   changeMemoState({
-    //     ...memoInfo,
-    //     isEditing: true,
-    //   }),
-    // )
+    dispatch(
+      changeMemoState({
+        ...memoInfo,
+        isEditing: true,
+      }),
+    )
   }
   const onApproveUpdateClick = () => {
     console.log('d')
