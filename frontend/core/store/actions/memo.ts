@@ -93,8 +93,6 @@ export const setMemoAction = createAsyncThunk<
   any,
   { rejectValue: MyKnownError }
 >('memo/setMemo', async (params, thunkAPI) => {
-  // api post 요청
-  console.log(params)
   try {
     const res = await axios.post(BASE_URL + '/diary', transForm(params.param), {
       headers: {
@@ -102,7 +100,7 @@ export const setMemoAction = createAsyncThunk<
         'Content-Type': 'multipart/form-data',
       },
     })
-    if (res.data.status == 201) {
+    if (res.data.status == 201 || res.data.status == 400) {
       return res
     }
   } catch (error) {
@@ -115,14 +113,17 @@ export const deleteDayDiary = createAsyncThunk<
   any,
   { rejectValue: MyKnownError }
 >('memo/deleteDayDiary', async (params, thunkAPI) => {
-  // api post 요청
+  alert(params)
   try {
-    const res = await axios.delete(BASE_URL + `/diary/${params.diaryDate}`, {
-      headers: {
-        Authorization: `Bearer ` + params.token,
-        'Content-Type': 'multipart/form-data',
+    const res = await axios.delete(
+      BASE_URL + `/diary/${params.param.diaryDate}`,
+      {
+        headers: {
+          Authorization: `Bearer ` + params.token,
+          'Content-Type': 'multipart/form-data',
+        },
       },
-    })
+    )
     return res
   } catch (error) {
     console.log(error)
