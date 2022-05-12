@@ -100,15 +100,15 @@
     position: absolute;
     top: 0%;
     left: 0%;
-    margin: 0px;
+    margin: 5px;
 }
-.checklistBody{
+.financeBody{
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
     margin: 0px;
-    top: 20px;
+    top: 30px;
     left: 0%;
 }
 .financeFooter{
@@ -118,4 +118,20 @@
     text-align: center;
     grid-template-columns: 1fr 1fr 1fr;
     bottom: 5px;
+}
+.checklistView{
+    position: relative;
+    background-color: #ffc;
+    width: 400px;
+    height: 200px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+.checklistBody{
+    padding-left: 20px;
+    position: relative;
+    margin: 0px;
+    top: 30px;
+    left: 0%;
+    text-align: left;
 }

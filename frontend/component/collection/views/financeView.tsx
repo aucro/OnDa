@@ -32,7 +32,7 @@ const FinanceView = ({memoSeq}) =>{
             {memoSeq.accountBookItems.length > 0 &&
                 memoSeq.accountBookItems.map((item, index) => {
                 return (
-                <div className={styles.checklistBody}>
+                <div className={styles.financeBody}>
                     <div className={styles.financeContent}>{item.content}</div>
                     <div className={styles.income} style={{color:'blue'}}>{item.income.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
                     <div className={styles.outcome} style={{color:'red'}}>{item.outcome.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>

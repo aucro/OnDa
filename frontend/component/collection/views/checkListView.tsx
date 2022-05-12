@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import styles from '../../../styles/scss/Collection.module.scss'
 const CheckListView = ({memoSeq}) =>{
+    console.log(memoSeq)
     const [info, setInfo] = useState();
     return (
-        <div>
-            <div className={styles.checklistHeader}>{info.checklistHeader}</div>
-            {info.checklistItems.length > 0 &&
-                info.checklistItems.map((item, index) => {
+        <div className={styles.checklistView}>
+            <div className={styles.checklistHeader}>{memoSeq.checklistHeader}</div>
+            {memoSeq.checklistItems.length > 0 &&
+                memoSeq.checklistItems.map((item, index) => {
                 return (
                 <div className={styles.checklistBody}>
-                    <input value={item.isChecked} />
+                    <input type="checkbox" checked={item.isChecked} />
                     {item.content}
                 </div>
             )
