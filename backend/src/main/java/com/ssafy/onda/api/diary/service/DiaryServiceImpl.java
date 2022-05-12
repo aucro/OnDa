@@ -213,7 +213,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         // 회원떡메(memberMemo), 회원떡메가 가지고 있는 떡메모지 삭제
         Optional<Background> optionalBackground = backgroundRepository.findByMemberAndDiaryDate(member, LocalDate.parse(diaryDate));
-        optionalBackground.ifPresent(this::delete);
+        optionalBackground.ifPresent(background -> delete(background, archivedImages));
         Background savedBackground = optionalBackground.orElseGet(() -> backgroundRepository.save(Background.builder()
                 .diaryDate(LocalDate.parse(diaryDate))
                 .member(member)
@@ -286,7 +286,7 @@ public class DiaryServiceImpl implements DiaryService {
         Background background = backgroundRepository.findByMemberAndDiaryDate(member, LocalDate.parse(diaryDate))
                 .orElseThrow(() -> new CustomException(LogUtil.getElement(), BACKGROUND_NOT_FOUND));
 
-        delete(background);
+        delete(background, new HashSet<>());
 
         // 배경판 삭제
         backgroundRepository.deleteAllInBatch(new ArrayList<>(){{
@@ -296,7 +296,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Transactional
     @Override
-    public void delete(Background background) {
+    public void delete(Background background, Set<Image> archivedImage) {
 
         // 배경판으로 회원떡메에서 떡메타입과 떡메식별자 찾기
         List<MemberMemo> memberMemos = memberMemoRepository.findAllByBackground(background);
@@ -311,7 +311,11 @@ public class DiaryServiceImpl implements DiaryService {
         accountBookRepository.deleteAllInBatch(findMemosDto.getAccountBooks());
         checklistRepository.deleteAllInBatch(findMemosDto.getChecklists());
         for (Image image : findMemosDto.getImages()) {
-            fileInfoService.delete(image);
+            if (!archivedImage.contains(image)) {
+                fileInfoService.delete(image);
+            } else {
+                archivedImage.remove(image);
+            }
         }
         stickerRepository.deleteAllInBatch(findMemosDto.getStickers());
 
