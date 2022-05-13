@@ -8,12 +8,13 @@ import TextView from './views/textView'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCollectionAction,getCollectionMemoAction } from 'core/store/actions/collection'
 import { AppDispatch } from 'core/store'
-
+import { useRouter } from 'next/router'
 const token =
 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg'
 
 
 const CollectionPannel = ({ onCloseBtn, info }) => {
+  const router = useRouter();
   console.log(info)
   console.log(info.memoSeqList.toString())
   const previewInfo = useSelector(({ collection }) => collection)
@@ -30,7 +31,9 @@ const CollectionPannel = ({ onCloseBtn, info }) => {
     appDispatch(getCollectionMemoAction(params))
 
   }
-
+  const moveToDate = () =>{
+    router.push(`/diary/${info.dateProp}`)
+  }
   useEffect(()=>{
     getPreviewInfo();
     console.log(previewInfo);
@@ -45,6 +48,7 @@ const CollectionPannel = ({ onCloseBtn, info }) => {
           height="36"
           onClick={onCloseBtn}
         />
+        <button className={styles.dateMoveButton} onClick={moveToDate}>{info.dateProp} 날짜 상세보기</button>
         {info.memoTypeSeq === 1 && previewInfo.collectionMemoInfo.memoList !== undefined && previewInfo.collectionMemoInfo.memoList.map((memoSeq)=>{
           return (<TextView memoSeq={memoSeq}/>)
         })}
