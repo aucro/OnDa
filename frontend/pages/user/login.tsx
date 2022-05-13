@@ -32,6 +32,7 @@ const login = () => {
     } else {
       alert(result.msg);
     }
+    console.log(getCookie("member"));
   }
 
   // 로그아웃 테스트 버튼

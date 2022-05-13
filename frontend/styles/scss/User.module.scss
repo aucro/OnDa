@@ -164,3 +164,65 @@
   color: rgb(19, 88, 141);
   display: inline-block;
 }
+
+// mypage
+.mypageForm {
+  width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mypageForm .title {
+  padding: 35px 0 35px;
+}
+
+.mypageForm .info_tbl {
+  width: 100%;
+  border-top: 2px solid #333;
+  padding-top: 20px;
+}
+
+.mypageForm .info_tbl th {
+  padding: 14px 0px 0px 90px;
+}
+
+.mypageForm .info_tbl td {
+  padding: 10px 0;
+  text-align: left;
+}
+
+.mypageForm .info_tbl input {
+  height: 44px;
+  padding: 15px;
+  line-height: 20px;
+  width: 290px;
+}
+
+.mypageForm .btn {
+  padding-top: 40px;
+  text-align: center;
+}
+.mypageForm .btn_withdraw, .mypageForm .btn_modify {
+  width: 130px;
+  height: 44px;
+  background-color: rgb(19, 88, 141);
+  border: solid 1px rgb(19, 88, 141);
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.mypageForm .btn_modify {
+  background-color: rgb(19, 88, 141);
+  color: #fff;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.mypageForm .btn_withdraw {
+  background-color: #fff;
+  color: rgb(19, 88, 141);
+  display: inline-block;
+  margin-right: 5px;
+}

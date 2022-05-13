@@ -1,3 +1,4 @@
+import { getCookie } from 'core/common/cookie';
 import {instance} from './axios'
 
 const COMMON = '/members';
@@ -27,7 +28,22 @@ export const onSignup = async (memberData) => {
 };
 
 // 로그인
-export const onLogin = async ({memberId, password}) => {
+export const onLogin = async ({ memberId, password }) => {
   const response = await instance.post(COMMON + '/login', { memberId, password });
   return response.data;
 }
+
+// 회원 정보
+export const getProfileInfo = async (token) => {
+  const response = await instance.get(COMMON + '/mypage', {
+    headers: {
+      Authorization: `Bearer ` + token,
+      'Content-Type': 'application/json',
+    },
+  })
+  console.log("api안쪽")
+  console.log(response.data)
+  return response.data;
+}
+
+// 회원 정보 수정
