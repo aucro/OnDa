@@ -38,11 +38,53 @@ export const getMemoAction = createAsyncThunk<
 })
 
 function transForm(param) {
+  console.log(param)
+
   const formData = new FormData()
-  const p = JSON.stringify(param)
+  let files = []
+  let numbering = 0
+
+  param.memoList.forEach((memo) => {
+    if (memo.memoTypeSeq === 4) {
+      files.push(memo.info)
+    }
+  })
+
+  param.memoList.forEach((memo)=>{
+    console.log(typeof memo.info)
+      if(memo.memoTypeSeq===4 && typeof memo.info === 'object'){
+        files.push(memo.info);
+      }
+    })
+  
+  let arr = param.memoList.map((memo) =>
+  // 4번인데 info 부분이 string src 이면 그대로
+  memo.memoTypeSeq === 4 && typeof memo.info === 'object'
+    ? {
+        width: memo.width,
+        height: memo.height,
+        x: memo.x,
+        y: memo.y,
+        isEditing: memo.isEditing,
+        id: memo.id,
+        memoTypeSeq: memo.memoTypeSeq,
+        info: numbering++,
+      }
+    : memo,
+  )
+  const newParam = {
+    diaryDate: param.diaryDate,
+    lastId: param.lastId,
+    memoList: arr,
+  }
+  console.log(typeof numbering)
+  console.log(newParam)
+  console.log(param)
+  files.forEach((file) => console.log(file))
+  const p = JSON.stringify(newParam)
   const blob = new Blob([p], { type: 'application/json' })
   formData.append('reqDiaryDto', blob)
-  formData.append('files', '')
+  files.forEach((file) => formData.append('files', file))
   return formData
 }
 
@@ -51,7 +93,6 @@ export const setMemoAction = createAsyncThunk<
   any,
   { rejectValue: MyKnownError }
 >('memo/setMemo', async (params, thunkAPI) => {
-  // api post 요청
   try {
     const res = await axios.post(BASE_URL + '/diary', transForm(params.param), {
       headers: {
@@ -59,9 +100,27 @@ export const setMemoAction = createAsyncThunk<
         'Content-Type': 'multipart/form-data',
       },
     })
-    if (res.data.status == 201) {
+    if (res.data.status == 201 || res.data.status == 400) {
       return res
     }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export const deleteDayDiary = createAsyncThunk<
+  any,
+  any,
+  { rejectValue: MyKnownError }
+>('memo/deleteDayDiary', async (params, thunkAPI) => {
+  try {
+    const res = await axios.delete(BASE_URL + `/diary/${params.diaryDate}`, {
+      headers: {
+        Authorization: `Bearer ` + params.token,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return res
   } catch (error) {
     console.log(error)
   }

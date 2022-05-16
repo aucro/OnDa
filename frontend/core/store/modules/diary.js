@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getMemoAction, setMemoAction } from '../actions/memo'
+import { deleteDayDiary, getMemoAction, setMemoAction } from '../actions/memo'
 
 // interface Memo {
 //   width: number
@@ -43,6 +43,7 @@ const diarySlice = createSlice({
     deleteMemo: (state, action) => {
       const id = action.payload
       let arr = state.memoList.filter((memo) => memo.id !== id)
+      console.log(arr)
       state.memoList = arr
     },
   },
@@ -58,6 +59,10 @@ const diarySlice = createSlice({
       .addCase(setMemoAction.fulfilled, (state, action) => {
         // console.log(action.payload)
         alert(action.payload.data.msg)
+      })
+      .addCase(deleteDayDiary.fulfilled, (state, action) => {
+        console.log(action.payload.data.msg)
+        state.memoList = []
       }),
 })
 

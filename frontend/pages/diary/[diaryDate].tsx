@@ -1,21 +1,27 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState, useEffect, forwardRef } from 'react'
 import MemoSeparator from 'component/memo/memoSeparator/MemoSeparator'
 import RND from 'component/diary/RND'
-import Pannel from 'component/diary/pannel'
+import Pannel from 'component/diary/Pannel/Pannel'
 import { useSelector, useDispatch } from 'react-redux'
 import { changeMemoState, addMemo, deleteMemo } from 'core/store/modules/diary'
-import { getMemoAction, setMemoAction } from 'core/store/actions/memo'
+import {
+  getMemoAction,
+  setMemoAction,
+  deleteDayDiary,
+} from 'core/store/actions/memo'
 import { AppDispatch } from 'core/store'
-import calendarIcon from 'public/asset/image/diaryImage/calendarIcon.png'
 import Image from 'next/image'
 import styles from './diary.module.scss'
-import closeBtnImg from 'public/asset/image/diaryImage/closeBtnImg.png'
 import hamburgerIcon from 'public/asset/image/diaryImage/hamburgerIcon.png'
-import { truncate } from 'fs'
 import { useRouter } from 'next/router'
 import { calNextDate, calPrevDate } from 'core/common/date'
+import DatePickerModule from 'component/diary/DatePickerModule/DatePickerModule'
+import moment from 'moment'
+import SsrCookie from 'ssr-cookie'
+import cookies from 'next-cookies'
 
-const diary = ({ diaryDate }) => {
+const diary = ({ diaryDate, token }) => {
+  console.log(token)
   const todaysInfo = useSelector(({ diary }) => diary)
   const len = todaysInfo.memoList.length
   const lastId = todaysInfo.lastId
@@ -41,19 +47,38 @@ const diary = ({ diaryDate }) => {
     // alert('추가되었습니다.')
   }
 
+  const [goDate, setGoDate] = useState(diaryDate)
+
   useEffect(() => {
     setDraggableState(Array(len).fill(true))
   }, [len])
 
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1MzM1Nzk4NywiaWF0IjoxNjUyMDYxOTg3fQ._yDfuQ4lL5tbYci6CFY-x08muvg71L5wo1uTH6FMMls_2IVep7jGlh5BMVWtqPXYoLp5Zm6UbzRY1aJYagiLrg'
+  // const cookie = new SsrCookie()
+  // const token = cookie.get('member')
+  // const token = ctxToken
 
-  const onClickSave = () => {
+  const onClickDelete = (date) => {
     const params = {
-      param: todaysInfo,
+      diaryDate: date,
       token: token,
     }
-    appDispatch(setMemoAction(params))
+    appDispatch(deleteDayDiary(params))
+  }
+
+  const onClickSave = () => {
+    todaysInfo.memoList.length <= 0
+      ? appDispatch(
+          deleteDayDiary({
+            param: goDate,
+            token: token,
+          }),
+        )
+      : appDispatch(
+          setMemoAction({
+            param: todaysInfo,
+            token: token,
+          }),
+        )
   }
 
   const onDeleteMemo = (id) => {
@@ -68,10 +93,7 @@ const diary = ({ diaryDate }) => {
 
   const router = useRouter()
 
-  const [goDate, setGoDate] = useState(diaryDate)
-
   const setTodaysInfo = (date) => {
-    console.log('setTodayInfo function is running')
     if (date != null && date != undefined) {
       const params = {
         diaryDate: date,
@@ -86,20 +108,12 @@ const diary = ({ diaryDate }) => {
   }
 
   useEffect(() => {
-    console.log('useEffect is running')
-    console.log(goDate)
     setTodaysInfo(goDate)
   }, [goDate])
 
   return (
     <>
       <div className={styles.dateContainer}>
-        <Image
-          src={calendarIcon}
-          className={styles.calendarIcon}
-          width="40"
-          height="40"
-        />
         <span>
           <button
             onClick={async () => {
@@ -111,7 +125,15 @@ const diary = ({ diaryDate }) => {
             &lt;
           </button>
           <span>
-            <h2>{diaryDate}</h2>
+            <DatePickerModule
+              startDate={Date.parse(goDate)}
+              setStartDate={(date) => {
+                const d = moment(date).format('YYYY-MM-DD')
+                setGoDate(d)
+                router.push(`/diary/${d}`)
+              }}
+              token={token}
+            />
           </span>
           <button
             onClick={async () => {
@@ -122,8 +144,16 @@ const diary = ({ diaryDate }) => {
           >
             &gt;
           </button>
+          <button
+            className={styles.deleteBtn}
+            onClick={async () => {
+              onClickDelete(goDate)
+            }}
+          >
+            삭제하기
+          </button>
         </span>
-        <span className={styles.closeBtnImgContainer}>
+        <div className={styles.pannelBtnImgContainer}>
           {!pannelIsOpen && (
             <Image
               src={hamburgerIcon}
@@ -132,9 +162,10 @@ const diary = ({ diaryDate }) => {
               onClick={(e) => {
                 setPannelIsOpen(true)
               }}
+              className={styles.pannelBtn}
             />
           )}
-        </span>
+        </div>
       </div>
       <div className={styles.saveBtnWrapper}>
         <button className={styles.saveBtn} onClick={onClickSave}>
@@ -142,51 +173,54 @@ const diary = ({ diaryDate }) => {
         </button>
       </div>
       {todaysInfo.memoList.map((c, index) => (
-        <RND
-          style={{
-            background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
-            borderRadius: '10px',
-            boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
-            borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
-          }}
-          content={c}
-          key={index}
-          onDragStop={(e, d) => {
-            if (d.x > 0 && d.y > 0 && d.x < viewSize.width) {
+        <div>
+          <RND
+            style={{
+              background: `${c.memoTypeSeq === 5 ? 'transparent' : '#ffc'}`,
+              borderRadius: '10px',
+              boxShadow: '0 5px 5px `rgba(0,0,0,0.4)`',
+              borderStyle: `${c.isEditing ? 'dashed' : 'none'}`,
+            }}
+            content={c}
+            key={index}
+            onDragStop={(e, d) => {
+              if (d.x > 0 && d.y > 0 && d.x < viewSize.width) {
+                console.log(viewSize)
+                dispatch(
+                  changeMemoState({
+                    ...c,
+                    x: d.x,
+                    y: d.y,
+                  }),
+                )
+              }
+            }}
+            onResizeStop={(e, direction, ref, delta, position) => {
               dispatch(
                 changeMemoState({
                   ...c,
-                  x: d.x,
-                  y: d.y,
+                  width: Number(
+                    ref.style.width.substring(0, ref.style.width.length - 2),
+                  ),
+                  height: Number(
+                    ref.style.height.substring(0, ref.style.height.length - 2),
+                  ),
                 }),
               )
-            }
-          }}
-          onResizeStop={(e, direction, ref, delta, position) => {
-            dispatch(
-              changeMemoState({
-                ...c,
-                width: Number(
-                  ref.style.width.substring(0, ref.style.width.length - 2),
-                ),
-                height: Number(
-                  ref.style.height.substring(0, ref.style.height.length - 2),
-                ),
-              }),
-            )
-          }}
-          disableDragging={!draggableState[index]}
-        >
-          <MemoSeparator
-            memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
-            memoTypeSeq={c.memoTypeSeq}
-            drag={{
-              enableDragging: () => enableDragging(index),
-              disableDragging: () => disableDragging(index),
             }}
-            onDeleteMemo={onDeleteMemo}
-          />
-        </RND>
+            disableDragging={!draggableState[index]}
+          >
+            <MemoSeparator
+              memoInfo={c} // memoInfo = memoList의 한 요소 전체 정보(width, height, x, y, info(content, header))
+              memoTypeSeq={c.memoTypeSeq}
+              drag={{
+                enableDragging: () => enableDragging(index),
+                disableDragging: () => disableDragging(index),
+              }}
+              onDeleteMemo={onDeleteMemo}
+            />
+          </RND>
+        </div>
       ))}
 
       {pannelIsOpen && (
@@ -203,7 +237,10 @@ const diary = ({ diaryDate }) => {
 
 export async function getServerSideProps(context) {
   return {
-    props: { diaryDate: context.params.diaryDate },
+    props: {
+      diaryDate: context.params.diaryDate,
+      token: cookies(context).member,
+    },
   }
 }
 

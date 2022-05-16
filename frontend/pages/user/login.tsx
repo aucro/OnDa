@@ -1,48 +1,66 @@
-import LoginForm from "component/user/loginForm";
-import { getCookie, removeCookie, setCookie } from "core/common/cookie";
-import { onLogin } from "core/api/memberApi";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import LoginForm from 'component/user/loginForm'
+// import { getCookie, removeCookie, setCookie } from 'core/common/cookie'
+import { onLogin } from 'core/api/memberApi'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+// import { getCookies, removeCookies, setCookies } from 'cookies-next'
+import SsrCookie from 'ssr-cookie'
 
 const login = () => {
-  const [memberId, setMemberId] = useState("");
-  const [password, setPassword] = useState("");
+  const [memberId, setMemberId] = useState('')
+  const [password, setPassword] = useState('')
 
   const memberIdHandler = (e) => {
-    setMemberId(e.currentTarget.value);
+    setMemberId(e.currentTarget.value)
   }
 
   const passwordHandler = (e) => {
-    setPassword(e.currentTarget.value);
+    setPassword(e.currentTarget.value)
   }
 
   const router = useRouter()
-  
+
+  const cookie = new SsrCookie()
   // 로그인 버튼 클릭
   const loginFormSubmit = async () => {
-    const result = await onLogin({memberId, password});
+    const result = await onLogin({ memberId, password })
     if (result.status == 200) {
-      // alert(result.msg);
-      setCookie("member", result.data, {
-        path: "/",
-        secure: true,
-        sameSite: "none",
-      })
+      document.cookie = `member = ${result.data.jwtToken}; path=/`
+      // cookie.set('member', result.data.jwtToken, {
+      //   path: '/',
+      //   secure: true,
+      //   sameSite: 'none',
+      //   // domain: 'http://k6a107.p.ssafy.io/',
+      // })
+      // setCookies('member', result.data, {
+      //   path: '/',
+      //   secure: true,
+      //   sameSite: 'none',
+      //   // domain: 'http://k6a107.p.ssafy.io/',
+      // })
       router.push(`/collection/month`)
     } else {
-      alert(result.msg);
+      alert(result.msg)
     }
     console.log(getCookie("member"));
   }
 
   // 로그아웃 테스트 버튼
   const logout = () => {
-    // console.log(getCookie("member"));
-    removeCookie("member", {
-      path: "/",
+    // console.log(cookie.get('member'))
+    cookie.remove('member', {
+      path: '/',
       secure: true,
-      sameSite: "none"
-    });
+      sameSite: 'none',
+      // domain: 'http://k6a107.p.ssafy.io/',
+    })
+    // console.log(getCookies());
+    // removeCookies('member', {
+    //   path: '/',
+    //   secure: true,
+    //   sameSite: 'none',
+    //   // domain: 'http://k6a107.p.ssafy.io/',
+    // })
   }
 
   const props = {
@@ -56,9 +74,9 @@ const login = () => {
 
   return (
     <div className="login-page">
-      <LoginForm {...props}/>
+      <LoginForm {...props} />
     </div>
-  );
-};
+  )
+}
 
-export default login;
+export default login

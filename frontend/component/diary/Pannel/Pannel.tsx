@@ -16,8 +16,8 @@ function getMemo(seq) {
     id: null,
     width: 200,
     height: 200,
-    x: 50,
-    y: 50,
+    x: 100,
+    y: 200,
     isEditing: false,
   }
   switch (seq) {
@@ -40,12 +40,10 @@ function getMemo(seq) {
       return {
         ...obj,
         memoTypeSeq: 3,
-        info: [
-          {
-            content: '항목을 입력해주세요',
-            isChecked: false,
-          },
-        ],
+        info: {
+          checklistHeader: '',
+          checklistItems: [],
+        },
       }
     case 4:
       return {
