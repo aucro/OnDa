@@ -4,10 +4,11 @@ import Router from 'next/router'
 import logo from 'public/asset/image/logo/onda_logo.png'
 import onda from 'public/asset/image/logo/onda.png'
 import Image from 'next/image'
+import { dateToString } from 'core/common/date'
 
 const menus = [
   { name: '월별 모아보기', url: '/collection/month' },
-  { name: '오늘의 다이어리', url: '/diary/2020-05-01' },
+  { name: '오늘의 다이어리', url: `/diary/${dateToString(new Date())}` },
 ]
 
 const Header = () => {
