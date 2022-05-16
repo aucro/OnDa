@@ -9,11 +9,9 @@ import { useRouter } from 'next/router'
 import { AppDispatch } from 'core/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCollectionMemoListAction } from 'core/store/actions/collection'
-const token =
-'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDMiLCJpc3MiOiJvbmRhLnNzYWZ5LmNvbSIsImV4cCI6MTY1Mzk4MTk5MiwiaWF0IjoxNjUyNjg1OTkyfQ.o-gEwnZVFOVCRL1Y0JnPrkrl_qjNZb2ssNn235x2DYsWwPEg-Kv7Ar2HVAMc7cN1x0LMRe4YS5ZvTuwHTX49MQ'
+import cookies from 'next-cookies'
 
-
-const month = () => {
+const month = ({token}) => {
     const router = useRouter();
     const appDispatch:AppDispatch = useDispatch();
     const [collectionPannelIsOpen, setCollectionPannelIsOpen] = useState(false);
@@ -109,5 +107,12 @@ const month = () => {
         </div>
     );
 };
-
+export async function getServerSideProps(context) {
+    return {
+      props: {
+        diaryDate: context.params.diaryDate,
+        token: cookies(context).member,
+      },
+    }
+  }
 export default month;
