@@ -10,12 +10,14 @@
   bottom: 0px;
   width: 100vw;
   text-align: center;
-}
-
-.menu {
-  display: inline-block;
-  margin: 10px;
-  margin-right: 50px;
-  margin-left: 50px;
-  vertical-align: bottom;
+  .menu {
+    display: inline-block;
+    margin: 10px;
+    margin-right: 50px;
+    margin-left: 50px;
+    vertical-align: bottom;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
