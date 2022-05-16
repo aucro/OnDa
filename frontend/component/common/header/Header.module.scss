@@ -1,0 +1,21 @@
+.naviWrapper {
+  height: 100px;
+  border-bottom: solid 2px;
+  position: relative;
+}
+
+.menuContainer {
+  // background-color: aqua;
+  position: absolute;
+  bottom: 0px;
+  width: 100vw;
+  text-align: center;
+}
+
+.menu {
+  display: inline-block;
+  margin: 10px;
+  margin-right: 50px;
+  margin-left: 50px;
+  vertical-align: bottom;
+}
