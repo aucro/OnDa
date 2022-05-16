@@ -28,6 +28,12 @@ const login = () => {
     }
   }
 
+  const onkeydown = (e) => {
+    if (e.key == 'Enter') {
+      loginFormSubmit()
+    }
+  }
+
   // 로그아웃 테스트 버튼
   const logout = () => {
     document.cookie = `member = ; path=/`
@@ -40,6 +46,7 @@ const login = () => {
     memberIdHandler,
     passwordHandler,
     loginFormSubmit,
+    onkeydown,
     logout,
   }
 
