@@ -16,6 +16,7 @@ import SsrCookie from "ssr-cookie";
 
 
 const CollectionPannel = ({ onCloseBtn, info }) => {
+  console.log(info)
   const cookie = new SsrCookie();
   const token= cookie.get('member');
   const router = useRouter();
@@ -28,9 +29,11 @@ const CollectionPannel = ({ onCloseBtn, info }) => {
       memoSeqList: info.memoSeqList.toString(),
       token: token,
     }
+    console.log(params)
     appDispatch(getCollectionMemoAction(params))
 
   }
+  
   const moveToDate = () =>{
     router.push(`/diary/${info.dateProp}`)
   }
