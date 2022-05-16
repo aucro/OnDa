@@ -12,6 +12,7 @@ import { getCollectionMemoListAction } from 'core/store/actions/collection'
 import cookies from 'next-cookies'
 
 const month = ({token}) => {
+    console.log(token)
     const router = useRouter();
     const appDispatch:AppDispatch = useDispatch();
     const [collectionPannelIsOpen, setCollectionPannelIsOpen] = useState(false);
@@ -88,6 +89,7 @@ const month = ({token}) => {
             </div>
             {collectionPannelIsOpen && (
                 <CollectionPannel
+                token={token}
                 onCloseBtn={() => {
                     setCollectionPannelIsOpen(false)
                 }}
@@ -110,7 +112,6 @@ const month = ({token}) => {
 export async function getServerSideProps(context) {
     return {
       props: {
-        diaryDate: context.params.diaryDate,
         token: cookies(context).member,
       },
     }
