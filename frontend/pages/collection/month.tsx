@@ -8,7 +8,7 @@ import CollectionPannel from 'component/collection/collectionPannel';
 import { useRouter } from 'next/router'
 import { AppDispatch } from 'core/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCollectionMemoListAction } from 'core/store/actions/collection'
+import { getCollectionMemoListAction, getCollectionMemoAction } from 'core/store/actions/collection'
 import cookies from 'next-cookies'
 
 const month = ({token}) => {
@@ -37,11 +37,22 @@ const month = ({token}) => {
         appDispatch(getCollectionMemoListAction(params))
     }
     useEffect(()=>{getBriefInfo()},[selectType])
+
     const onCalenderEventClick=(e)=>{
+        setCollectionPannelIsOpen(false);
         console.log(e.event._def);
         console.log(typeof e.event._def.extendedProps);
-        setExtendedProps(()=>e.event._def.extendedProps);
-        setCollectionPannelIsOpen(true);
+        const params = {
+            memoTypeSeq: e.event._def.extendedProps.memoTypeSeq,
+            memoSeqList: e.event._def.extendedProps.memoSeqList.toString(),
+            token: token,
+        }
+        console.log(params)
+        appDispatch(getCollectionMemoAction(params)).then(()=>{        
+            setExtendedProps(()=>e.event._def.extendedProps);
+            setCollectionPannelIsOpen(true);
+    })
+
     }
     const searchInputChange = (e) => {
         console.log(e.target.value);
@@ -73,6 +84,17 @@ const month = ({token}) => {
             }, 200)
         }
     }
+    const renderObject = () =>{
+        return (
+                <CollectionPannel
+                token={token}
+                onCloseBtn={() => {
+                    setCollectionPannelIsOpen(false)
+                }}
+                info={{...extendedProps}}
+                />
+        )
+    }
     return (
         <div>
             <div className={styles.month}>
@@ -87,15 +109,7 @@ const month = ({token}) => {
                     <option value={3}>체크리스트</option>
                 </select>
             </div>
-            {collectionPannelIsOpen && (
-                <CollectionPannel
-                token={token}
-                onCloseBtn={() => {
-                    setCollectionPannelIsOpen(false)
-                }}
-                info={extendedProps}
-                />
-            )}
+            {collectionPannelIsOpen && renderObject()}
             <div className={styles.calender} style={{width: "75%" }}>
                 <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}

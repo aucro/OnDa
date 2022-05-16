@@ -15,25 +15,12 @@ const CollectionPannel = ({ onCloseBtn, info, token }) => {
   console.log(info)
   const router = useRouter();
   const previewInfo = useSelector(({ collection }) => collection)
+  console.log(previewInfo)
   const appDispatch:AppDispatch = useDispatch();
 
-  const getPreviewInfo = () =>{
-    const params = {
-      memoTypeSeq: info.memoTypeSeq,
-      memoSeqList: info.memoSeqList.toString(),
-      token: token,
-    }
-    console.log(params)
-    appDispatch(getCollectionMemoAction(params))
-
-  }
-  
   const moveToDate = () =>{
     router.push(`/diary/${info.dateProp}`)
   }
-  useEffect(()=>{
-    getPreviewInfo();
-  },[])
   return (
     <div className={styles.pannel}>
       <div className={styles.closeBtnImgContainer}>
