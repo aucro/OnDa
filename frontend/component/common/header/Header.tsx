@@ -7,9 +7,6 @@ const menus = [
   { name: '오늘의 다이어리', url: '/diary/2020-05-01' },
 ]
 
-const loginMenu = { name: '로그인', url: '/user/login' }
-const logout = { name: '로그아웃', url: '/user/logout' }
-
 const Header = () => {
   return (
     <div className={styles.naviWrapper}>
@@ -22,6 +19,21 @@ const Header = () => {
             {m.name}
           </div>
         ))}
+        {/* 토큰 여부 검사 후 선택적 렌더링 */}
+        <div
+          className={styles.menu}
+          onClick={() => (document.location.href = '/user/login')}
+        >
+          로그인
+        </div>
+        <div
+          className={styles.menu}
+          onClick={() => {
+            //로그아웃 로직 추가 필요
+          }}
+        >
+          로그아웃
+        </div>
       </div>
     </div>
   )
