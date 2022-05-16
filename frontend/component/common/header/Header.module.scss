@@ -1,7 +1,18 @@
+@mixin cursor {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .naviWrapper {
-  height: 100px;
-  border-bottom: solid 2px;
+  height: 120px;
+  border-bottom: solid 2px rgb(186, 186, 186);
   position: relative;
+  .logo {
+    text-align: center;
+    padding: 20px;
+    @include cursor;
+  }
 }
 
 .menuContainer {
@@ -9,15 +20,16 @@
   position: absolute;
   bottom: 0px;
   width: 100vw;
-  text-align: center;
+  // text-align: center;
   .menu {
     display: inline-block;
     margin: 10px;
     margin-right: 50px;
     margin-left: 50px;
     vertical-align: bottom;
-    &:hover {
-      cursor: pointer;
-    }
+    @include cursor;
+  }
+  .auth {
+    float: right;
   }
 }
