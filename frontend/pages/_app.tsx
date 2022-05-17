@@ -23,7 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>온 다: 온라인 다이어리</title>
       </Head>
       {pageProps.path !== '/' && <Header />}
-      {(isMember(pageProps) && pageProps.path != '/') ||
+      {(isMember(pageProps) &&
+        pageProps.path != '/' &&
+        pageProps.path != '/user/login') ||
       (!isMember(pageProps) && pageProps.path == '/') ? (
         <Component {...pageProps} />
       ) : (
