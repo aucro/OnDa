@@ -2,14 +2,17 @@ import MypageForm from "component/user/mypageForm";
 import { useEffect, useState } from "react";
 import cookies from 'next-cookies';
 import styles from 'styles/scss/User.module.scss'
-import { deleteMember, getMemberInfo } from "core/api/memberApi";
-import { useRouter } from "next/router";
+import { deleteMember, emailAuth, emailAuthCheck, getMemberInfo, modifyMemberInfo } from "core/api/memberApi";
 
 const mypage = ({ token }) => {
   const [memberId, setMember] = useState("")
   const [email, setEmail] = useState("")
   const [nickname, setNickname] = useState("")
-  const router = useRouter()
+  const [password, setPassword] = useState("")
+  const [withdrawStatus, setWithdrawStatus] = useState(false)
+  const [modifyStatus, setModifyStatus] = useState(false)
+
+  
   
   useEffect(() => {
     // console.log('컴포넌트가 화면에 나타남');
@@ -30,9 +33,29 @@ const mypage = ({ token }) => {
     };
   }, []);
 
+  // 회원 정보 수정
+  const onModify = async () => {
+    const result = await modifyMemberInfo(token, nickname)
+    if (result.status == 200) {
+      alert(result.msg)
+      setNickname(nickname)
+    } else {
+      alert(result.msg)
+    }
+  }
+
+
+  // 회원 탈퇴
   const onWithdraw = async () => {
-    confirm("정말로 탈퇴하시겠습니까?");
-    // const result = await deleteMember({token})
+    setWithdrawStatus(true)
+    if (password == '') {
+      alert("비밀번호를 입력해주세요.")
+    } else {
+      confirm("정말로 탈퇴하시겠습니까?");
+      const result = await deleteMember({ token }, memberId, password)
+      console.log(result)
+    }
+
   }
 
   return (
@@ -55,21 +78,33 @@ const mypage = ({ token }) => {
               <th>이메일</th>
               <td>
                 <input type="text" name='email' defaultValue={email} disabled />
+                {/* <button type='button' onClick={emailSendCode} >인증번호 받기</button> */}
+                </td>
+              </tr>
+            {/* <tr>
+              <th>이메일 인증</th>
+              <td>
+                <input type="text" name='authCode' value={authCode} onChange={(e) => {setAuthCode(e.currentTarget.value)}} placeholder='인증번호 입력' />
+                <button type='button' onClick={emailSendCheck} >인증번호 확인</button>
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <th>닉네임</th>
               <td>
-                <input type="text" name='nickname' defaultValue={nickname} />
-                {/* <input type="hidden" name='chk_nickname' required aria-label='중복체크' /> */}
-                {/* <button type='button' className={styles.} >중복체크</button> */}
+                <input type="text" name='nickname' value={nickname} onChange={(e) => setNickname(e.currentTarget.value)} />
               </td>
-            </tr>
+              </tr>
+              <tr>
+                <th>비밀번호</th>
+                <td>
+                  <input type="password" name='password' value={password} onChange={(e) => setPassword(e.currentTarget.value)}  />
+                </td>
+              </tr>
           </tbody>
         </table>
         <div className={styles.btn}>
         <button type='button' className={styles.btn_withdraw} onClick={onWithdraw} >탈퇴하기</button>
-        <button type='button' className={styles.btn_modify}  >정보수정</button>
+        <button type='button' className={styles.btn_modify} onClick={onModify} >정보수정</button>
         </div>
       </div>
     </div>
