@@ -173,10 +173,10 @@ const mypage = ({ token }) => {
               <th>닉네임</th>
               <td>
                 <input type="text" name='nickname' value={nickname} onChange={(e) => setNickname(e.currentTarget.value)} onKeyUp={checkNicknameValid} maxLength={12} placeholder="닉네임을 입력해주세요" required />
+                <button type='button' className={styles.btn_modify} onClick={onModify} >정보수정</button>
                 <p className={ nickname.length==0 ? styles.txt_guide_none : errorState.nicknameRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.nicknameRegex}</span>
                 </p>
-                <button type='button' className={styles.btn_modify} onClick={onModify} >정보수정</button>
               </td>
               </tr>
               <tr>
@@ -188,10 +188,6 @@ const mypage = ({ token }) => {
               </tr>
           </tbody>
         </table>
-        {/* <div className={styles.btn}>
-          <button type='button' className={styles.btn_withdraw} onClick={onWithdraw} >탈퇴하기</button>
-          <button type='button' className={styles.btn_modify} onClick={onModify} >정보수정</button>
-        </div> */}
       </div>
         
       <div>
@@ -199,7 +195,7 @@ const mypage = ({ token }) => {
         <h2>비밀번호 변경</h2>
         </div>
         <div className={styles.content}>
-          <table className={styles.info_tbl}>
+          <table className={styles.password_tbl}>
             <tbody>
               <tr className={styles.top}>
                 <th>현재 비밀번호</th>
@@ -228,11 +224,10 @@ const mypage = ({ token }) => {
             </tbody>
           </table>
           <div className={styles.btn}>
-            <button type='button' className={styles.btn_modify} onClick={changePassword} >비밀번호 변경</button>
+            <button type='button' className={styles.btn_password} onClick={changePassword} >비밀번호 변경</button>
           </div>
         </div>
       </div>  
-    
       {/* <MypageForm /> */}
     </div>
   )
