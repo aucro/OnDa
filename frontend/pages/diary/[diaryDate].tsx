@@ -232,7 +232,7 @@ const diary = ({ diaryDate, token }) => {
 export async function getServerSideProps(context) {
   return {
     props: {
-      diaryDate: context.params.diaryDate,
+      // diaryDate: context.params.diaryDate,
       token: cookies(context).member,
     },
   }
