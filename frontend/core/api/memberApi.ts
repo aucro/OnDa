@@ -46,8 +46,6 @@ export const getMemberInfo = async (token) => {
       'Content-Type': 'application/json',
     },
   })
-  // console.log("api안쪽")
-  // console.log(response.data)
   return response.data
 }
 
@@ -65,43 +63,23 @@ export const modifyMemberInfo = async (token, nickname) => {
       },
     },
   )
-  console.log(response.data)
   return response.data
 }
 
 // 회원 탈퇴
 export const deleteMember = async (token, memberId, password) => {
-  console.log('여기 api임')
-  console.log(token)
-  console.log(memberId)
-  console.log(password)
-  const response = await instance.delete(COMMON, {
-    headers: {
-      Authorization: `Bearer ` + token,
-      'Content-Type': 'application/json',
+  const response = await instance.delete(
+    COMMON,
+    {
+      headers: {
+        Authorization: `Bearer ` + token,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        memberId: memberId,
+        password: password,
+      },
     },
-  })
-
+  )
   return response.data
 }
-
-// export const deleteMember = async (token, memberId, password) => {
-//   console.log(memberId + " " + password)
-//   try {
-//     const response = await instance.delete(COMMON, {
-//       headers: {
-//         Authorization: `Bearer ` + token,
-//         'Content-Type': 'application/json',
-//       },
-//       memberId, password
-//       // body: {
-//       //   memberId: memberId,
-//       //   password: password
-//       // }
-//     })
-//     document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-//     return response.data;
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
