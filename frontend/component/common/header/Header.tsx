@@ -12,6 +12,9 @@ const menus = [
 ]
 
 const Header = () => {
+  
+  const isLogin = false
+
   return (
     <div className={styles.naviWrapper}>
       <div className={styles.logo}>
@@ -36,12 +39,14 @@ const Header = () => {
         ))}
         <div className={styles.auth}>
           {/* 토큰 여부 검사 후 선택적 렌더링 */}
+          {isLogin ? 
           <div
             className={styles.menu}
             onClick={() => Router.push('/user/login')}
           >
             로그인
           </div>
+          :
           <div
             className={styles.menu}
             onClick={() => {
@@ -49,7 +54,8 @@ const Header = () => {
             }}
           >
             로그아웃
-          </div>
+            </div>
+          }
         </div>
       </div>
     </div>

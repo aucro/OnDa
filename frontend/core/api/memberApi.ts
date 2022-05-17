@@ -31,3 +31,14 @@ export const onLogin = async ({memberId, password}) => {
   const response = await instance.post(COMMON + '/login', { memberId, password });
   return response.data;
 }
+
+// 토큰 유효성 검사
+export const checkToken = async (token) => {
+  const response = await instance.get(COMMON + '/check', {
+    headers: {
+      Authorization: `Bearer ` + token,
+      'Content-Type': 'application/json',
+    },
+  })
+  return response.data;
+}
