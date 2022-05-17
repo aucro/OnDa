@@ -36,7 +36,7 @@ const login = () => {
 
   // 로그아웃 테스트 버튼
   const logout = () => {
-    document.cookie = `member = ; path=/`
+    document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
     router.push(`/user/login`)
   }
 
