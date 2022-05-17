@@ -44,12 +44,19 @@ const Header = () => {
           </div>
           <div
             className={styles.menu}
+            onClick={() => Router.push('/user/mypage')}
+          >
+            마이페이지  
+          </div>
+          <div
+            className={styles.menu}
             onClick={() => {
               //로그아웃 로직 추가 필요
             }}
           >
             로그아웃
           </div>
+          
         </div>
       </div>
     </div>

@@ -26,7 +26,6 @@ const login = () => {
     } else {
       alert(result.msg)
     }
-    console.log(getCookie("member"));
   }
 
   const onkeydown = (e) => {

@@ -33,19 +33,22 @@ export const onLogin = async ({ memberId, password }) => {
 }
 
 // 회원 정보
-export const getProfileInfo = async (token) => {
+export const getMemberInfo = async (token) => {
   const response = await instance.get(COMMON + '/mypage', {
     headers: {
       Authorization: `Bearer ` + token,
       'Content-Type': 'application/json',
     },
   })
-  console.log("api안쪽")
-  console.log(response.data)
+  // console.log("api안쪽")
+  // console.log(response.data)
   return response.data;
 }
 
 // 회원 정보 수정
+export const modifyMemberInfo = async (member) => {
+  const response = await instance.put(COMMON)
+}
 
 // 회원 탈퇴
 export const deleteMember = async (token) => {
