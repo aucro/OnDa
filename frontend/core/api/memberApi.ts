@@ -83,3 +83,21 @@ export const deleteMember = async (token, memberId, password) => {
   )
   return response.data
 }
+
+// 비밀번호 수정
+export const modifyPassword = async (token, curPwd, newPwd) => {
+  const response = await instance.put(COMMON + '/mypage/password',
+    {
+      prePassword: curPwd,
+      newPassword: newPwd,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ` + token,
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  console.log(response.data)
+  return response.data
+}
