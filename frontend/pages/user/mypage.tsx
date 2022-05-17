@@ -13,16 +13,14 @@ const mypage = ({ token }) => {
   
   useEffect(() => {
     // console.log('컴포넌트가 화면에 나타남');
-    const response = getMemberInfo(token)
-
-    const promise = response;
+    const promise = getMemberInfo(token)
     const getData = () => {
       promise.then((appData) => {
-        console.log(appData);
-        const memberInfo = appData.data.memberInfo;
-        setMember(memberInfo.memberId)
-        setEmail(memberInfo.email)
-        setNickname(memberInfo.nickname)
+          console.log(appData);
+          const memberInfo = appData.data.memberInfo;
+          setMember(memberInfo.memberId)
+          setEmail(memberInfo.email)
+          setNickname(memberInfo.nickname)
       })
     }
     getData()

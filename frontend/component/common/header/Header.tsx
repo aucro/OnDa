@@ -51,7 +51,8 @@ const Header = () => {
           <div
             className={styles.menu}
             onClick={() => {
-              //로그아웃 로직 추가 필요
+              document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+              Router.push(`/user/login`)
             }}
           >
             로그아웃
