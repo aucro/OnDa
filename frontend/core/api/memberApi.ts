@@ -1,4 +1,3 @@
-import { getCookie } from 'core/common/cookie';
 import {instance} from './axios'
 
 const COMMON = '/members';
@@ -47,3 +46,15 @@ export const getProfileInfo = async (token) => {
 }
 
 // 회원 정보 수정
+
+// 회원 탈퇴
+export const deleteMember = async (token) => {
+  const response = await instance.delete(COMMON, {
+    headers: {
+      Authorization: `Bearer ` + token,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data;
+}

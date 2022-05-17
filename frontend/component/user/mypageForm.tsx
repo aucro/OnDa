@@ -1,22 +1,10 @@
-import { getProfileInfo } from 'core/api/memberApi';
-import { getCookie } from 'core/common/cookie';
+import { getMemberInfo } from 'core/api/memberApi';
 import router from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from 'styles/scss/User.module.scss'
 
 const mypageForm = () => {
   const [memberId, setMemberId] = useState();
-  
-  const jwtToken = getCookie('member');
-  useEffect(() => {
-    if (jwtToken) {
-      const info = getProfileInfo(jwtToken);
-      console.log(info);
-    } else {
-      console.log("로그인필요")
-      router.push(`/user/login`);
-    }
-  })
   
 
   return (
