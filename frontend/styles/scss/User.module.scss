@@ -182,6 +182,12 @@
   padding-top: 20px;
 }
 
+.mypageForm .info_tbl .password_title td {
+  // text-align: center;
+  padding: 35px 55px 15px;
+
+}
+
 .mypageForm .info_tbl .top td, .mypageForm .password_tbl .top td {
   padding: 0 0 20px 0;
 }
@@ -224,7 +230,7 @@
   outline: none;
 }
 
-.mypageForm .btn_modify {
+.mypageForm .btn_modify, .mypageForm .btn_password {
   background-color: rgb(19, 88, 141);
   color: #fff;
   padding: 0;
@@ -236,10 +242,4 @@
   color: rgb(19, 88, 141);
   display: inline-block;
   margin-left: 5px;
-}
-
-.mypageForm .btn_password {
-  background-color: rgb(19, 88, 141);
-  color: #fff;
-  padding: 0;
 }

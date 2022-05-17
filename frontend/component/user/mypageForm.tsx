@@ -32,8 +32,6 @@ const mypageForm = () => {
               <th>닉네임</th>
               <td>
                 <input type="text" name='nickname' />
-                {/* <input type="hidden" name='chk_nickname' required aria-label='중복체크' /> */}
-                {/* <button type='button' className={styles.} >중복체크</button> */}
               </td>
             </tr>
           </tbody>
