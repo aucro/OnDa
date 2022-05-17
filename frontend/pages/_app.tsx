@@ -12,7 +12,8 @@ import 'styles/css/framer.css'
 import Head from 'next/head'
 
 function isMember(props) {
-  return false
+  // api 통신 통해 토큰 유효성 검사
+  return true
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -22,7 +23,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>온 다: 온라인 다이어리</title>
       </Head>
       {pageProps.path !== '/' && <Header />}
-      {isMember(pageProps) ? <Component {...pageProps} /> : alert('접근제한')}
+      {(isMember(pageProps) && pageProps.path != '/') ||
+      (!isMember(pageProps) && pageProps.path == '/') ? (
+        <Component {...pageProps} />
+      ) : (
+        ''
+      )}
     </>
   )
 }
