@@ -6,6 +6,7 @@ import onda from 'public/asset/image/logo/onda.png'
 import Image from 'next/image'
 import { dateToString } from 'core/common/date'
 import cookies from 'next-cookies'
+import { getIsMember } from 'core/api/auth'
 
 const menus = [
   { name: '월별 모아보기', url: '/collection/month' },
@@ -32,25 +33,27 @@ const Header = ({ token, isMember }) => {
           </div>
         ))}
         <div className={styles.auth}>
-          {/* 토큰 여부 검사 후 선택적 렌더링 */}
-          <div className={styles.menu}>
-            <Link href="/user/login">로그인</Link>
-          </div>
-          <div
-            className={styles.menu}
-            onClick={() => Router.push('/user/mypage')}
-          >
-            마이페이지
-          </div>
-          <div
-            className={styles.menu}
-            onClick={() => {
-              document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
-              Router.push(`/user/login`)
-            }}
-          >
-            로그아웃
-          </div>
+          {!isMember && (
+            <div className={styles.menu}>
+              <Link href="/user/login">로그인</Link>
+            </div>
+          )}
+          {isMember && (
+            <>
+              <div className={styles.menu}>
+                <Link href="/user/mypage">마이페이지</Link>
+              </div>
+              <div
+                className={styles.menu}
+                onClick={() => {
+                  document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+                  Router.push(`/`)
+                }}
+              >
+                로그아웃
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -58,10 +61,16 @@ const Header = ({ token, isMember }) => {
 }
 
 export async function getServerSideProps(context) {
+  const t = cookies(context).member
+  const token = t === undefined ? null : t
+  const isMember =
+    t === undefined ? false : await getIsMember(cookies(context).member)
+
   return {
     props: {
       // diaryDate: context.params.diaryDate,
-      token: cookies(context).member,
+      isMember: isMember,
+      token: token,
     },
   }
 }
