@@ -21,13 +21,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (
       (pageProps.isMember && pageProps.path == '/') ||
-      (pageProps.isMember && pageProps.path == '/user/login')
+      (pageProps.isMember && pageProps.path == '/user/login') ||
+      (pageProps.isMember && pageProps.path == '/user/signup')
     ) {
       alert('로그인 상태에서 접근 불가능한 경로입니다.')
       Router.push('/collection/month')
     } else if (
-      (!pageProps.isMember && pageProps.path !== '/') ||
-      (!pageProps.isMember && pageProps.path !== '/user/login')
+      !pageProps.isMember &&
+      pageProps.path !== '/' &&
+      !pageProps.isMember &&
+      pageProps.path !== '/user/login' &&
+      !pageProps.isMember &&
+      pageProps.path !== '/user/signup'
     ) {
       alert('비로그인 상태에서 접근 불가능한 경로입니다.')
       Router.push('/')
