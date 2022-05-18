@@ -13,7 +13,6 @@ const menus = [
 ]
 
 const Header = ({ token }) => {
-  console.log(token)
   return (
     <div className={styles.naviWrapper}>
       <div className={styles.logo}>
@@ -35,7 +34,7 @@ const Header = ({ token }) => {
         <div className={styles.auth}>
           {/* 토큰 여부 검사 후 선택적 렌더링 */}
           <div className={styles.menu}>
-            <Link href="user/login">로그인</Link>
+            <Link href="/user/login">로그인</Link>
           </div>
           <div
             className={styles.menu}
