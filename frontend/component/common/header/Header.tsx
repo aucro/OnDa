@@ -5,15 +5,19 @@ import logo from 'public/asset/image/logo/onda_logo.png'
 import onda from 'public/asset/image/logo/onda.png'
 import Image from 'next/image'
 import { dateToString } from 'core/common/date'
+import { checkToken } from 'core/api/memberApi'
+import { useEffect } from 'react'
 
 const menus = [
   { name: '월별 모아보기', url: '/collection/month' },
   { name: '오늘의 다이어리', url: `/diary/${dateToString(new Date())}` },
 ]
 
-const Header = ({token}) => {
+const Header = ({ token }) => {
   console.log(token)
   const isLogin = false
+  
+  
 
   return (
     <div className={styles.naviWrapper}>
@@ -38,22 +42,22 @@ const Header = ({token}) => {
           {isLogin ? 
           <><div className={styles.menu}>
               <Link href="user/login">로그인</Link>
-            </div><div
+            </div></>
+            :
+            <><div
               className={styles.menu}
               onClick={() => Router.push('/user/mypage')}
             >
-                마이페이지
+              마이페이지
+            </div><div
+              className={styles.menu}
+              onClick={() => {
+                document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+                Router.push(`/user/login`)
+              } }
+            >
+                로그아웃
               </div></>
-          :
-          <div
-            className={styles.menu}
-            onClick={() => {
-              document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-              Router.push(`/user/login`)
-            }}
-          >
-            로그아웃
-            </div>
           }
         </div>
       </div>
