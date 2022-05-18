@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>온 다: 온라인 다이어리</title>
       </Head>
-      {path !== '/' && <Header />}
+      {path !== '/' && <Header {...pageProps} />}
       <Component {...pageProps} />
     </>
   )

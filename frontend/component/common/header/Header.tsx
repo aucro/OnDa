@@ -11,8 +11,8 @@ const menus = [
   { name: '오늘의 다이어리', url: `/diary/${dateToString(new Date())}` },
 ]
 
-const Header = () => {
-  
+const Header = ({token}) => {
+  console.log(token)
   const isLogin = false
 
   return (
