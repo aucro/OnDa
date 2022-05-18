@@ -21,7 +21,7 @@ const Header = ({ token }) => {
             src={onda}
             height="80"
             width="130"
-            onClick={() => Router.push('/')}
+            // onClick={() => Router.push('/')}
           />
         </Link>
       </div>
@@ -38,8 +38,15 @@ const Header = ({ token }) => {
           </div>
           <div
             className={styles.menu}
+            onClick={() => Router.push('/user/mypage')}
+          >
+            마이페이지
+          </div>
+          <div
+            className={styles.menu}
             onClick={() => {
-              //로그아웃 로직 추가 필요
+              document.cookie = `member = ; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+              Router.push(`/user/login`)
             }}
           >
             로그아웃
