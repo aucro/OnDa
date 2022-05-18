@@ -12,23 +12,38 @@ import 'styles/css/framer.css'
 import Head from 'next/head'
 import cookies from 'next-cookies'
 import { getIsMember } from 'core/api/auth'
+import { useEffect, useState } from 'react'
+import Router from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log(pageProps)
+  console.log(pageProps.isMember)
+  const [isAccessable, setIsAccessable] = useState(false)
+  useEffect(() => {
+    if (
+      (pageProps.isMember && pageProps.path == '/') ||
+      (pageProps.isMember && pageProps.path == '/user/login') ||
+      (pageProps.isMember && pageProps.path == '/user/mypage')
+    ) {
+      alert('로그인 상태에서 접근 불가능한 경로입니다.')
+      Router.push('/collection/month')
+    } else if (!pageProps.isMember && pageProps.path !== '/') {
+      alert('비로그인 상태에서 접근 불가능한 경로입니다.')
+      Router.push('/')
+    } else {
+      setIsAccessable(true)
+    }
+
+    return () => {
+      setIsAccessable(false)
+    }
+  }, [pageProps])
   return (
     <>
       <Head>
         <title>온 다: 온라인 다이어리</title>
       </Head>
       {pageProps.path !== '/' && <Header {...pageProps} />}
-      {(pageProps.isMember &&
-        pageProps.path != '/' &&
-        pageProps.path != '/user/login') ||
-      (!pageProps.isMember && pageProps.path == '/') ? (
-        <Component {...pageProps} />
-      ) : (
-        ''
-      )}
+      {isAccessable ? <Component {...pageProps} /> : ''}
     </>
   )
 }
@@ -50,8 +65,8 @@ MyApp.getInitialProps = async (context) => {
       ...props,
       path: ctx.asPath,
       diaryDate: ctx.query.diaryDate,
+      token: cookies(context).member,
       isMember: isMember,
-      token: token,
     },
   }
 }

@@ -12,11 +12,11 @@ const menus = [
   { name: '오늘의 다이어리', url: `/diary/${dateToString(new Date())}` },
 ]
 
-const Header = ({ token }) => {
+const Header = ({ token, isMember }) => {
   return (
     <div className={styles.naviWrapper}>
       <div className={styles.logo}>
-        <Link href="/">
+        <Link href={isMember ? '/collection/month' : '/'}>
           <Image
             src={onda}
             height="80"
