@@ -10,23 +10,21 @@ import Header from 'component/common/header/Header'
 import 'styles/css/font.css'
 import 'styles/css/framer.css'
 import Head from 'next/head'
-
-function isMember(props) {
-  // api 통신 통해 토큰 유효성 검사
-  return true
-}
+import cookies from 'next-cookies'
+import { getIsMember } from 'core/api/auth'
 
 function MyApp({ Component, pageProps }: AppProps) {
+  console.log(pageProps)
   return (
     <>
       <Head>
         <title>온 다: 온라인 다이어리</title>
       </Head>
       {pageProps.path !== '/' && <Header {...pageProps} />}
-      {(isMember(pageProps) &&
+      {(pageProps.isMember &&
         pageProps.path != '/' &&
         pageProps.path != '/user/login') ||
-      (!isMember(pageProps) && pageProps.path == '/') ? (
+      (!pageProps.isMember && pageProps.path == '/') ? (
         <Component {...pageProps} />
       ) : (
         ''
@@ -37,18 +35,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 MyApp.getInitialProps = async (context) => {
   const { ctx, Component, req } = context
-  let pageProps = {}
+  let props = {}
   if (Component.getInitialProps) {
-    // Component의 context로 ctx를 넣어주자
-    pageProps = await Component.getInitialProps(ctx)
+    props = await Component.getInitialProps(ctx)
   }
 
-  // return한 값은 해당 컴포넌트의 props로 들어가게 됩니다.
+  const t = cookies(context).member
+  const token = t === undefined ? null : t
+  const isMember =
+    t === undefined ? false : await getIsMember(cookies(context).member)
+
   return {
     pageProps: {
-      ...pageProps,
+      ...props,
       path: ctx.asPath,
       diaryDate: ctx.query.diaryDate,
+      isMember: isMember,
+      token: token,
     },
   }
 }
