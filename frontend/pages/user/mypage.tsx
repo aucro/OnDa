@@ -146,8 +146,8 @@ const mypage = ({ token }) => {
         alert(result.msg)
       }
       setCurPassword('')
-      setCheckPassword('') // 지워지지 않음
       setNewPassword('')
+      setCheckPassword('') 
     }
   }
 
@@ -176,7 +176,7 @@ const mypage = ({ token }) => {
   
   return (
     <div className="mypage">
-      <MypageForm props = props />
+      <MypageForm {...props} />
     </div>
   )
 }

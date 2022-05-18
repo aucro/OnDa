@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from 'styles/scss/User.module.scss'
 
 const mypageForm = (
-  memberId,
+  {memberId,
   email,
   nickname,
   errorState,
@@ -23,7 +23,7 @@ const mypageForm = (
   onWithdraw,
   checkPasswordValid,
   checkPasswordConfirm,
-  changePassword
+  changePassword}
 ) => {
   return (
     <div className={styles.mypageForm}>
@@ -75,7 +75,7 @@ const mypageForm = (
             <tr>
               <th>새로운 비밀번호</th>
               <td>
-                <input type="password" name='newPassword' defaultValue={newPassword} onChange={(e) => setNewPassword(e.currentTarget.value)} onKeyUp={checkPasswordValid} maxLength={16} required />
+                <input type="password" name='newPassword' value={newPassword} onChange={(e) => setNewPassword(e.currentTarget.value)} onKeyUp={checkPasswordValid} maxLength={16} required />
                 <p className={ newPassword.length==0 ? styles.txt_guide_none : errorState.passwordRegex ? styles.txt_guide_none : styles.txt_guide_block}>
                   <span>{errorMsg.passwordRegex}</span>
                 </p>
