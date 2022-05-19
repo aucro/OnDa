@@ -42,7 +42,7 @@
 }
 // 판넬
 .pannel {
-  width: 30%;
+  width: 25%;
   height: 100%;
   // float: right;
   position: fixed;
@@ -51,8 +51,8 @@
   right: 0;
   // border-left: solid 1px grey;
   overflow: auto;
-  background-color: #b1b9be;
-  border-radius: 10px 10px;
+  background-color: #e0e0e0;
+  border-radius: 10px 0px 0px 10px;
   box-shadow: 5px 5px 5px 8px rgb(130, 130, 130);
   .closeBtnImg {
     right: 0;
@@ -75,7 +75,7 @@
 .textView {
   position: relative;
   background-color: #ffc;
-  width: 400px;
+  width: 330px;
   height: 200px;
   margin-bottom: 40px;
   overflow: hidden;
@@ -95,7 +95,7 @@
 .financeView {
   position: relative;
   background-color: #ffc;
-  width: 400px;
+  width: 330px;
   height: 200px;
   margin-bottom: 40px;
   overflow: hidden;
@@ -132,7 +132,7 @@
 .checklistView {
   position: relative;
   background-color: #ffc;
-  width: 400px;
+  width: 330px;
   height: 200px;
   margin-bottom: 40px;
   overflow: hidden;

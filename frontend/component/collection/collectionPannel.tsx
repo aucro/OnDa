@@ -37,6 +37,21 @@ const CollectionPannel = ({ onCloseBtn, info, token }) => {
         <div className={styles.dateMoveButton} onClick={moveToDate}>
           👉 {info.dateProp} 날짜 상세보기
         </div>
+        {info.memoTypeSeq === 1 &&
+          previewInfo.collectionMemoInfo.memoList !== undefined &&
+          previewInfo.collectionMemoInfo.memoList.map((memoSeq) => {
+            return <TextView memoSeq={memoSeq} />
+          })}
+        {info.memoTypeSeq === 2 &&
+          previewInfo.collectionMemoInfo.memoList !== undefined &&
+          previewInfo.collectionMemoInfo.memoList.map((memoSeq) => {
+            return <FinanceView memoSeq={memoSeq} />
+          })}
+        {info.memoTypeSeq === 3 &&
+          previewInfo.collectionMemoInfo.memoList !== undefined &&
+          previewInfo.collectionMemoInfo.memoList.map((memoSeq) => {
+            return <CheckListView memoSeq={memoSeq} />
+          })}
       </div>
     </div>
   )
