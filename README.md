@@ -1,4 +1,4 @@
-![image](/uploads/37e7a9eea112366fe637195e972f16f5/image.png)
+![image](https://lab.ssafy.com/s06-final/S06P31A107/uploads/37e7a9eea112366fe637195e972f16f5/image.png)
 
 # :bookmark: 목차
 
@@ -29,34 +29,30 @@
 # :computer: 기술 스택
 
 #### FE
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> 
-<img src="https://img.shields.io/badge/ts-3178c6?style=for-the-badge&logo=ts-node&logoColor=white">
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> <img src="https://img.shields.io/badge/ts-3178c6?style=for-the-badge&logo=ts-node&logoColor=white">
 <img src="https://img.shields.io/badge/Next.js-0094f5?style=for-the-badge&logo=Next.js&logoColor=white">
 <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=black">
 <img src="https://img.shields.io/badge/scss-CC6699?style=for-the-badge&logo=sass&logoColor=white">
 
 
 #### BE
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
-<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
 <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=white">
 
 #### 프로젝트 관리
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
 
 # :bookmark_tabs: ERD
-![image](/uploads/4f4ac65309bcc96a2abcbff42ac49c01/image.png)
+![image](https://lab.ssafy.com/s06-final/S06P31A107/uploads/4f4ac65309bcc96a2abcbff42ac49c01/image.png)
 
 # :books: 사이트 레이아웃
 #### :book: 메인화면
-![image](/uploads/d8cf03e45696339747fb4a8f4e31e943/image.png)
+![image](https://lab.ssafy.com/s06-final/S06P31A107/uploads/d8cf03e45696339747fb4a8f4e31e943/image.png)
 #### :book: 월별 모아보기
-![image](/uploads/c639405a4d31b8d60fbc3dc0c5b84e83/image.png)
+![image](https://lab.ssafy.com/s06-final/S06P31A107/uploads/c639405a4d31b8d60fbc3dc0c5b84e83/image.png)
 #### :book: 오늘의 다이어리
-![image](/uploads/788b6d011277465ac53a8074fcac95b5/image.png)
+![image](https://lab.ssafy.com/s06-final/S06P31A107/uploads/788b6d011277465ac53a8074fcac95b5/image.png)
